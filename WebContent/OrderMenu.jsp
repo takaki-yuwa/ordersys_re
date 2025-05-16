@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="CSS/ProductCategory.css">
 <link rel="stylesheet" href="CSS/Menu.css">
 <link rel="stylesheet" href="CSS/WordWrap.css">
+<link rel="stylesheet" href="CSS/Tab.css">
 <link rel="icon" href="data:," />
 <!--.jsの呼び出し-->
 <script src="JavaScript/Menu3.js" defer></script>
@@ -26,16 +27,33 @@
 </header>
 <main>
 <!--カテゴリー-->
-<div class="category-wrapper">
-  <button class="category-button" onclick="location.href='#01'">お好み焼き</button>
-  <button class="category-button" onclick="location.href='#02'">もんじゃ焼き</button>
-  <button class="category-button" onclick="location.href='#03'">鉄板焼き</button>
-  <button class="category-button" onclick="location.href='#04'">ソフトドリンク</button>
-  <button class="category-button" onclick="location.href='#05'">お酒</button>
-  <button class="category-button" onclick="location.href='#06'">ボトル</button>
-  <button class="category-button" onclick="location.href='#07'">サイドメニュー</button>
-</div>
-<h1 id="01">お好み焼き</h1>
+<!--タブ表示ラジオボタンで設定してCSSで調整-->
+<div class="area">
+  <input type="radio" name="tab_name" id="tab1" checked>
+  <label class="tab_class" for="tab1">お好み焼き</label>
+  <div class="content_class">
+    <ul class="menu" id="price"></ul>
+  </div>
+  <input type="radio" name="tab_name" id="tab2" >
+  <label class="tab_class" for="tab2">鉄板焼き</label>
+  <div class="content_class">
+    <p>鉄板焼き一覧</p>
+  </div>
+  <input type="radio" name="tab_name" id="tab3" >
+  <label class="tab_class" for="tab3">タブ3</label>
+  <div class="content_class">
+    <p>タブ3のコンテンツを表示します</p>
+  </div>
+  <input type="radio" name="tab_name" id="tab4" >
+  <label class="tab_class" for="tab4">タブ4</label>
+  <div class="content_class">
+    <p>タブ4のコンテンツを表示します</p>
+  </div>
+  <input type="radio" name="tab_name" id="tab5" >
+  <label class="tab_class" for="tab5">タブ5</label>
+  <div class="content_class">
+    <p>タブ5のコンテンツを表示します</p>
+  </div>
 <ul class="menu" id="price"></ul>
 </main>
 <footer class="footer-buttons">
