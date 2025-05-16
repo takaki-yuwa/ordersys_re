@@ -1,0 +1,32 @@
+@charset "UTF-8";
+/*画像サイズ自動調整*/
+img{
+	max-width: 100%;
+	height:auto;
+	max-height:100%;
+}
+/*ヘッダーの分間隔をあける*/
+main{
+	margin-top:90px;
+	margin-bottom:90px;
+	padding:20px;
+}
+
+body{
+	padding-top:90px;
+	background-color:seashell;
+}
+
+html{
+	scroll-padding-top: 160px;
+}
+
+/*テキストに下線部をつける*/
+.underline-text{
+	text-decoration:underline;
+}
+
+/*テキストを太文字にする*/
+.bold-text{
+	font-weight: bold;
+}

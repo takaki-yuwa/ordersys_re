@@ -1,0 +1,10 @@
+@charset "UTF-8";
+.break-word{
+	width:210px;
+	word-wrap: break-word;
+}
+
+.break-topping{
+	width:250px;
+	word-wrap:break-word;
+}

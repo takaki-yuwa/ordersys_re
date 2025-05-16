@@ -1,0 +1,17 @@
+@charset "UTF-8";
+.topping{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+
+.topping li{
+	padding:10px;
+}
+
+.topping-row{
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	margin-bottom:5px;
+}

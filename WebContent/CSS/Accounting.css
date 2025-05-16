@@ -1,0 +1,45 @@
+@charset "UTF-8";
+/*中央のコンテナ*/
+.center-container{
+	display:flex;
+	justify-content:center;
+	align-items: center;
+	width: 100%;
+	height:100%;
+	
+}
+
+/*四角形のボックス*/
+.square-box{
+	width:500px;
+	height:200px;
+	background-color:gold;
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items: center;
+	border-radius:10px;
+	padding:10px;
+}
+
+/*テキストのスタイル*/
+.center-text{
+	color:black;
+	font-size:20px;
+	text-align: center;
+}
+
+/*テキストに下線部をつける*/
+.underline-text{
+	text-decoration:underline;
+}
+
+/*テキストを太文字にする*/
+.bold-text{
+	font-weight: bold;
+}
+
+/*フォントサイズ*/
+.size-text{
+	font-size: 20pt;
+}

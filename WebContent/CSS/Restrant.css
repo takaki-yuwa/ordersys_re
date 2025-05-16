@@ -1,0 +1,23 @@
+@charset "UTF-8";
+p{
+    background-color:transparent;
+    color: black;
+}
+
+@media screen and (max-width: 768px) {
+    p{
+        background-color: transparent;
+         color:black;
+     }
+ }
+ 
+ @media screen and (max-width: 480px) {
+    p{
+        background-color: transparent;
+         color:black;
+     }
+ }
+ 
+p{
+	line-height: 0.5;
+}

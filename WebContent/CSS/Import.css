@@ -1,0 +1,6 @@
+/*全てのHTMLで使うCSSのリンク*/
+@import url('HTMLBase.css');
+@import url('Restrant.css');
+@import url('HeaderImage.css');
+@import url('ButtonPosition.css');
+@import url('FooterImage.css');
