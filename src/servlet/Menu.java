@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/product")
-public class Menu1 extends HttpServlet {
+public class Menu extends HttpServlet {
 
     public static final String URL = "jdbc:mysql://localhost:3306/order_management";
     public static final String USER = "root";
