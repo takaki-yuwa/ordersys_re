@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="servlet.product_list" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +13,7 @@
 <link rel="stylesheet" href="CSS/WordWrap.css">
 <link rel="stylesheet" href="CSS/ProductDetails.css">
 <link rel="stylesheet" href="CSS/Topping.css">
+<link rel="icon" href="data:," />
 <script src="JavaScript/Topping.js" defer></script>
 </head>
 <body>
@@ -23,8 +27,10 @@
 <header class="header-product">
 	<div class="header-product-wrapper">
 		<!-- EL式を使用して商品名を表示 -->
-		<div class="product-text">${productName}</div>
-		<div class="price-text">${productPrice}円(税込)</div>
+		<c:if test="${not empty sessionScope.productList}">
+		<div class="product-text">${sessionScope.productList.name}</div>
+		<div class="price-text">${sessionScope.productList.price}円(税込)</div>
+		</c:if>
 	</div>
 </header>
 <main>

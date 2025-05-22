@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="CSS/WordWrap.css">
     <link rel="icon" href="data:," />
     <!--.jsの呼び出し-->
-    <script src="JavaScript/Menu.js" defer></script>
 </head>
 <body>
 <!--ヘッダー(店の名前)-->
@@ -58,9 +57,13 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>
@@ -88,10 +91,15 @@
                     <li>
                         <div class="menu-row">
                             <div class="break-word bold-text"><%= p.getName() %></div>
+                            
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>
@@ -119,10 +127,15 @@
                     <li>
                         <div class="menu-row">
                             <div class="break-word bold-text"><%= p.getName() %></div>
+                            
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>
@@ -151,10 +164,15 @@
                     <li>
                         <div class="menu-row">
                             <div class="break-word bold-text"><%= p.getName() %></div>
+                            
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>
@@ -183,10 +201,15 @@
                     <li>
                         <div class="menu-row">
                             <div class="break-word bold-text"><%= p.getName() %></div>
+                            
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>
@@ -215,10 +238,15 @@
                     <li>
                         <div class="menu-row">
                             <div class="break-word bold-text"><%= p.getName() %></div>
+                            
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>
@@ -247,10 +275,15 @@
                     <li>
                         <div class="menu-row">
                             <div class="break-word bold-text"><%= p.getName() %></div>
+                            
                             <div>
-                                <a href="ProductDetails?name=<%= java.net.URLEncoder.encode(p.getName(), "UTF-8") %>&price=<%= p.getPrice() %>">
-                                    <img src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-                                </a>
+                            <form action="Details" method="post">
+                            		<input type="hidden" name="id" value="<%= p.getId() %>">
+    								<input type="hidden" name="name" value="<%= p.getName() %>">
+    								<input type="hidden" name="price" value="<%= p.getPrice() %>">
+    								<input type="hidden" name="category" value="<%= p.getCategory() %>">
+                                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+                            </form>
                             </div>
                         </div>
                         <div><%= p.getPrice() %> 円</div>

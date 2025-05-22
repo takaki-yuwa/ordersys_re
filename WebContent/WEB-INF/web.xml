@@ -9,4 +9,37 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+      <!-- JSTL タグライブラリ設定 -->
+  <jsp-config>
+    <taglib>
+      <taglib-uri>jakarta.tags.core</taglib-uri>
+      <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>jakarta.tags.fmt</taglib-uri>
+      <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>jakarta.tags.sql</taglib-uri>
+      <taglib-location>/WEB-INF/tld/sql.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>jakarta.tags.xml</taglib-uri>
+      <taglib-location>/WEB-INF/tld/x.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+  
+  <servlet>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+        <param-name>development</param-name>
+        <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+</servlet>
+<servlet-mapping>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
+</servlet-mapping>
 </web-app>
