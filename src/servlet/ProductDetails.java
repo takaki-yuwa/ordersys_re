@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ProductDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // パラメータの取得
@@ -27,8 +27,7 @@ public class ProductDetails extends HttpServlet {
         request.setAttribute("productPrice", productPrice);
 
         // JSPへフォワード
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ProductDetails.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/JSP/ProductDetails.jsp");
         dispatcher.forward(request, response);
     }
 }
-
