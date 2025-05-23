@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="CSS/WordWrap.css">
 <link rel="stylesheet" href="CSS/ProductDetails.css">
 <link rel="stylesheet" href="CSS/Topping.css">
+<lind rel="stylesheet" href="CSS/style.css">
 <link rel="icon" href="data:," />
 <script src="JavaScript/Topping.js" defer></script>
 </head>
@@ -33,7 +34,7 @@
 		</c:if>
 	</div>
 </header>
-<main>
+<main class="details-main">
 	<p>トッピング:110円</p>
 	<ul class="topping" id="topping"></ul>
 </main>

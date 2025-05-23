@@ -25,7 +25,7 @@
     </div>
 </header>
 
-<main>
+<main class="default-main">
     <!--カテゴリー-->
     <div class="category-wrapper">
         <button class="category-button" onclick="location.href='#01'">お好み焼き</button>

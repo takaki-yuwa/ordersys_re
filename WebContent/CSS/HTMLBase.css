@@ -6,9 +6,15 @@ img{
 	max-height:100%;
 }
 /*ヘッダーの分間隔をあける*/
-main{
+.default-main{
 	margin-top:90px;
 	margin-bottom:90px;
+	padding:20px;
+}
+
+.details-main{
+	margin-top:90px;
+	margin-bottom:180px;
 	padding:20px;
 }
 
