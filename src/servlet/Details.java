@@ -42,7 +42,7 @@ public class Details extends HttpServlet {
             }
         }
         
-        product_list productList=new product_list(name,price,category,id);
+        product_list productList=new product_list(id, name, price, category);
         
         HttpSession session=request.getSession();
         
