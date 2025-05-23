@@ -1,12 +1,12 @@
 package servlet;
 
-public class product_list {
+public class topping_list {
 	private int id;
 	private String name;
     private int price;
     private String category;
 
-    public product_list(int id, String name, int price, String category) {
+    public topping_list(int id, String name, int price, String category) {
     	this.id = id;
     	this.name = name;
         this.price = price;
