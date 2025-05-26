@@ -85,12 +85,12 @@
 	<div class="table-number">3卓</div>
 	<div class="footer-wrapper">
 		<!-- ボタン -->
-		<a href="OrderList.html">
+		<form action="OrderList" method="post">
 			<button class="fixed-right-button">
 				<img src="Image/addCart.png" alt="追加のボタン">
 				追加
 			</button>
-		</a>
+		</form>
 		<a href="OrderSystem">
 			<button class="fixed-left-button">
 				<img src="Image/menu.png" alt="メニューのボタン">
