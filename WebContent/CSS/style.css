@@ -26,4 +26,15 @@
     background-color: transparent;
 }
 
+/* 無効状態のボタンに灰色を適用 */
+.counter-button.disabled {
+    background-color: #d3d3d3;  /* 灰色 */
+    cursor: not-allowed;        /* ポインタが表示されないようにする */
+}
+.counter-button[disabled] {
+    background-color: #d3d3d3;  /* 灰色 */
+    cursor: not-allowed;        /* ポインタが表示されないようにする */
+}
+
+
 
