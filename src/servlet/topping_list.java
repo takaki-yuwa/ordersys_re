@@ -4,13 +4,13 @@ public class topping_list {
 	private int id;
 	private String name;
     private int price;
-    private String category;
+    private int stock;
 
-    public topping_list(int id, String name, int price, String category) {
+    public topping_list(int id, String name, int price, int stock) {
     	this.id = id;
     	this.name = name;
         this.price = price;
-        this.category = category;
+        this.stock = stock;
     }
 
     public int getId() {
@@ -25,7 +25,7 @@ public class topping_list {
         return price;
     }
     
-    public String getCategory() {
-        return category;
+    public int getStock() {
+        return stock;
     }
 }

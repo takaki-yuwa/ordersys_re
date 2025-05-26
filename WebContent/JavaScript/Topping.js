@@ -17,7 +17,7 @@ topping.forEach((item, index) => {
     const li = document.createElement('li');
     li.innerHTML = `
         <div class="topping-row">
-            <div class="break-topping">・${item.name}</div>
+            <div class="break-topping">・${topping.name}</div>
             <button class="counter-button minus" data-index="${index}">-</button>
             <input type="text" value="${item.count}" class="counter-input" readonly>
             <button class="counter-button plus" data-index="${index}">+</button>

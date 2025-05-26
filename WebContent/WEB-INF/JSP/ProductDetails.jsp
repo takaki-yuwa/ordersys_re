@@ -13,9 +13,9 @@
 <link rel="stylesheet" href="CSS/WordWrap.css">
 <link rel="stylesheet" href="CSS/ProductDetails.css">
 <link rel="stylesheet" href="CSS/Topping.css">
-<lind rel="stylesheet" href="CSS/style.css">
+<link rel="stylesheet" href="CSS/style.css">
 <link rel="icon" href="data:," />
-<script src="JavaScript/Topping.js" defer></script>
+<!--<script src="JavaScript/Topping.js" defer></script>-->
 </head>
 <body>
 <!-- ヘッダー(店の名前) -->
@@ -35,8 +35,51 @@
 	</div>
 </header>
 <main class="details-main">
+
 	<p>トッピング:110円</p>
-	<ul class="topping" id="topping"></ul>
+	<c:if test="${not empty topping_list}">
+        <c:forEach var="topping" items="${topping_list}" varStatus="status">
+            <li class="topping-row">
+                <div class="break-topping">${topping.name}</div>
+                <button class="counter-button minus" data-index="${status.index}">-</button>
+                <input type="text" value="0" class="counter-input" readonly>
+                <button class="counter-button plus" data-index="${status.index}" data-max="${topping.stock}" >+</button>
+            </li>
+        </c:forEach>
+        <script>
+    // -ボタンと+ボタンのクリックイベントを処理
+    document.querySelectorAll('.counter-button').forEach(button => {
+        button.addEventListener('click', function() {
+            // ボタンの種類をチェック
+            const isMinusButton = this.classList.contains('minus');
+            const isPlusButton = this.classList.contains('plus');
+            const max = parseInt(this.getAttribute('data-max'));
+            
+            // 対応する input 要素を取得
+            const input = this.parentElement.querySelector('.counter-input');
+            let currentValue = parseInt(input.value);
+
+            // もし input の値が数字でなければ初期化
+            if (isNaN(currentValue)) {
+                currentValue = 0;
+            }
+
+            // - ボタンがクリックされた場合は値を減らす
+            if (isMinusButton && currentValue > 0) {
+                input.value = currentValue - 1;
+            }
+
+            // + ボタンがクリックされた場合は値を増やす
+            if (isPlusButton && currentValue<max) {
+                input.value = currentValue + 1;
+            }
+        });
+    });
+</script>
+</c:if>
+<c:if test="${empty topping_list}">
+    <div>トッピングはありません。</div>
+</c:if>
 </main>
 <footer class="footer-buttons">
 	<div class="table-number">3卓</div>
@@ -48,7 +91,7 @@
 				追加
 			</button>
 		</a>
-		<a href="OrderMenu.jsp">
+		<a href="OrderSystem">
 			<button class="fixed-left-button">
 				<img src="Image/menu.png" alt="メニューのボタン">
 				メニュー
