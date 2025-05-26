@@ -313,12 +313,12 @@
             </button>
         </a>
         <!--履歴・お会計へ遷移-->
-        <a href="OrderHistory.html">
+        <form action="OrderHistory" method="post">
             <button class="fixed-left-button">
                 <img src="Image/menuhistory.png" alt="履歴・お会計のボタン">
                 履歴・お会計
             </button>
-        </a>
+        </form>
     </div>
 </footer>
 </body>
