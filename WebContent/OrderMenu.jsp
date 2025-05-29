@@ -315,6 +315,16 @@
         <!--履歴・お会計へ遷移-->
         <form action="OrderHistory" method="post">
             <button class="fixed-left-button">
+                <input type="hidden" name="tableNo" value="4">
+                <%
+                    int iOrderPrice[] = {770,990};
+                    for (int i = 0; i < iOrderPrice.length; i++)
+                    {
+                %>
+                        <input type="hidden" name="orderPrice" value="<%= iOrderPrice[i] %>">
+                <%
+                    }
+                %>
                 <img src="Image/menuhistory.png" alt="履歴・お会計のボタン">
                 履歴・お会計
             </button>

@@ -1,14 +1,15 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.servlet.RequestDispatcher;
+import dao.OrderDetailsDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/OrderHistory")
 public class OrderHistory extends HttpServlet {
@@ -18,38 +19,40 @@ public class OrderHistory extends HttpServlet {
             throws ServletException, IOException {
 
         // パラメータの取得
-        String p_id = request.getParameter("id");
-        String name = request.getParameter("name");
-        String p_price = request.getParameter("price");
-        String category=request.getParameter("category");
-        int id = 0;
+        String strTableNo = request.getParameter("tableNo");
+        int tableNo = 0;
         int price = 0;
         // idの変換
-        if (p_id != null && !p_id.isEmpty()) {
+        if (strTableNo != null && !strTableNo.isEmpty()) {
             try {
-                id = Integer.parseInt(p_id);
+            	tableNo = Integer.parseInt(strTableNo);
             } catch (NumberFormatException e) {
-                System.out.println("無効な数値: id=" + p_id);
-            }
-        }
-
-        // priceの変換
-        if (p_price != null && !p_price.isEmpty()) {
-            try {
-                price = Integer.parseInt(p_price);
-            } catch (NumberFormatException e) {
-                System.out.println("無効な数値: price=" + p_price);
+                System.out.println("無効な数値: 卓番=" + strTableNo);
             }
         }
         
-        product_list productList=new product_list(id, name, price, category);
-        
-        HttpSession session=request.getSession();
-        
-        session.setAttribute("productList", productList);
+        // 卓番に無効な値 = 0 が入っている場合は処理しない
+        List<order_details_list> OrderDetailsList = new ArrayList<order_details_list>();
+        if(tableNo > 0)
+        {
+            OrderDetailsDAO dao = new OrderDetailsDAO();
+            String[] strOrderPrice = request.getParameterValues("orderPrice");
+            // 注文金額の変換
+            if (strOrderPrice.length > 0) {
+                for (int i = 0; i < strOrderPrice.length; i++)
+                {
+                    try {
+                    	price = Integer.parseInt(strOrderPrice[i]);
+                    	OrderDetailsList.addAll(dao.findOrderHistory(tableNo, price));
+                    } catch (NumberFormatException e) {
+                        System.out.println("無効な数値: 注文金額=" + strOrderPrice[i]);
+                    }
+                }
+            }
+        }
 
         // JSPへフォワード
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/JSP/OrderHistory.jsp");
-        dispatcher.forward(request, response);
+        request.setAttribute("orderHistory", OrderDetailsList);
+        request.getRequestDispatcher("/WEB-INF/JSP/OrderHistory.jsp").forward(request, response);
     }
 }
