@@ -57,7 +57,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -93,7 +93,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -129,7 +129,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -166,7 +166,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -203,7 +203,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -240,7 +240,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -277,7 +277,7 @@
                             <div class="break-word bold-text"><%= p.getName() %></div>
                             
                             <div>
-                            <form action="Details" method="post">
+                            <form action="DetailsAdd" method="post">
                             		<input type="hidden" name="id" value="<%= p.getId() %>">
     								<input type="hidden" name="name" value="<%= p.getName() %>">
     								<input type="hidden" name="price" value="<%= p.getPrice() %>">
@@ -306,12 +306,12 @@
     <div class="footer-wrapper">
         <!--ボタン-->
         <!--注文リストへ遷移-->
-        <a href="OrderList.html">
+        <form action="OrderList" method="post">
             <button class="fixed-right-button">
                 <img src="Image/cart.png" alt="注文リストのボタン">
                 注文リスト
             </button>
-        </a>
+        </form>
         <!--履歴・お会計へ遷移-->
         <form action="OrderHistory" method="post">
             <button class="fixed-left-button">

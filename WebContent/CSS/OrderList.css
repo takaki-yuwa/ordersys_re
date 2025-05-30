@@ -65,7 +65,58 @@
 	font-weight:bold;
 }
 
-.subtotal{
-	margin-left:10px;
+.subtotal-price{
+	margin-left:auto;
 	font-weight:bold;
+}
+
+/* ボタンの横並びを調整 */
+.buttons-container {
+    display: flex;
+    justify-content: space-between;  /* ボタン間に間隔をつける */
+    align-items: center;  /* ボタンを同じ高さに揃える */
+    width: 100%;  /* li要素の幅に合わせる */
+}
+
+/* 変更ボタン */
+.change-btn {
+    padding: 10px 20px;
+    background-color: green;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.change-btn:hover {
+    background-color: #ccc; /* ホバー時の色変更 */
+}
+
+
+/* 増減ボタンのスタイル */
+.quantity-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.decrease-btn, .increase-btn {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.decrease-btn:hover, .increase-btn:hover {
+    background-color: #2980b9;
+}
+
+/* 数量表示 */
+.quantity {
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
 }

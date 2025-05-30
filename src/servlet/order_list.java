@@ -1,37 +1,53 @@
 package servlet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class order_list {
-	private String[] name;
-	private String[] name2;
-	private String[] price;
-	private String[] price2;
-	private String[] subtotal;
-	
-	public order_list(String[] name, String[] name2, String[] price, String[] price2, String[] subtotal) {
-		this.name=name;
-		this.name2=name2;
-		this.price=price;
-		this.price2=price2;
-		this.subtotal=subtotal;
-	}
-	
-	public String[] getName() {
-		return name;
-	}
-	
-	public String[] getName2() {
-		return name2;
-	}
-	
-	public String[] getPrice() {
-		return price;
-	}
-	
-	public String[] getPrice2() {
-		return price2;
-	}
-	
-	public String[] getSubtotal() {
-		return subtotal;
-	}
+    private List<String> product_name;
+    private List<String> topping_name;
+    private List<Integer> product_price;
+    private List<Integer> topping_price;
+    private List<Integer> menu_quantity;
+    private List<Integer> menu_subtotal;
+    private int total;
+
+    public order_list(List<String> name, List<String> name2, List<Integer> price, List<Integer> price2, List<Integer> quantity, List<Integer> subtotal, int total) {
+        this.product_name = new ArrayList<>(name);
+        this.topping_name = new ArrayList<>(name2);
+        this.product_price = new ArrayList<>(price);
+        this.topping_price = new ArrayList<>(price2);
+        this.menu_quantity = new ArrayList<>(quantity);
+        this.menu_subtotal = new ArrayList<>(subtotal);
+        this.total = total;
+    }
+
+    public List<String> getProduct_name() {
+        return product_name;
+    }
+
+    public List<String> getTopping_name() {
+        return topping_name;
+    }
+
+    public List<Integer> getProduct_price() {
+        return product_price;
+    }
+
+    public List<Integer> getTopping_price() {
+        return topping_price;
+    }
+
+    public List<Integer> getMenu_quantity() {
+        return menu_quantity;
+    }
+
+    public List<Integer> getMenu_subtotal() {
+        return menu_subtotal;
+    }
+
+    public int getTotal() {
+    	return total;
+    }
+
 }

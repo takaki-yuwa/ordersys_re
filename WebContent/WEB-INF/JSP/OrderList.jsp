@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,7 @@
 <link rel="stylesheet" href="CSS/OrderList.css">
 <link rel="icon" href="data:," />
 
+<!--<script src="JavaScript/OrderList.js"></script>-->
 </head>
 <body>
 <!--ヘッダー(店の名前)-->
@@ -24,26 +26,44 @@
 </header>
 <main class="list-main">
 <div class="orderlist">
-	<c:if test="${not empty sessionScope.orderList}">
-		<c:forEach var="name" items="${sessionScope.orderList.name}" varStatus="status">
-			<c:set var="price" value="${sessionScope.orderList.price[status.index]}"/>
-			<li>
-				<div class="order-item">
-					<div class="product-name">${name}</div><div class="product-price">${price}円</div>
-				</div>		
-				<c:forEach var="name2" items="${sessionScope.orderList.name2}">
-					<c:set var="price2" value="${sessionScope.orderList.price2[status.index]}"/>
-					<div class="order-item">
-						<div class="topping-name">・${name2}</div><div class="topping-price"> ${price2}円</div>
-					</div>
-				</c:forEach>
-				
-			</li>
-		</c:forEach>
-		<c:forEach var="subtotal" items="${sessionScope.orderList.subtotal}">
-					<div class="subtotal">小計:${subtotal}円</div>
-		</c:forEach>
-	</c:if>
+    <c:if test="${not empty sessionScope.orderList}">
+        <c:forEach var="name" items="${sessionScope.orderList.product_name}" varStatus="status">
+            <c:set var="price" value="${sessionScope.orderList.product_price[status.index]}"/>
+            <c:set var="quantity" value="${sessionScope.orderList.menu_quantity[status.index]}"/>
+            <c:set var="subtotal" value="${sessionScope.orderList.menu_subtotal[status.index]}"/>
+            <c:set var="subtotal" value="${price * quantity}" />
+            <li>
+                <div class="order-item">
+                    <div class="product-name">${name}</div>
+                    <div class="product-price">${price}円</div>
+                </div>
+                <c:forEach var="name2" items="${sessionScope.orderList.topping_name}" varStatus="status2">
+                    <c:set var="price2" value="${sessionScope.orderList.topping_price[status2.index]}"/>
+                    <div class="order-item">
+                        <div class="topping-name">・${name2}</div>
+                        <div class="topping-price"> ${price2}円</div>
+                    </div>
+                    <c:set var="subtotal" value="${subtotal+(price2 * quantity)}"/>
+                </c:forEach>
+                <div class="order-item">
+                    <div class="subtotal-price">小計: ${subtotal}円</div>
+                </div>
+                <c:set var="total" value="${total+subtotal}"/>
+                
+                <!-- ボタンを横並びに配置 -->
+                <div class="order-item buttons-container">
+                    <button class="change-btn">変更</button>
+                    <!-- 増減ボタンを追加 -->
+                    <div class="quantity-buttons">
+                        <button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn">−</button>
+                        <!-- 数量を表示する要素、変数にバインド -->
+                        <span class="quantity">${quantity}</span>
+                        <button type="submit" name="quantity" value="${quantity + 1}" class="increase-btn">+</button>
+                    </div>
+                </div>
+            </li>
+        </c:forEach>
+    </c:if>
 </div>
 
 </main>
@@ -68,9 +88,11 @@
 	</div>
 </footer>
 <footer class="footer-subtotal">
+	<c:if test="${not empty sessionScope.orderList}">
 	<div class="footer-subtotal-wrapper">
-		<div class="subtotal-text">合計:111,430円(税込)</div>
+		<div class="subtotal-text">合計:${total}円(税込)</div>
 	</div>
+	</c:if>
 </footer>
 </body>
 </html>

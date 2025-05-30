@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -17,14 +18,16 @@ public class OrderList extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		//パラメータの取得
-		String[] name={"お好み焼き","もんじゃ焼き","ドリンク","サイド","メニュー","お酒","ボトル"};
-		String[] name2={"コーン","バター","塩"};
-		String[] price= {"1001","1002","1003","1004","1005","1006","1007"};
-		String[] price2= {"111","112","113"};
-		String[] subtotal= {"1111","2222","3333","4444","5555","6666","7777"};
+        // リストの初期化
+        List<String> product_name = List.of("納豆お好み焼き", "ベビースターお好み焼き", "豚玉お好み焼き", "イカお好み焼き", "桜エビお好み焼き", "イカ桜エビお好み焼き", "梅しそお好み焼き");
+        List<String> topping_name = List.of("コーン", "カレー", "チーズ","もち","ツナ","ベビースター");
+        List<Integer> product_price = List.of(660, 660, 800, 740, 740, 770, 740);
+        List<Integer> topping_price = List.of(110, 110, 110,110,110,110);
+        List<Integer> menu_quantity = List.of(1, 1, 1, 1, 1, 1, 1);
+        List<Integer> menu_subtotal = List.of(0,0,0,0,0,0,0);
+		int total=0;
 
-		order_list orderList=new order_list(name,name2,price,price2,subtotal);
+		order_list orderList=new order_list(product_name,topping_name,product_price,topping_price,menu_quantity,menu_subtotal,total);
 		
 		HttpSession session=request.getSession();
 		
@@ -36,3 +39,5 @@ public class OrderList extends HttpServlet {
 	}
 
 }
+
+
