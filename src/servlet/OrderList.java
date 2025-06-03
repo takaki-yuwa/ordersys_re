@@ -26,9 +26,9 @@ public class OrderList extends HttpServlet {
         List<Integer> topping_price = List.of(110, 110, 110,110,110,110);
         List<Integer> menu_quantity = List.of(1, 1, 1, 1, 1, 1, 1);
         List<Integer> menu_subtotal = List.of(0,0,0,0,0,0,0);
-		int total=0;
+		int menu_total=0;
 
-		order_list orderList=new order_list(menu_id,product_name,topping_name,product_price,topping_price,menu_quantity,menu_subtotal,total);
+		order_list orderList=new order_list(menu_id,product_name,topping_name,product_price,topping_price,menu_quantity,menu_subtotal,menu_total);
 		
 		HttpSession session=request.getSession();
 		

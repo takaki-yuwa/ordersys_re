@@ -11,17 +11,17 @@ public class order_list {
     private List<Integer> topping_price;
     private List<Integer> menu_quantity;
     private List<Integer> menu_subtotal;
-    private int total;
+    private int menu_total;
 
-    public order_list(List<Integer> id, List<String> name, List<String> name2, List<Integer> price, List<Integer> price2, List<Integer> quantity, List<Integer> subtotal, int total) {
-        this.menu_id=new ArrayList<>(id);
-    	this.product_name = new ArrayList<>(name);
-        this.topping_name = new ArrayList<>(name2);
-        this.product_price = new ArrayList<>(price);
-        this.topping_price = new ArrayList<>(price2);
-        this.menu_quantity = new ArrayList<>(quantity);
-        this.menu_subtotal = new ArrayList<>(subtotal);
-        this.total = total;
+    public order_list(List<Integer> menu_id, List<String> product_name, List<String> topping_name, List<Integer> product_price, List<Integer> topping_price, List<Integer> menu_quantity, List<Integer> menu_subtotal, int menu_total) {
+        this.menu_id=new ArrayList<>(menu_id);
+    	this.product_name = new ArrayList<>(product_name);
+        this.topping_name = new ArrayList<>(topping_name);
+        this.product_price = new ArrayList<>(product_price);
+        this.topping_price = new ArrayList<>(topping_price);
+        this.menu_quantity = new ArrayList<>(menu_quantity);
+        this.menu_subtotal = new ArrayList<>(menu_subtotal);
+        this.menu_total = menu_total;
     }
 
     public List<Integer> getMenu_id() {
@@ -43,7 +43,7 @@ public class order_list {
     public List<Integer> getTopping_price() {
         return topping_price;
     }
-
+    
     public List<Integer> getMenu_quantity() {
         return menu_quantity;
     }
@@ -52,8 +52,8 @@ public class order_list {
         return menu_subtotal;
     }
 
-    public int getTotal() {
-    	return total;
+    public int getMenu_total() {
+    	return menu_total;
     }
 
 }

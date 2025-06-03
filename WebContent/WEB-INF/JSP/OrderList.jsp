@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="CSS/OrderList.css">
 <link rel="icon" href="data:," />
 
-<!--<script src="JavaScript/OrderList.js"></script>-->
+<script src="JavaScript/OrderList.js"></script>
 </head>
 <body>
 <!--ヘッダー(店の名前)-->
@@ -48,7 +48,7 @@
                 </c:forEach>
                 <div class="order-item">
                     <div class="subtotal-price">小計: 
-                        <span id="subtotal">${subtotal}</span>円
+                        <span id="subtotal-${menu_id}">${subtotal}</span>円
                     </div>
                 </div>
                 <c:set var="total" value="${total+subtotal}"/>
@@ -65,28 +65,16 @@
                     </form>
                     <!-- 増減ボタンを追加 -->
                     <div class="quantity-buttons">
-                        <button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn">−</button>
+                        <button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn" id="decrement-${menu_id}">−</button>
                         <!-- 数量を表示する要素、変数にバインド -->
-                        <span class="quantity" id="counter">1</span>
-                        <button type="button" name="quantity" value="${quantity + 1}" class="increase-btn" id="increment">+</button>
+                        <span class="quantity" id="counter-${menu_id}">${quantity}</span>
+                        <button type="button" name="quantity" value="${quantity + 1}" class="increase-btn" id="increment-${menu_id}">+</button>
                     </div>
-                    <script type="text/javascript" id="test">
-                        const state = { count: 1 };
-
-                        const btn = document.getElementById('increment');
-                        btn.addEventListener('click', () => {
-                          const counter = document.getElementById('counter');
-                          const subtotal = document.getElementById('subtotal');
-                          counter.innerHTML = ++state.count;
-                          subtotal.innerHTML = state.count * ${subtotal};
-                        });
-                    </script>
                 </div>
             </li>
         </c:forEach>
     </c:if>
 </div>
-
 </main>
 <footer class="footer-buttons">
 	<div class="table-number">3卓</div>
@@ -110,11 +98,24 @@
 	</div>
 </footer>
 <footer class="footer-subtotal">
-	<c:if test="${not empty sessionScope.orderList}">
 	<div class="footer-subtotal-wrapper">
-		<div class="subtotal-text">合計:${total}円(税込)</div>
+		<div class="subtotal-text" id="total">合計:${total}円(税込)</div>
 	</div>
-	</c:if>
 </footer>
 </body>
+<c:forEach var="menu_id" items="${sessionScope.orderList.menu_id}" varStatus="status">
+    <c:set var="product_name" value="${sessionScope.orderList.product_name[status.index]}"/>
+    <c:set var="product_price" value="${sessionScope.orderList.product_price[status.index]}"/>
+    <c:set var="quantity" value="${sessionScope.orderList.menu_quantity[status.index]}"/>
+    <c:set var="subtotal" value="${sessionScope.orderList.menu_subtotal[status.index]}"/>
+    <c:set var="subtotal" value="${product_price * quantity}" />
+    <c:forEach var="topping_name" items="${sessionScope.orderList.topping_name}" varStatus="status2">
+		<c:set var="topping_price" value="${sessionScope.orderList.topping_price[status2.index]}"/>
+		<c:set var="subtotal" value="${subtotal+(topping_price * quantity)}"/>
+    <!-- JavaScriptで埋め込む -->
+    <script>
+        updateOrderState(${menu_id}, ${quantity},${subtotal});
+    </script>
+    </c:forEach>
+</c:forEach>
 </html>
