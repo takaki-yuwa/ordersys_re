@@ -47,7 +47,9 @@
                     <c:set var="subtotal" value="${subtotal+(topping_price * quantity)}"/>
                 </c:forEach>
                 <div class="order-item">
-                    <div class="subtotal-price">小計: ${subtotal}円</div>
+                    <div class="subtotal-price">小計: 
+                        <span id="subtotal">${subtotal}</span>円
+                    </div>
                 </div>
                 <c:set var="total" value="${total+subtotal}"/>
                 
@@ -65,9 +67,20 @@
                     <div class="quantity-buttons">
                         <button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn">−</button>
                         <!-- 数量を表示する要素、変数にバインド -->
-                        <span class="quantity">${quantity}</span>
-                        <button type="submit" name="quantity" value="${quantity + 1}" class="increase-btn">+</button>
+                        <span class="quantity" id="counter">1</span>
+                        <button type="button" name="quantity" value="${quantity + 1}" class="increase-btn" id="increment">+</button>
                     </div>
+                    <script type="text/javascript" id="test">
+                        const state = { count: 1 };
+
+                        const btn = document.getElementById('increment');
+                        btn.addEventListener('click', () => {
+                          const counter = document.getElementById('counter');
+                          const subtotal = document.getElementById('subtotal');
+                          counter.innerHTML = ++state.count;
+                          subtotal.innerHTML = state.count * ${subtotal};
+                        });
+                    </script>
                 </div>
             </li>
         </c:forEach>
@@ -82,6 +95,7 @@
 		<!--注文完了へ遷移-->
 		<form action="OrderCompleted" method="post">
 		<button class="fixed-right-button">
+            <input type="hidden" name="tableNo" value="3">
 			<img src="Image/Vector.png" alt="注文のボタン">
 			注文する
 		</button>
