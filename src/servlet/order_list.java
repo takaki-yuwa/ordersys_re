@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class order_list {
+	private List<Integer> menu_id;
     private List<String> product_name;
     private List<String> topping_name;
     private List<Integer> product_price;
@@ -12,8 +13,9 @@ public class order_list {
     private List<Integer> menu_subtotal;
     private int total;
 
-    public order_list(List<String> name, List<String> name2, List<Integer> price, List<Integer> price2, List<Integer> quantity, List<Integer> subtotal, int total) {
-        this.product_name = new ArrayList<>(name);
+    public order_list(List<Integer> id, List<String> name, List<String> name2, List<Integer> price, List<Integer> price2, List<Integer> quantity, List<Integer> subtotal, int total) {
+        this.menu_id=new ArrayList<>(id);
+    	this.product_name = new ArrayList<>(name);
         this.topping_name = new ArrayList<>(name2);
         this.product_price = new ArrayList<>(price);
         this.topping_price = new ArrayList<>(price2);
@@ -22,6 +24,10 @@ public class order_list {
         this.total = total;
     }
 
+    public List<Integer> getMenu_id() {
+    	return menu_id;
+    }
+    
     public List<String> getProduct_name() {
         return product_name;
     }

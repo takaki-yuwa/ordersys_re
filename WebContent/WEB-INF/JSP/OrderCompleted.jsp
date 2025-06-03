@@ -37,7 +37,7 @@
 	<div class="footer-wrapper">
 		<!--ボタン-->
 		<!--メニューへ遷移-->
-		<a href="OrderMenu.html">
+		<a href="OrderSystem">
 		<button class="fixed-left-button">
 			<img src="Image/menu.png" alt="メニューのボタン">
 			メニュー
