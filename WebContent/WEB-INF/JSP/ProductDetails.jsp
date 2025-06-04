@@ -76,29 +76,12 @@
 				                input.value = currentValue + 1;
 				            }
 				
-				            // ボタンの状態をチェックして、上限/下限に達した場合の処理
-				            // - ボタン
-				            const minusButton = this.parentElement.querySelector('.counter-button.minus');
-				            if (currentValue === 0) {
-				                minusButton.classList.add('disabled');
-				                minusButton.setAttribute('disabled', 'true');
-				            } else {
-				                minusButton.classList.remove('disabled');
-				                minusButton.removeAttribute('disabled');
-				            }
-				
-				            // + ボタン
-				            const plusButton = this.parentElement.querySelector('.counter-button.plus');
-				            if (currentValue === max-1) {
-				                plusButton.classList.add('disabled');
-				                plusButton.setAttribute('disabled', 'true');
-				            } else {
-				                plusButton.classList.remove('disabled');
-				                plusButton.removeAttribute('disabled');
-				            }
+				            
 				        });
 				    });
 				</script>
+
+
 
             </c:if>
             <c:if test="${empty topping_list}">
@@ -130,9 +113,10 @@
 </footer>
 
 <footer class="footer-subtotal">
-	<div class="footer-subtotal-wrapper">
-		<div class="subtotal-text">小計:111,430円(税込)</div>
-	</div>
+	<!-- 小計 -->
+    <div class="subtotal">
+        <p>小計: ${sessionScope.subtotal}円(税込)</p>
+    </div>
 </footer>
 
 </body>
