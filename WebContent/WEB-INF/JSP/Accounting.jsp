@@ -33,7 +33,6 @@
 				<p class="center-text">会計が確定されました</p>
 				<p class="center-text">ご利用ありがとうございます</p>
             <span class="bold-text size-text"><%= Accounting_List.getTableNo() %>卓</span>
-<!--TotalからTotalPriceへ変更-->
             <span class="underline-text bold-text size-text">合計:<%= Accounting_List.getTotalPrice() %>円(税込)</span>
 			</div>
 		</div>
