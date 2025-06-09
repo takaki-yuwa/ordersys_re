@@ -63,6 +63,7 @@
 				            const isMinusButton = this.classList.contains('minus');
 				            const isPlusButton = this.classList.contains('plus');
 				            const max = parseInt(this.getAttribute('data-max'));
+				            const min = parseInt(this.getAttribute('data-min')) || 0;
 				            
 				            // 対応する input 要素を取得
 				            const input = this.parentElement.querySelector('.counter-input');
@@ -73,7 +74,7 @@
 				            }
 				
 				            // - ボタンがクリックされた場合は値を減らす
-				            if (isMinusButton && currentValue > 0) {
+				            if (isMinusButton && currentValue > min) {
 				                input.value = currentValue - 1;
 				            }
 				
@@ -82,12 +83,29 @@
 				                input.value = currentValue + 1;
 				            }
 				
-				            
+				            // ボタンの状態をチェックして、上限/下限に達した場合の処理
+				            // - ボタン
+				            const minusButton = this.parentElement.querySelector('.counter-button.minus');
+				            if (currentValue <= min) {
+				                minusButton.classList.add('disabled');
+				                minusButton.setAttribute('disabled', 'true');
+				            } else {
+				                minusButton.classList.remove('disabled');
+				                minusButton.removeAttribute('disabled');
+				            }
+				
+				            // + ボタン
+				            const plusButton = this.parentElement.querySelector('.counter-button.plus');
+				            if (currentValue === max-1) {
+				                plusButton.classList.add('disabled');
+				                plusButton.setAttribute('disabled', 'true');
+				            } else {
+				                plusButton.classList.remove('disabled');
+				                plusButton.removeAttribute('disabled');
+				            }
 				        });
 				    });
 				</script>
-
-
 
 					</c:if>
 					<c:if test="${empty topping_list}">
@@ -103,11 +121,12 @@
 		<div class="table-number">3卓</div>
 		<div class="footer-wrapper">
 			<!-- ボタン -->
-			<a href="OrderList.html">
+			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
 					<img src="Image/addCart.png" alt="追加のボタン"> 追加
 				</button>
-			</a> <a href="OrderSystem">
+			</form>
+			<a href="OrderSystem">
 				<button class="fixed-left-button">
 					<img src="Image/menu.png" alt="メニューのボタン"> メニュー
 				</button>
@@ -116,9 +135,8 @@
 	</footer>
 
 	<footer class="footer-subtotal">
-		<!-- 小計 -->
-		<div class="subtotal">
-			<p>小計: ${sessionScope.subtotal}円(税込)</p>
+		<div class="footer-subtotal-wrapper">
+			<div class="subtotal-text">小計:111,430円(税込)</div>
 		</div>
 	</footer>
 

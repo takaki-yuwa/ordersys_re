@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,10 +8,10 @@
 <!--サイトのサイズ自動調整-->
 <meta name="viewport"
 	content="width=device-width,height=device-height,initial-scale=1.0">
-<title>注文完了画面</title>
+<title>会計確定画面</title>
 <!--.cssの呼び出し-->
 <link rel="stylesheet" href="CSS/Import.css">
-<link rel="stylesheet" href="CSS/OrderCompleted.css">
+<link rel="stylesheet" href="CSS/Accounting.css">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 </head>
@@ -25,25 +26,14 @@
 	<main>
 		<div class="center-container">
 			<div class="square-box">
-				<p class="center-text">ご注文いただき</p>
-				<p class="center-text">ありがとうございます</p>
+				<p class="center-text">会計が確定されました</p>
+				<p class="center-text">ご利用ありがとうございます</p>
+				<span class="bold-text size-text">3卓</span> <span> </span> <span
+					class="underline-text bold-text size-text">合計:2,660円(税込)</span>
 			</div>
 		</div>
-		<p class="center-text">お料理を準備いたしますので</p>
-		<p class="center-text">しばらくお待ち下さい</p>
-
+		<p class="center-text">レジにてお支払いください</p>
+		<p class="center-text">またのご利用をお待ちしております</p>
 	</main>
-	<footer class="footer-buttons">
-		<div class="table-number">3卓</div>
-		<div class="footer-wrapper">
-			<!--ボタン-->
-			<!--メニューへ遷移-->
-			<a href="OrderSystem">
-				<button class="fixed-left-button">
-					<img src="Image/menu.png" alt="メニューのボタン"> メニュー
-				</button>
-			</a>
-		</div>
-	</footer>
 </body>
 </html>

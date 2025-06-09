@@ -339,7 +339,7 @@
 				<button class="fixed-left-button">
 					<input type="hidden" name="tableNo" value="4">
 					<%
-					int iOrderPrice[] = { 770, 740 };
+					int iOrderPrice[] = { 770, 990 };
 					for (int i = 0; i < iOrderPrice.length; i++) {
 					%>
 					<input type="hidden" name="orderPrice"

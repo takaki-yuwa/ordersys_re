@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
-<%@ page import="java.util.List, java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,12 +96,12 @@
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
 			<form action="OrderCompleted" method="post">
-				<button  type="submit" class="fixed-right-button">
-                		<input type="hidden" id="menu_id" name="order_id" value="${order_id}">
-                		<input type="hidden" id="countField" name="product_quantity" value="${quantity}">
-                		<input type="hidden" id="priceField"name="order_price" value="${subtotal}">
-                		<input type="hidden" name="tableNumber" value="3">
-				<img src="Image/Vector.png" alt="注文のボタン">注文する
+                <input type="hidden" name="orderId" value="123457">
+                <input type="hidden" name="productQuantity" value="${quantity}">
+                <input type="hidden" name="orderPrice" value="${product_price}">
+                <input type="hidden" name="tableNumber" value="3">
+				<button class="fixed-right-button">
+				<img src="Image/Vector.png" alt="注文のボタン"> 注文する
 				</button>
 			</form>
 			<!--メニューへ遷移-->

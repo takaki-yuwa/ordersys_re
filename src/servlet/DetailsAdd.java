@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/Details")
-public class Details extends HttpServlet {
+@WebServlet("/DetailsAdd")
+public class DetailsAdd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -61,6 +61,6 @@ public class Details extends HttpServlet {
 		request.setAttribute("topping_list", toppingList);
 
 		// JSPに転送
-		request.getRequestDispatcher("/WEB-INF/JSP/ProductDetails.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/JSP/ProductDetailsAdd.jsp").forward(request, response);
 	}
 }

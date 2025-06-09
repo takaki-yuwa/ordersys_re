@@ -1,0 +1,20 @@
+@charset "UTF-8";
+.order-details-white{
+    border-bottom-style: 2px solid #000000;
+    background-color: #FFFFFF;
+    width: 96vw;
+    height: 100px;
+}
+
+.order-details-gray{
+    border-bottom-style: 2px solid #000000;
+    background-color: #EBEBEB;
+    width: 96vw;
+    height: 100px;
+}
+
+.order-total{
+    background-color: #FFFFEB;
+    margin-top: 1vw;
+    width: 96vw;
+}
