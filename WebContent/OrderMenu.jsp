@@ -60,6 +60,7 @@
 
 					<div>
 						<form action="DetailsAdd" method="post">
+							<input type="hidden" name="from" value="OrderMenu.jsp">
 							<input type="hidden" name="id" value="<%=p.getId()%>">
 							<input type="hidden" name="name" value="<%=p.getName()%>">
 							<input type="hidden" name="price" value="<%=p.getPrice()%>">
