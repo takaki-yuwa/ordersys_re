@@ -28,13 +28,8 @@ public class Accounting extends HttpServlet {
         // AccountingDAOのインスタンスを作成
         AccountingDAO accountingDAO = new AccountingDAO();
 
-        // insertAccountingDataメソッドを呼び出してデータを挿入し、自動採番された会計情報IDを取得
-        int accountingInformationId = accountingDAO.insertAccountingData(totalPrice);
-
-        if (accountingInformationId != -1) {
-
-           
-        }
+        // 会計情報を挿入し、関連するorder_detailsを処理
+        accountingDAO.processAccountingData(totalPrice);
 
         // accounting_list オブジェクトを作成
         accounting_list accountingList = new accounting_list(strTableNo, strTotalPrice);
