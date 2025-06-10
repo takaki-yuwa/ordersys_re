@@ -30,64 +30,65 @@
 	<main class="list-main">
 		<div class="orderlist">
 			<c:if test="${not empty sessionScope.orderList}">
-				<c:forEach var="order_id" items="${sessionScope.orderList.order_id}"
-					varStatus="product">
-					<c:set var="product_name"
-						value="${sessionScope.orderList.product_name[product.index]}" />
-					<c:set var="product_price"
-						value="${sessionScope.orderList.product_price[product.index]}" />
-					<c:set var="quantity"
-						value="${sessionScope.orderList.menu_quantity[product.index]}" />
-					<c:set var="menu_stock"
-						value="${sessionScope.orderList.menu_stock[product.index]}" />
-					<c:set var="subtotal"
-						value="${sessionScope.orderList.menu_subtotal[product.index]}" />
+				
+				<c:forEach var="order_id" items="${sessionScope.orderList.order_id}" varStatus="product">
+					<c:set var="product_id" value="${sessionScope.orderList.product_id[product.index]}" />
+					<c:set var="product_name" value="${sessionScope.orderList.product_name[product.index]}" />
+					<c:set var="category_name" value="${sessionScope.orderList.category_name[product.index]}"/>
+					<c:set var="product_price" value="${sessionScope.orderList.product_price[product.index]}" />
+					<c:set var="quantity" value="${sessionScope.orderList.menu_quantity[product.index]}" />
+					<c:set var="menu_stock" value="${sessionScope.orderList.menu_stock[product.index]}" />
+					<c:set var="subtotal" value="${sessionScope.orderList.menu_subtotal[product.index]}" />
 					<c:set var="subtotal" value="${product_price * quantity}" />
 					<li>
 						<div class="order-item">
 							<div class="product-name">${product_name}</div>
 							<div class="product-price">${product_price}円</div>
-						</div> <c:forEach var="topping_name"
-							items="${sessionScope.orderList.topping_name}"
-							varStatus="topping">
-							<c:set var="topping_price"
-								value="${sessionScope.orderList.topping_price[topping.index]}" />
-							<c:set var="topping_quantity"
-								value="${sessionScope.orderList.topping_quantity[topping.index]}" />
-							<div class="order-item">
-								<div class="topping-name">・${topping_name}✕${topping_quantity}</div>
-								<div class="topping-price">${topping_price}円</div>
-							</div>
-							<c:set var="subtotal"
-								value="${subtotal+(topping_price * quantity)}" />
-						</c:forEach>
+						</div>
+						<c:choose>
+							<c:when test="${category_name == 'お好み焼き' || category_name == 'もんじゃ焼き'}">
+								<c:forEach var="topping_id" items="${sessionScope.orderList.topping_id}" varStatus="topping">
+									<c:set var="topping_name" value="${sessionScope.orderList.topping_name[topping.index]}" />
+									<c:set var="topping_price" value="${sessionScope.orderList.topping_price[topping.index]}" />
+									<c:set var="topping_quantity" value="${sessionScope.orderList.topping_quantity[topping.index]}" />
+									<div class="order-item">
+										<div class="topping-name">・${topping_name}✕${topping_quantity}</div>
+										<div class="topping-price">${topping_price}円</div>
+									</div>
+									<c:set var="subtotal" value="${subtotal+(topping_price * quantity)}" />
+								</c:forEach>
+							</c:when>
+						</c:choose>
 						<div class="order-item">
 							<div class="subtotal-price">
 								小計: <span id="subtotal-${order_id}">${subtotal}</span>円
 							</div>
-						</div> <c:set var="total" value="${total+subtotal}" /> <!-- ボタンを横並びに配置 -->
+						</div> 
+						<c:set var="total" value="${total+subtotal}" /> 
+						<!-- ボタンを横並びに配置 -->
 						<div class="order-item buttons-container">
 							<form action="DetailsChange" method="post">
 								<input type="hidden" name="order_id" value="${order_id}">
+								<input type="hidden" name="product_id" value="${product_id}">
 								<input type="hidden" name="product_name" value="${product_name}">
-								<input type="hidden" name="product_price"
-									value="${product_price}"> <input type="hidden"
-									name="topping_name" value="${topping_name}"> <input
-									type="hidden" name="topping_price" value="${topping_price}">
+								<input type="hidden" name="product_price" value="${product_price}">
+								<input type="hidden" name="topping_id" value="${topping_id}"> 
+								<input type="hidden" name="topping_name" value="${topping_name}"> 
+								<input type="hidden" name="topping_price" value="${topping_price}">
+								<input type="hidden" name="topping_quantity" value="${topping_quantity}">
 								<button class="change-btn">変更</button>
 							</form>
 							<!-- 増減ボタンを追加 -->
 							<div class="quantity-buttons">
-								<button type="submit" name="quantity" value="${quantity - 1}"
-									class="decrease-btn" id="decrement-${order_id}">−</button>
+								<button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn" id="decrement-${order_id}">−</button>
 								<!-- 数量を表示する要素、変数にバインド -->
 								<span class="quantity" id="counter-${order_id}">${quantity}</span>
-								<button type="button" name="quantity" value="${quantity + 1}"
-									class="increase-btn" id="increment-${order_id}">+</button>
+								<button type="button" name="quantity" value="${quantity + 1}" class="increase-btn" id="increment-${order_id}">+</button>
 							</div>
 						</div>
 					</li>
 				</c:forEach>
+				
 			</c:if>
 		</div>
 	</main>
@@ -96,15 +97,17 @@
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
-			<form action="OrderCompleted" method="post">
-				<button  type="submit" class="fixed-right-button">
-                		<input type="hidden" id="menu_id" name="order_id" value="${order_id}">
-                		<input type="hidden" id="countField" name="product_quantity" value="${quantity}">
-                		<input type="hidden" id="priceField"name="order_price" value="${subtotal}">
-                		<input type="hidden" name="tableNumber" value="3">
-				<img src="Image/Vector.png" alt="注文のボタン">注文する
-				</button>
-			</form>
+				<form action="OrderCompleted" method="post">
+					<c:forEach var="order_id" items="${sessionScope.orderList.order_id}" varStatus="order">
+						<input type="hidden" id="menu_id" name="order_id[]" value="${order_id}">
+						<input type="hidden" id="countField" name="product_quantity[]" value="${quantity}">
+						<input type="hidden" id="priceField" name="order_price[]" value="${subtotal}">
+					</c:forEach>
+					<input type="hidden" name="tableNumber" value="3">
+					<button class="fixed-right-button">
+						<img src="Image/Vector.png" alt="注文のボタン">注文する
+					</button>
+				</form>
 			<!--メニューへ遷移-->
 			<a href="OrderSystem">
 				<button class="fixed-left-button">
@@ -122,6 +125,7 @@
 <c:forEach var="order_id" items="${sessionScope.orderList.order_id}"
 	varStatus="product">
 	<c:set var="product_name" value="${sessionScope.orderList.product_name[product.index]}" />
+	<c:set var="category_name" value="${sessionScope.orderList.category_name[product.index]}"/>
 	<c:set var="product_price" value="${sessionScope.orderList.product_price[product.index]}" />
 	<c:set var="quantity" value="${sessionScope.orderList.menu_quantity[product.index]}" />
 	<c:set var="menu_stock" value="${sessionScope.orderList.menu_stock[product.index]}" />
@@ -129,7 +133,11 @@
 	<c:set var="subtotal" value="${product_price * quantity}" />
 	<c:forEach var="topping_name" items="${sessionScope.orderList.topping_name}" varStatus="topping">
 		<c:set var="topping_price" value="${sessionScope.orderList.topping_price[topping.index]}" />
-		<c:set var="subtotal" value="${subtotal+(topping_price * quantity)}" />
+		<c:choose>
+			<c:when test="${category_name == 'お好み焼き' || category_name == 'もんじゃ焼き'}">
+				<c:set var="subtotal" value="${subtotal+(topping_price * quantity)}" />
+			</c:when>
+		</c:choose>
 		<!-- JavaScriptで埋め込む -->
 		<script>
         updateOrderState(${order_id}, ${quantity},${menu_stock},${subtotal});
