@@ -11,7 +11,7 @@ function updateOrderState(menuId, menuQuantity, menuStock, menuSubtotal) {
 	const counter = document.getElementById(`counter-${menuId}`);
 	const subtotal = document.getElementById(`subtotal-${menuId}`);
 	const totalElem = document.getElementById('total'); // total 要素の取得
-	document.getElementById(`menu_id`).value=menuId;
+	document.getElementById(`menu_id`).value=0;
 
 	// 要素が存在する場合のみイベントを登録
 	if (incrementbtn && decrementbtn && counter && subtotal && total) {
