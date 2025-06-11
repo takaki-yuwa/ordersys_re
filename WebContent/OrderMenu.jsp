@@ -2,6 +2,9 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ page import="java.util.List"%>
 <%@ page import="servlet.product_list"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="java.util.Map.Entry"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,289 +42,69 @@
 			<button class="category-button" onclick="location.href='#07'">ボトル</button>
 		</div>
 
+		<%
+		Map<String, String> categoryMap = new HashMap<>();
+		categoryMap.put("01", "お好み焼き");
+		categoryMap.put("02", "もんじゃ焼き");
+		categoryMap.put("03", "鉄板焼き");
+		categoryMap.put("04", "サイドメニュー");
+		categoryMap.put("05", "ソフトドリンク");
+		categoryMap.put("06", "お酒");
+		categoryMap.put("07", "ボトル");
+		%>
 		<!--リストを取得-->
 		<%
 		List<product_list> productList = (List<product_list>) request.getAttribute("product_list");
 		%>
 
-		<h1 id="01">お好み焼き</h1>
-
-		<!-- リストを「お好み焼き」カテゴリーで絞り込んで表示 -->
+		<%
+		if (productList != null && !productList.isEmpty()) {
+			for (Map.Entry<String, String> entry : categoryMap.entrySet()) {
+				String categoryId = entry.getKey();
+				String categoryName = entry.getValue();
+		%>
+		<h1 id="<%=categoryId%>"><%=categoryName%></h1>
 		<div class="menu">
 			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「お好み焼き」カテゴリの商品だけを表示
-					if ("お好み焼き".equals(p.getCategory())) {
+			boolean hasProducts = false;
+			for (product_list p : productList) {
+				if (categoryName.equals(p.getCategory())) {
+					hasProducts = true;
 			%>
 			<li>
 				<div class="menu-row">
 					<div class="break-word bold-text"><%=p.getName()%></div>
-
 					<div>
 						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="from" value="OrderMenu.jsp">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
+							<input type="hidden" name="from" value="OrderMenu.jsp"> 
+							<input type="hidden" name="id" value="<%=p.getId()%>"> 
+							<input type="hidden" name="name" value="<%=p.getName()%>"> 
 							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+							<input type="hidden" name="category" value="<%=p.getCategory()%>"> 
+							<input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
 						</form>
 					</div>
 				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
+				<div><%=p.getPrice()%>円</div>
 			</li>
 			<%
+				}
 			}
-			}
-			} else {
+			if (!hasProducts) {
 			%>
 			<p>商品情報がありません。</p>
 			<%
 			}
 			%>
 		</div>
-		<h1 id="02">もんじゃ焼き</h1>
-
-		<!-- リストを「もんじゃ焼き」カテゴリーで絞り込んで表示 -->
-		<div class="menu">
-			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「もんじゃ焼き」カテゴリの商品だけを表示
-					if ("もんじゃ焼き".equals(p.getCategory())) {
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
-			</li>
-			<%
+		<%
 			}
-			}
-			} else {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
-		<h1 id="03">鉄板焼き</h1>
-
-		<!-- リストを「鉄板焼き」カテゴリーで絞り込んで表示 -->
-		<div class="menu">
-			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「鉄板焼き」カテゴリの商品だけを表示
-					if ("鉄板焼き".equals(p.getCategory())) {
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
-			</li>
-			<%
-			}
-			}
-			} else {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
-
-		<h1 id="04">サイドメニュー</h1>
-
-		<!-- リストを「サイドメニュー」カテゴリーで絞り込んで表示 -->
-		<div class="menu">
-			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「サイドメニュー」カテゴリの商品だけを表示
-					if ("サイドメニュー".equals(p.getCategory())) {
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
-			</li>
-			<%
-			}
-			}
-			} else {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
-
-		<h1 id="05">ソフトドリンク</h1>
-
-		<!-- リストを「ソフトドリンク」カテゴリーで絞り込んで表示 -->
-		<div class="menu">
-			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「ソフトドリンク」カテゴリの商品だけを表示
-					if ("ソフトドリンク".equals(p.getCategory())) {
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
-			</li>
-			<%
-			}
-			}
-			} else {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
-
-		<h1 id="06">お酒</h1>
-
-		<!-- リストを「お酒」カテゴリーで絞り込んで表示 -->
-		<div class="menu">
-			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「お酒」カテゴリの商品だけを表示
-					if ("お酒".equals(p.getCategory())) {
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
-			</li>
-			<%
-			}
-			}
-			} else {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
-
-		<h1 id="07">ボトル</h1>
-
-		<!-- リストを「ボトル」カテゴリーで絞り込んで表示 -->
-		<div class="menu">
-			<%
-			if (productList != null && !productList.isEmpty()) {
-				for (product_list p : productList) {
-					// 「ボトル」カテゴリの商品だけを表示
-					if ("ボトル".equals(p.getCategory())) {
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="id" value="<%=p.getId()%>">
-							<input type="hidden" name="name" value="<%=p.getName()%>">
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category"
-								value="<%=p.getCategory()%>"> <input type="image"
-								src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>
-					円
-				</div>
-			</li>
-			<%
-			}
-			}
-			} else {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
+		} else {
+		%>
+		<p>商品情報がありません。</p>
+		<%
+		}
+		%>
 	</main>
 
 
@@ -343,8 +126,7 @@
 					int iOrderPrice[] = { 770, 740 };
 					for (int i = 0; i < iOrderPrice.length; i++) {
 					%>
-					<input type="hidden" name="orderPrice"
-						value="<%=iOrderPrice[i]%>">
+					<input type="hidden" name="orderPrice" value="<%=iOrderPrice[i]%>">
 					<%
 					}
 					%>

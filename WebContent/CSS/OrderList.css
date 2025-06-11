@@ -101,13 +101,18 @@
 }
 
 .decrease-btn, .increase-btn {
-    padding: 5px 10px;
+    padding: 10px 15px;
     font-size: 16px;
     background-color: #3498db;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 4px;
+}
+
+.dustbox-img{
+	width:15px;
+	height:15px;
 }
 
 .decrease-btn:hover, .increase-btn:hover {

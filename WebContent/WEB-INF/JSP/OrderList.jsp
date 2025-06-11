@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="CSS/Import.css">
 <link rel="stylesheet" href="CSS/WordWrap.css">
 <link rel="stylesheet" href="CSS/OrderList.css">
+<link rel="stylesheet" href="CSS/Popup.css">
 <link rel="icon" href="data:," />
 
 <script src="JavaScript/OrderList.js"></script>
@@ -66,7 +67,7 @@
 						<c:set var="total" value="${total+subtotal}" /> 
 						<!-- ボタンを横並びに配置 -->
 						<div class="order-item buttons-container">
-							<form action="DetailsChange" method="get">
+							<form action="DetailsChange" method="post">
 								<input type="hidden" name="from" value="OrderList.jsp">
 								<input type="hidden" name="order_id" value="${order_id}">
 								<input type="hidden" name="product_id" value="${product_id}">
@@ -91,10 +92,30 @@
 							</form>
 							<!-- 増減ボタンを追加 -->
 							<div class="quantity-buttons">
-								<button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn" id="decrement-${order_id}">−</button>
+								<c:choose>
+									<%-- 数量が1の場合、ゴミ箱ボタンを表示 --%>
+									<c:when test="${quantity == 1}">
+										<button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn" id="decrement-${order_id}"><img class="dustbox-img" src="Image/dustbox.png" alt="ゴミ箱ボタン"></button>
+									</c:when>
+									<%-- 数量が1以外の場合、マイナスボタンを表示 --%>
+									<c:otherwise>
+										<button type="submit" name="quantity" value="${quantity - 1}" class="decrease-btn" id="decrement-${order_id}">−</button>
+									</c:otherwise>
+								</c:choose>
 								<!-- 数量を表示する要素、変数にバインド -->
 								<span class="quantity" id="counter-${order_id}">${quantity}</span>
 								<button type="button" name="quantity" value="${quantity + 1}" class="increase-btn" id="increment-${order_id}">+</button>
+							</div>
+							<!--ポップアップの背景-->
+							<div class="popup-overlay" id="popup-overlay"></div>
+							<!--ポップアップの内容-->
+							<div class="popup-content" id="popup-content">
+								<p>この商品を削除します</p>
+								<p>よろしいですか？</p>
+								<button class="popup-close" id="close-popup">いいえ</button>
+	    						<button class="popup-proceed" id="confirm-button">
+            						はい
+								</button>
 							</div>
 						</div>
 					</li>
@@ -144,9 +165,10 @@
 	<c:set var="subtotal" value="${product_price * quantity}" />
 	<c:forEach var="topping_name" items="${sessionScope.orderList.topping_name}" varStatus="topping">
 		<c:set var="topping_price" value="${sessionScope.orderList.topping_price[topping.index]}" />
+		<c:set var="topping_quantity" value="${sessionScope.orderList.topping_quantity[topping.index]}" />
 		<c:choose>
 			<c:when test="${category_name == 'お好み焼き' || category_name == 'もんじゃ焼き'}">
-				<c:set var="subtotal" value="${subtotal+(topping_price * quantity)}" />
+				<c:set var="subtotal" value="${subtotal+(topping_price * topping_quantity)}" />
 			</c:when>
 		</c:choose>
 		<!-- JavaScriptで埋め込む -->
