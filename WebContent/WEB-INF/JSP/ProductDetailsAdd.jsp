@@ -76,134 +76,64 @@ if("OrderMenu.jsp".equals(fromPage)){
 		//メニュー画面から遷移してきた場合
 		if("OrderMenu.jsp".equals(fromPage)){
 		%>
-		<!-- セッションからカテゴリー名を取ってくる -->
-		<c:if test="${not empty sessionScope.productList.category}">
-			<c:choose>
-				<c:when
-					test="${sessionScope.productList.category == 'お好み焼き' || sessionScope.productList.category == 'もんじゃ焼き'}">
-					<p>トッピング:110円</p>
-					<c:if test="${not empty topping_list}">
-						<c:forEach var="topping" items="${topping_list}"
-							varStatus="status">
-							<li class="topping-row">
-								<div class="break-topping">${topping.name}</div>
-								<button class="counter-button minus" id="toppingButton" data-id="${topping.id}"
-									data-index="${status.index}">-</button> <input type="text"
-								value="0" class="counter-input" readonly>
-								<button class="counter-button plus" data-index="${status.index}" id="toppingButton"
-									 data-id="${topping.id}" data-max="${topping.stock}">+</button>
-							</li>
-						</c:forEach>
-						<script>
-						    // -ボタンと+ボタンのクリックイベントを処理
-						    document.querySelectorAll('.counter-button').forEach(button => {
-						        button.addEventListener('click', function() {
-						            const isMinusButton = this.classList.contains('minus');
-						            const isPlusButton = this.classList.contains('plus');
-						            const max = parseInt(this.getAttribute('data-max'));
-						            const min = parseInt(this.getAttribute('data-min')) || 0;
-						            
-						            // 対応する input 要素を取得
-						            const input = this.parentElement.querySelector('.counter-input');
-						            let currentValue = parseInt(input.value);
-						
-						            if (isNaN(currentValue)) {
-						                currentValue = 0;
-						            }
-						
-						            // - ボタンがクリックされた場合は値を減らす
-						            if (isMinusButton && currentValue > min) {
-						                input.value = currentValue - 1;
-						                topping--;
-						            }
-						
-						            // + ボタンがクリックされた場合は値を増やす
-						            if (isPlusButton && currentValue < max) {
-						                input.value = currentValue + 1;
-						                topping++;
-						            }
-
-						            const minusButton = this.parentElement.querySelector('.counter-button.minus');
-						            const plusButton = this.parentElement.querySelector('.counter-button.plus');
-						            changeButtonColor(input.value,min,max,minusButton,plusButton);
-						            const btnId = button.dataset.id;  // data-item-id を取得
-						            console.log(JSON.stringify(btnId));
-                                    console.log('topping-' + btnId);
-						            document.getElementById('topping-' + btnId).value = input.value;
-                                    document.getElementById('remain-' + btnId).value = max - input.value;
-						        });
-						    });
-						</script>
-
-					</c:if>
-					<c:if test="${empty topping_list}">
-						<div>トッピングはありません。</div>
-					</c:if>
-				</c:when>
-			</c:choose>
-		</c:if>
-		<%
-		//注文リスト画面から遷移してきた場合
-		}else if("OrderList.jsp".equals(fromPage)){
-		%>
-		<!-- セッションからカテゴリー名を取ってくる -->
-		<c:if test="${not empty sessionScope.changeList.category_name}">
-			<c:choose>
-				<c:when
-					test="${sessionScope.changeList.category_name == 'お好み焼き' || sessionScope.changeList.category_name == 'もんじゃ焼き'}">
-					<p>トッピング:110円</p>
-						<c:forEach var="topping_id" items="${sessionScope.changeList.topping_id}" varStatus="status">
-							<c:set var="topping_name" value="${sessionScope.changeList.topping_name[status.index]}"/>
-							<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}"/>
-							<li class="topping-row">
-								<div class="break-topping">${topping_name}</div>
-								<button class="counter-button minus" id="toppingButton" data-index="${status.index}">-</button> 
-									<input type="text" value="${topping_quantity}" class="counter-input" readonly>
-								<button class="counter-button plus" data-index="${status.index}" id="toppingButton">+</button>
-							</li>
-						</c:forEach>
-						<script>
-						    // -ボタンと+ボタンのクリックイベントを処理
-						    document.querySelectorAll('.counter-button').forEach(button => {
-						        button.addEventListener('click', function() {
-						            const isMinusButton = this.classList.contains('minus');
-						            const isPlusButton = this.classList.contains('plus');
-						            const max = parseInt(this.getAttribute('data-max'))|| 20;
-						            const min = parseInt(this.getAttribute('data-min')) || 0;
-						            
-						            // 対応する input 要素を取得
-						            const input = this.parentElement.querySelector('.counter-input');
-						            let currentValue = parseInt(input.value);
-						
-						            if (isNaN(currentValue)) {
-						                currentValue = 0;
-						            }
-						
-						            // - ボタンがクリックされた場合は値を減らす
-						            if (isMinusButton && currentValue > min) {
-						                input.value = currentValue - 1;
-						                topping--;
-						            }
-						
-						            // + ボタンがクリックされた場合は値を増やす
-						            if (isPlusButton && currentValue < max) {
-						                input.value = currentValue + 1;
-						                topping++;
-						            }
-
-						            const minusButton = this.parentElement.querySelector('.counter-button.minus');
-						            const plusButton = this.parentElement.querySelector('.counter-button.plus');
-						            changeButtonColor(input.value,min,max,minusButton,plusButton);
-						            document.getElementById('total').value = input.value;
-						        });
-						    });
-						</script>
-				</c:when>
-			</c:choose>
-		</c:if>
-		<%
-		}
-		%>
+			<!-- セッションからカテゴリー名を取ってくる -->
+			<c:if test="${not empty sessionScope.productList.category}">
+				<c:choose>
+					<c:when
+						test="${sessionScope.productList.category == 'お好み焼き' || sessionScope.productList.category == 'もんじゃ焼き'}">
+						<c:if test="${not empty topping_list}">
+	                        <p>トッピング:110円</p>
+							<c:forEach var="topping" items="${topping_list}"
+								varStatus="status">
+								<li class="topping-row">
+									<div class="break-topping">${topping.name}</div>
+									<button class="counter-button minus" id="toppingButton" data-id="${topping.id}"
+										data-index="${status.index}">-</button> <input type="text"
+									value="0" class="counter-input" readonly>
+									<button class="counter-button plus" data-index="${status.index}" id="toppingButton"
+										 data-id="${topping.id}" data-max="${topping.stock}">+</button>
+								</li>
+							</c:forEach>
+                        </c:if>
+                        <c:if test="${empty topping_list}">
+                            <div>トッピングはありません。</div>
+                        </c:if>
+                    </c:when>
+                </c:choose>
+            </c:if>
+        <%
+        //注文リスト画面から遷移してきた場合
+        }else if("OrderList.jsp".equals(fromPage)){
+        %>
+            <!-- セッションからカテゴリー名を取ってくる -->
+            <c:if test="${not empty sessionScope.changeList.category_name}">
+                <c:choose>
+                    <c:when
+                        test="${sessionScope.changeList.category_name == 'お好み焼き' || sessionScope.changeList.category_name == 'もんじゃ焼き'}">
+                        <c:if test="${not empty sessionScope.changeList.topping_id}">
+                            <p>トッピング:110円</p>
+                            <c:forEach var="topping_id" items="${sessionScope.changeList.topping_id}" varStatus="status">
+                                <c:set var="topping_name" value="${sessionScope.changeList.topping_name[status.index]}"/>
+                                <c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}"/>
+                                <li class="topping-row">
+                                    <div class="break-topping">${topping_name}</div>
+                                    <button class="counter-button minus" id="toppingButton" data-id="${topping_id}"
+                                        data-index="${status.index}">-</button> <input type="text"
+                                    value="0" class="counter-input" readonly>
+                                    <button class="counter-button plus" data-index="${status.index}" id="toppingButton"
+                                         data-id="${topping_id}" data-max="${topping.stock}">+</button>
+                                </li>
+                            </c:forEach>
+	                    </c:if>
+	                    <c:if test="${empty sessionScope.changeList.topping_id}">
+	                        <div>トッピングはありません。</div>
+	                    </c:if>
+	                </c:when>
+	            </c:choose>
+            </c:if>
+        <%
+        }
+        %>
 	</main>
 
 	<footer class="footer-buttons">
@@ -214,28 +144,36 @@ if("OrderMenu.jsp".equals(fromPage)){
 			//メニュー画面から遷移してきた場合
 			if("OrderMenu.jsp".equals(fromPage)){
 			%>
-			<form action="OrderList" method="post">
-				<button class="fixed-right-button">
-				    <input type="hidden" name="id" value="${sessionScope.productList.id}">
-				    <input type="hidden" name="tableNo" value="3">
-                    <c:forEach var="topping" items="${topping_list}" varStatus="status">
-                        <input type="hidden" name="topping" value="${topping.id}">
-                        <input type="hidden" name="topping-value" id="topping-${topping.id}" value="0">
-                        <input type="hidden" name="topping_quantity" id="topping-quantity-${topping.id}" value="0">
-                    </c:forEach>
-                    <input type="hidden" name="total" id="input-total" value="">
-					<img src="Image/addCart.png" alt="追加のボタン"> 追加
-				</button>
-			</form>
+				<form action="OrderList" method="post">
+					<button class="fixed-right-button">
+					    <input type="hidden" name="id" value="${sessionScope.productList.id}">
+					    <input type="hidden" name="tableNo" value="3">
+	                    <c:forEach var="topping" items="${topping_list}" varStatus="status">
+	                        <input type="hidden" name="topping" value="${topping.id}">
+	                        <input type="hidden" name="topping-value" id="topping-${topping.id}" value="0">
+	                        <input type="hidden" name="topping_quantity" id="topping-quantity-${topping.id}" value="0">
+	                    </c:forEach>
+	                    <input type="hidden" name="total" id="input-total" value="">
+						<img src="Image/addCart.png" alt="追加のボタン"> 追加
+					</button>
+				</form>
 			<%
 			//注文リスト画面から遷移してきた場合
 			}else if("OrderList.jsp".equals(fromPage)){
 			%>
-			<form action="OrderList" method="post">
-				<button class="fixed-right-button">
-					<img src="Image/changeCart.png" alt="変更のボタン"> 変更
-				</button>
-			</form>
+				<form action="OrderList" method="post">
+					<button class="fixed-right-button">
+                        <input type="hidden" name="id" value="${sessionScope.changeList.product_id}">
+                        <input type="hidden" name="tableNo" value="3">
+                        <c:forEach var="topping" items="${sessionScope.changeList.topping_id}" varStatus="status">
+                            <input type="hidden" name="topping" value="${topping}">
+                            <input type="hidden" name="topping-value" id="topping-${topping}" value="0">
+                            <input type="hidden" name="topping_quantity" id="topping-quantity-${topping}" value="0">
+                        </c:forEach>
+                        <input type="hidden" name="total" id="input-total" value="">
+						<img src="Image/changeCart.png" alt="変更のボタン"> 変更
+					</button>
+				</form>
 			<%
 			}
 			%>
@@ -289,6 +227,55 @@ function changeButtonColor(currentValue,min,max,minusButton,plusButton) {
         plusButton.removeAttribute('disabled');
     }
 };
+
+function initializeCounterButtons(container = document) {
+    container.querySelectorAll('.counter-button').forEach(button => {
+        button.removeEventListener('click', handleCounterClick); // 安全対策
+        button.addEventListener('click', handleCounterClick);
+    });
+}
+
+function handleCounterClick(event) {
+    // -ボタンと+ボタンのクリックイベントを処理
+        const button = event.currentTarget;
+        const isMinusButton = button.classList.contains('minus');
+        const isPlusButton = button.classList.contains('plus');
+        const max = parseInt(button.getAttribute('data-max'))|| 20;
+        const min = parseInt(button.getAttribute('data-min')) || 0;
+        
+        // 対応する input 要素を取得
+        const input = button.parentElement.querySelector('.counter-input');
+        let currentValue = parseInt(input.value);
+
+        if (isNaN(currentValue)) {
+            currentValue = 0;
+        }
+
+        // - ボタンがクリックされた場合は値を減らす
+        if (isMinusButton && currentValue > min) {
+            input.value = currentValue - 1;
+            topping--;
+        }
+
+        // + ボタンがクリックされた場合は値を増やす
+        if (isPlusButton && currentValue < max) {
+            input.value = currentValue + 1;
+            topping++;
+        }
+
+        const minusButton = button.parentElement.querySelector('.counter-button.minus');
+        const plusButton = button.parentElement.querySelector('.counter-button.plus');
+        changeButtonColor(input.value,min,max,minusButton,plusButton);
+        const btnId = button.dataset.id;  // data-item-id を取得
+        console.log(JSON.stringify(btnId));
+                 console.log('topping-' + btnId);
+        document.getElementById('topping-' + btnId).value = input.value;
+                 document.getElementById('remain-' + btnId).value = max - input.value;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCounterButtons();
+});
 </script>
 </body>
 </html>
