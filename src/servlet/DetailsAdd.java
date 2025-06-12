@@ -24,6 +24,7 @@ public class DetailsAdd extends HttpServlet {
 		String name = request.getParameter("name");
 		String p_price = request.getParameter("price");
 		String category = request.getParameter("category");
+		
 
 		int id = 0;
 		int price = 0;
@@ -33,7 +34,7 @@ public class DetailsAdd extends HttpServlet {
 			try {
 				id = Integer.parseInt(p_id);
 			} catch (NumberFormatException e) {
-				System.out.println("無効な数値: id=" + p_id);
+				
 			}
 		}
 

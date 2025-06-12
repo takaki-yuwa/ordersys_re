@@ -105,35 +105,40 @@ if("OrderMenu.jsp".equals(fromPage)){
         //注文リスト画面から遷移してきた場合
         }else if("OrderList.jsp".equals(fromPage)){
         %>
-            <!-- セッションからカテゴリー名を取ってくる -->
-            <c:if test="${not empty sessionScope.changeList.category_name}">
-                <c:choose>
-                    <c:when
-                        test="${sessionScope.changeList.category_name == 'お好み焼き' || sessionScope.changeList.category_name == 'もんじゃ焼き'}">
-                        <c:if test="${not empty sessionScope.changeList.topping_id}">
-                            <p>トッピング:110円</p>
-                            <c:forEach var="topping_id" items="${sessionScope.changeList.topping_id}" varStatus="status">
-                                <c:set var="topping_name" value="${sessionScope.changeList.topping_name[status.index]}"/>
-                                <c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}"/>
-                                <li class="topping-row">
-                                    <div class="break-topping">${topping_name}</div>
-                                    <button class="counter-button minus" id="toppingButton" data-id="${topping_id}"
-                                        data-index="${status.index}">-</button> <input type="text"
-                                    value="0" class="counter-input" readonly>
-                                    <button class="counter-button plus" data-index="${status.index}" id="toppingButton"
-                                         data-id="${topping_id}" data-max="${topping.stock}">+</button>
-                                </li>
-                            </c:forEach>
-	                    </c:if>
-	                    <c:if test="${empty sessionScope.changeList.topping_id}">
-	                        <div>トッピングはありません。</div>
-	                    </c:if>
-	                </c:when>
-	            </c:choose>
-            </c:if>
-        <%
-        }
-        %>
+        <!-- セッションからカテゴリー名を取ってくる -->
+		<c:if test="${not empty sessionScope.changeList.category_name}">
+			<c:choose>
+				<c:when
+					test="${sessionScope.changeList.category_name == 'お好み焼き' || sessionScope.changeList.category_name == 'もんじゃ焼き'}">
+					<p>トッピング:110円</p>
+					<c:if test="${not empty topping_list}">
+						<c:forEach var="topping" items="${topping_list}"
+							varStatus="status">
+							<c:set var="topping_oder_id"
+								value="${sessionScope.changeList.topping_order_id[status.index]}" />
+							<c:set var="topping_quantity"
+								value="${sessionScope.changeList.topping_quantity[status.index]}" />
+							<li class="topping-row">
+								<div class="break-topping">${topping.name}</div>
+								<button class="counter-button minus" id="toppingButton"
+									data-id="${topping.id}" data-index="${status.index}">-</button>
+								<input type="text" value="${topping_quantity}"
+								class="counter-input" readonly>
+								<button class="counter-button plus" data-index="${status.index}"
+									id="toppingButton" data-id="${topping.id}"
+									data-max="${topping.stock}">+</button>
+							</li>
+						</c:forEach>
+					</c:if>
+					<c:if test="${empty topping_list}">
+						<div>トッピングはありません。</div>
+					</c:if>
+				</c:when>
+			</c:choose>
+		</c:if>
+		<%
+		}
+		%>
 	</main>
 
 	<footer class="footer-buttons">

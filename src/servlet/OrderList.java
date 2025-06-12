@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.RequestDispatcher;
@@ -15,72 +14,72 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/OrderList")
 public class OrderList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	// 注文詳細
-	private List<Integer> order_details_id = new ArrayList<Integer>();
-	private List<Integer> order_id = new ArrayList<Integer>();
-	private List<Integer> product_quantity = new ArrayList<Integer>();
-	private List<Integer> order_price = new ArrayList<Integer>();
-	private int tableNo = 3;
-
-	// 商品詳細
-	// 商品ID
-	private List<Integer> product_id = new ArrayList<Integer>();
-
-	// 複数トッピング
-	private List<List<Integer>> toppings_id = new ArrayList<>();
-	// topping_id
-	private List<List<Integer>> topping_quantity = new ArrayList<>();
-	// order_id
+//	// 注文詳細
+//	private List<Integer> order_details_id = new ArrayList<Integer>();
+//	private List<Integer> order_id = new ArrayList<Integer>();
+//	private List<Integer> product_quantity = new ArrayList<Integer>();
+//	private List<Integer> order_price = new ArrayList<Integer>();
+//	private int tableNo = 3;
+//
+//	// 商品詳細
+//	// 商品ID
+//	private List<Integer> product_id = new ArrayList<Integer>();
+//
+//	// 複数トッピング
+//	private List<List<Integer>> toppings_id = new ArrayList<>();
+//	// topping_id
+//	private List<List<Integer>> topping_quantity = new ArrayList<>();
+//	// order_id
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// 商品詳細画面からの取得
-		// 商品ID
-		String strProductId = request.getParameter("product_id");
-		// idの変換
-		if (strProductId != null && !strProductId.isEmpty()) {
-			try {
-				product_id.add(Integer.parseInt(strProductId));
-			} catch (NumberFormatException e) {
-				System.out.println("無効な数値: 商品ID=" + strProductId);
-			}
-		}
-		// 卓番
-		String strTableNo = request.getParameter("tableNo");
-		// idの変換
-		if (strTableNo != null && !strTableNo.isEmpty()) {
-			try {
-				tableNo = Integer.parseInt(strTableNo);
-			} catch (NumberFormatException e) {
-				System.out.println("無効な数値: 卓番=" + strTableNo);
-			}
-		}
-		// トッピングID
-		String[] strToppingId = request.getParameterValues("topping");
-		List<Integer> iToppingId = new ArrayList<Integer>();
-		for(int i=0;i < strToppingId.length;i++)
-		{
-			try {
-				iToppingId.add(Integer.parseInt(strToppingId[i]));
-			} catch (NumberFormatException e) {
-				System.out.println("無効な数値: トッピング数=" + strToppingId[i]);
-			}
-		}
-		toppings_id.add(iToppingId);
-		// トッピング数
-		String[] strToppingQuantity = request.getParameterValues("topping_quantity");
-		List<Integer> iToppingQuantity = new ArrayList<Integer>();
-		for(int i=0;i < strToppingQuantity.length;i++)
-		{
-			try {
-				iToppingQuantity.add(Integer.parseInt(strToppingQuantity[i]));
-			} catch (NumberFormatException e) {
-				System.out.println("無効な数値: トッピング数=" + strToppingQuantity[i]);
-			}
-		}
-		topping_quantity.add(iToppingQuantity);
+//		// 商品詳細画面からの取得
+//		// 商品ID
+//		String strProductId = request.getParameter("product_id");
+//		// idの変換
+//		if (strProductId != null && !strProductId.isEmpty()) {
+//			try {
+//				product_id.add(Integer.parseInt(strProductId));
+//			} catch (NumberFormatException e) {
+//				System.out.println("無効な数値: 商品ID=" + strProductId);
+//			}
+//		}
+//		// 卓番
+//		String strTableNo = request.getParameter("tableNo");
+//		// idの変換
+//		if (strTableNo != null && !strTableNo.isEmpty()) {
+//			try {
+//				tableNo = Integer.parseInt(strTableNo);
+//			} catch (NumberFormatException e) {
+//				System.out.println("無効な数値: 卓番=" + strTableNo);
+//			}
+//		}
+//		// トッピングID
+//		String[] strToppingId = request.getParameterValues("topping");
+//		List<Integer> iToppingId = new ArrayList<Integer>();
+//		for(int i=0;i < strToppingId.length;i++)
+//		{
+//			try {
+//				iToppingId.add(Integer.parseInt(strToppingId[i]));
+//			} catch (NumberFormatException e) {
+//				System.out.println("無効な数値: トッピング数=" + strToppingId[i]);
+//			}
+//		}
+//		toppings_id.add(iToppingId);
+//		// トッピング数
+//		String[] strToppingQuantity = request.getParameterValues("topping_quantity");
+//		List<Integer> iToppingQuantity = new ArrayList<Integer>();
+//		for(int i=0;i < strToppingQuantity.length;i++)
+//		{
+//			try {
+//				iToppingQuantity.add(Integer.parseInt(strToppingQuantity[i]));
+//			} catch (NumberFormatException e) {
+//				System.out.println("無効な数値: トッピング数=" + strToppingQuantity[i]);
+//			}
+//		}
+//		topping_quantity.add(iToppingQuantity);
 		// リストの初期化
 		//商品詳細テーブルから取得するもの
 		//主キー(注文ID):order_id
@@ -100,6 +99,7 @@ public class OrderList extends HttpServlet {
 		List<Integer> order_id = List.of(1, 2, 3, 4, 5, 6, 7);
 		List<Integer> product_id=List.of(1, 2, 3, 4, 5, 6, 7);
 		List<Integer> topping_id=List.of(1, 2, 3, 4, 5, 6);
+		List<Integer> topping_order_id = List.of(1, 1, 1, 1, 1, 1);
 		List<String> product_name = List.of("納豆お好み焼き", "納豆もんじゃ焼き", "ウィンナー", "山芋磯辺揚げ", "ラムネ", "生ビール",
 				"JINRO");
 		List<String> category_name=List.of("お好み焼き","もんじゃ焼き","鉄板焼き","サイドメニュー","ソフトドリンク","お酒","ボトル");
@@ -112,7 +112,8 @@ public class OrderList extends HttpServlet {
 		List<Integer> menu_subtotal = List.of(0, 0, 0, 0, 0, 0, 0);
 		int menu_total = 0;
 
-		order_list orderList = new order_list(order_id, product_id, topping_id, product_name, category_name, topping_name, product_price, topping_price,
+		order_list orderList = new order_list(order_id, product_id, topping_id,topping_order_id, product_name, category_name,
+				topping_name, product_price, topping_price,
 				topping_quantity, menu_quantity, menu_stock, menu_subtotal, menu_total);
 
 		HttpSession session = request.getSession();

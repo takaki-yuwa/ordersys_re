@@ -7,6 +7,7 @@ public class order_list {
 	private List<Integer> order_id;
 	private List<Integer> product_id;
 	private List<Integer> topping_id;
+	private List<Integer> topping_order_id;
 	private List<String> product_name;
 	private List<String> category_name;
 	private List<String> topping_name;
@@ -19,12 +20,13 @@ public class order_list {
 
 	private int menu_total;
 
-	public order_list(List<Integer> order_id, List<Integer> product_id, List<Integer> topping_id, List<String> product_name, List<String> category_name, List<String> topping_name,
+	public order_list(List<Integer> order_id, List<Integer> product_id, List<Integer> topping_id, List<Integer> topping_order_id, List<String> product_name, List<String> category_name, List<String> topping_name,
 			List<Integer> product_price, List<Integer> topping_price, List<Integer> topping_quantity,
 			List<Integer> menu_quantity, List<Integer> menu_stock, List<Integer> menu_subtotal, int menu_total) {
 		this.order_id = new ArrayList<>(order_id);
 		this.product_id=new ArrayList<>(product_id);
 		this.topping_id=new ArrayList<>(topping_id);
+		this.topping_order_id=new ArrayList<>(topping_order_id);
 		this.product_name = new ArrayList<>(product_name);
 		this.category_name=new ArrayList<>(category_name);
 		this.topping_name = new ArrayList<>(topping_name);
@@ -47,6 +49,10 @@ public class order_list {
 
 	public List<Integer> getTopping_id() {
 		return topping_id;
+	}
+
+	public List<Integer> getTopping_order_id() {
+		return topping_order_id;
 	}
 
 	public List<String> getProduct_name() {

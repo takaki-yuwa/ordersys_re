@@ -2,7 +2,10 @@ package servlet;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+import dao.ToppingDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,6 +27,7 @@ public class DetailsChange extends HttpServlet {
 		String p_price = request.getParameter("product_price");
 		String category_name = request.getParameter("category_name");
 		String p_subtotal=request.getParameter("product_subtotal");
+		String[] t_o_id=request.getParameterValues("topping_order_id[]");
 		String[] t_id = request.getParameterValues("topping_id[]");
 		String[] topping_name = request.getParameterValues("topping_name[]");
 		String[] t_price = request.getParameterValues("topping_price[]");
@@ -33,6 +37,7 @@ public class DetailsChange extends HttpServlet {
 		int product_id = 0;
 		int product_price = 0;
 		int product_subtotal=0;
+		int[] topping_order_id;
 		int[] topping_id;
 		int[] topping_price;
 		int[] topping_quantity;
@@ -54,18 +59,26 @@ public class DetailsChange extends HttpServlet {
 		}
 		//int型[]への変換処理
 		//nullチェックを行い、nullの場合はからの配列を代入
+		topping_order_id = (t_o_id != null) ? Arrays.stream(t_o_id).mapToInt(Integer::parseInt).toArray() : new int[0];
 		topping_id = (t_id != null) ? Arrays.stream(t_id).mapToInt(Integer::parseInt).toArray() : new int[0];
 		topping_price = (t_price != null) ? Arrays.stream(t_price).mapToInt(Integer::parseInt).toArray() : new int[0];
-		topping_quantity = (t_quantity != null) ? Arrays.stream(t_quantity).mapToInt(Integer::parseInt).toArray() : new int[0];
+		topping_quantity = Optional.ofNullable(t_quantity).filter(arr -> arr.length > 0).map(arr -> Arrays.stream(arr).mapToInt(Integer::parseInt).toArray()).orElse(new int[]{0});
 
 		//詳細変更リストオブジェクトの作成
 		details_change_list changeList = new details_change_list(order_id, product_id, product_name, product_price,
-				category_name, product_subtotal, topping_id, topping_name, topping_price, topping_quantity);
+				category_name, product_subtotal, topping_order_id, topping_id, topping_name, topping_price, topping_quantity);
 
 		//セッションに詳細変更情報をセット
 		HttpSession session = request.getSession();
 		session.setAttribute("changeList", changeList);
 
+		// トッピング情報の取得
+		ToppingDAO dao = new ToppingDAO();
+		List<topping_list> toppingList = dao.getToppingNames(product_id);
+
+		// トッピング情報をリクエストにセット
+		request.setAttribute("topping_list", toppingList);
+		
 		// JSPに転送
 		request.getRequestDispatcher("/WEB-INF/JSP/ProductDetailsAdd.jsp").forward(request, response);
 	}
