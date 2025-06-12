@@ -146,12 +146,11 @@ if("OrderMenu.jsp".equals(fromPage)){
 			%>
 				<form action="OrderList" method="post">
 					<button class="fixed-right-button">
-					    <input type="hidden" name="id" value="${sessionScope.productList.id}">
+					    <input type="hidden" name="product_id" value="${sessionScope.productList.id}">
 					    <input type="hidden" name="tableNo" value="3">
 	                    <c:forEach var="topping" items="${topping_list}" varStatus="status">
 	                        <input type="hidden" name="topping" value="${topping.id}">
-	                        <input type="hidden" name="topping-value" id="topping-${topping.id}" value="0">
-	                        <input type="hidden" name="topping_quantity" id="topping-quantity-${topping.id}" value="0">
+	                        <input type="hidden" name="topping_quantity" id="topping-${topping.id}" value="0">
 	                    </c:forEach>
 	                    <input type="hidden" name="total" id="input-total" value="">
 						<img src="Image/addCart.png" alt="追加のボタン"> 追加
@@ -163,12 +162,11 @@ if("OrderMenu.jsp".equals(fromPage)){
 			%>
 				<form action="OrderList" method="post">
 					<button class="fixed-right-button">
-                        <input type="hidden" name="id" value="${sessionScope.changeList.product_id}">
+                        <input type="hidden" name="product_id" value="${sessionScope.changeList.product_id}">
                         <input type="hidden" name="tableNo" value="3">
                         <c:forEach var="topping" items="${sessionScope.changeList.topping_id}" varStatus="status">
                             <input type="hidden" name="topping" value="${topping}">
-                            <input type="hidden" name="topping-value" id="topping-${topping}" value="0">
-                            <input type="hidden" name="topping_quantity" id="topping-quantity-${topping}" value="0">
+                            <input type="hidden" name="topping_quantity" id="topping-${topping}" value="0">
                         </c:forEach>
                         <input type="hidden" name="total" id="input-total" value="">
 						<img src="Image/changeCart.png" alt="変更のボタン"> 変更
@@ -192,22 +190,66 @@ if("OrderMenu.jsp".equals(fromPage)){
 	</footer>
 
 <script>
+function initializeCounterButtons(container = document) {
+    container.querySelectorAll('.counter-button').forEach(button => {
+        button.removeEventListener('click', handleCounterClick); // 安全対策
+        button.addEventListener('click', handleCounterClick);
+    });
+}
+
+function handleCounterClick(event) {
+    // -ボタンと+ボタンのクリックイベントを処理
+    const button = event.currentTarget;
+    const isMinusButton = button.classList.contains('minus');
+    const isPlusButton = button.classList.contains('plus');
+    const max = parseInt(button.getAttribute('data-max'))|| 20;
+    const min = parseInt(button.getAttribute('data-min')) || 0;
+    
+    // 対応する input 要素を取得
+    const input = button.parentElement.querySelector('.counter-input');
+    let currentValue = parseInt(input.value);
+
+    if (isNaN(currentValue)) {
+        currentValue = 0;
+    }
+
+    // - ボタンがクリックされた場合は値を減らす
+    if (isMinusButton && currentValue > min) {
+        input.value = currentValue - 1;
+        topping--;
+    }
+
+    // + ボタンがクリックされた場合は値を増やす
+    if (isPlusButton && currentValue < max) {
+        input.value = currentValue + 1;
+        topping++;
+    }
+
+    // トッピングの値段は固定値を設定しているので修正が必要
+    totalElem.textContent  = total +(110 * topping);
+    inputTotalElem.value = total + (110 * topping);
+
+    const minusButton = button.parentElement.querySelector('.counter-button.minus');
+    const plusButton = button.parentElement.querySelector('.counter-button.plus');
+    changeButtonColor(input.value,min,max,minusButton,plusButton);
+    const btnId = button.dataset.id;  // data-item-id を取得
+    console.log(JSON.stringify(btnId));
+    console.log('topping-' + btnId);
+    document.getElementById('topping-' + btnId).value = input.value;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCounterButtons();
+});
+
 const buttons = document.getElementsByClassName("counter-button");
 const totalElem = document.getElementById('total');
 const inputTotalElem = document.getElementById('input-total');
-for(let button of buttons){
-	button.addEventListener("click", function() {
-		// トッピングの値段は固定値を設定しているので修正が必要
-		totalElem.textContent  = total +(110 * topping);
-	    inputTotalElem.value = total + (110 * topping);
-	});
-}
 document.addEventListener("DOMContentLoaded", function() {
 	  // ページのDOMが完全に読み込まれた後に実行される処理
 	totalElem.textContent = total +(110 * topping);
 	inputTotalElem.value = total + (110 * topping);
 });
-
 function changeButtonColor(currentValue,min,max,minusButton,plusButton) {
     // - ボタン
     if (currentValue <= min) {
@@ -227,55 +269,6 @@ function changeButtonColor(currentValue,min,max,minusButton,plusButton) {
         plusButton.removeAttribute('disabled');
     }
 };
-
-function initializeCounterButtons(container = document) {
-    container.querySelectorAll('.counter-button').forEach(button => {
-        button.removeEventListener('click', handleCounterClick); // 安全対策
-        button.addEventListener('click', handleCounterClick);
-    });
-}
-
-function handleCounterClick(event) {
-    // -ボタンと+ボタンのクリックイベントを処理
-        const button = event.currentTarget;
-        const isMinusButton = button.classList.contains('minus');
-        const isPlusButton = button.classList.contains('plus');
-        const max = parseInt(button.getAttribute('data-max'))|| 20;
-        const min = parseInt(button.getAttribute('data-min')) || 0;
-        
-        // 対応する input 要素を取得
-        const input = button.parentElement.querySelector('.counter-input');
-        let currentValue = parseInt(input.value);
-
-        if (isNaN(currentValue)) {
-            currentValue = 0;
-        }
-
-        // - ボタンがクリックされた場合は値を減らす
-        if (isMinusButton && currentValue > min) {
-            input.value = currentValue - 1;
-            topping--;
-        }
-
-        // + ボタンがクリックされた場合は値を増やす
-        if (isPlusButton && currentValue < max) {
-            input.value = currentValue + 1;
-            topping++;
-        }
-
-        const minusButton = button.parentElement.querySelector('.counter-button.minus');
-        const plusButton = button.parentElement.querySelector('.counter-button.plus');
-        changeButtonColor(input.value,min,max,minusButton,plusButton);
-        const btnId = button.dataset.id;  // data-item-id を取得
-        console.log(JSON.stringify(btnId));
-                 console.log('topping-' + btnId);
-        document.getElementById('topping-' + btnId).value = input.value;
-                 document.getElementById('remain-' + btnId).value = max - input.value;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    initializeCounterButtons();
-});
 </script>
 </body>
 </html>
