@@ -51,6 +51,6 @@ public class OrderHistory extends HttpServlet {
 
 		// JSPへフォワード
 		request.setAttribute("orderHistory", OrderDetailsList);
-		request.getRequestDispatcher("/WEB-INF/JSP/OrderHistory.jsp").forward(request, response);
+		request.getRequestDispatcher("/OrderHistory.jsp").forward(request, response);
 	}
 }

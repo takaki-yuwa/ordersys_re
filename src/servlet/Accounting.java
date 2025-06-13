@@ -2,13 +2,12 @@ package servlet;
 
 import java.io.IOException;
 
+import dao.AccountingDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import dao.AccountingDAO;
 
 @WebServlet("/Accounting")
 public class Accounting extends HttpServlet {
@@ -36,6 +35,6 @@ public class Accounting extends HttpServlet {
 
         // JSPへフォワード
         request.setAttribute("accountingList", accountingList);
-        request.getRequestDispatcher("/WEB-INF/JSP/Accounting.jsp").forward(request, response);
+        request.getRequestDispatcher("/Accounting.jsp").forward(request, response);
     }
 }

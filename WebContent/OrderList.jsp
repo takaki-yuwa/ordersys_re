@@ -33,34 +33,33 @@
 	<main class="list-main">
 		<div class="orderlist">
 			<c:if test="${not empty sessionScope.orderList}">
-				<c:forEach var="order_id" items="${sessionScope.orderList.order_id}" varStatus="product">
-					<c:set var="product_id" value="${sessionScope.orderList.product_id[product.index]}" />
-					<c:set var="product_name" value="${sessionScope.orderList.product_name[product.index]}" />
-					<c:set var="category_name" value="${sessionScope.orderList.category_name[product.index]}" />
-					<c:set var="product_price" value="${sessionScope.orderList.product_price[product.index]}" />
-					<c:set var="menu_quantity" value="${sessionScope.orderList.menu_quantity[product.index]}" />
-					<c:set var="menu_stock" value="${sessionScope.orderList.menu_stock[product.index]}" />
-					<c:set var="menu_subtotal" value="${sessionScope.orderList.menu_subtotal[product.index]}" />
+				<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
+                    <c:set var="order_id" value="${order_list.order_id}" />
+					<c:set var="product_id" value="${order_list.product_id}" />
+					<c:set var="product_name" value="${order_list.product_name}" />
+					<c:set var="category_name" value="${order_list.category_name}" />
+					<c:set var="product_price" value="${order_list.product_price}" />
+					<c:set var="menu_quantity" value="${order_list.menu_quantity}" />
+					<c:set var="menu_stock" value="${order_list.menu_stock}" />
+					<c:set var="menu_subtotal" value="${order_list.menu_subtotal}" />
 					<c:set var="menu_subtotal" value="${product_price * menu_quantity}" />
 					<li>
 						<div class="order-item">
 							<div class="product-name">${product_name}</div>
 							<div class="product-price">${product_price}円</div>
 						</div> 
-								<c:forEach var="topping_id" items="${sessionScope.orderList.topping_id}" varStatus="topping">
-									<c:set var="topping_order_id" value="${sessionScope.orderList.topping_order_id[topping.index]}"/>
-									<%--order_idと複数トッピングのtopping_order_idが同じである場合 --%>
-									<c:if test="${order_id == topping_order_id}">
-										<c:set var="topping_name" value="${sessionScope.orderList.topping_name[topping.index]}" />
-										<c:set var="topping_price" value="${sessionScope.orderList.topping_price[topping.index]}" />
-										<c:set var="topping_quantity" value="${sessionScope.orderList.topping_quantity[topping.index]}" />
-										<div class="order-item">
-											<div class="topping-name">・${topping_name}✕${topping_quantity}</div>
-											<div class="topping-price">${topping_price * topping_quantity}円</div>
-										</div>
-										<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
-									</c:if>
-								</c:forEach>
+						<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
+							<c:set var="topping_name" value="${order_list.topping_name[topping.index]}" />
+							<c:set var="topping_price" value="${order_list.topping_price[topping.index]}" />
+							<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
+							<c:if test="${topping_quantity>=1 }">
+								<div class="order-item">
+									<div class="topping-name">・${topping_name}✕${topping_quantity}</div>
+									<div class="topping-price">${topping_price * topping_quantity}円</div>
+								</div>
+								<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
+							</c:if>
+						</c:forEach>
 						<div class="order-item">
 							<div class="subtotal-price">
 								小計: <span id="subtotal-${order_id}">${menu_subtotal}</span>円
@@ -77,27 +76,15 @@
 								<input type="hidden" name="product_price" value="${product_price}"> 
 								<input type="hidden" name="category_name" value="${category_name}"> 
 								<input type="hidden" name="product_subtotal" value="${menu_subtotal}">
-									<c:forEach var="topping_id" items="${sessionScope.orderList.topping_id}" varStatus="topping">
-										<c:set var="topping_order_id" value="${sessionScope.orderList.topping_order_id[topping.index]}" />
-										<c:set var="topping_name" value="${sessionScope.orderList.topping_name[topping.index]}" />
-										<c:set var="topping_price" value="${sessionScope.orderList.topping_price[topping.index]}" />
-										<c:set var="topping_quantity" value="${sessionScope.orderList.topping_quantity[topping.index]}" />
-										<%--order_idと複数トッピングのtopping_order_idが同じである場合 --%>
-										<c:if test="${order_id == topping_order_id}">
-											<input type="hidden" name="topping_id[]" value="${topping_id}">
-											<input type="hidden" name="topping_order_id[]" value="${topping_order_id}">
-											<input type="hidden" name="topping_name[]" value="${topping_name}">
-											<input type="hidden" name="topping_price[]" value="${topping_price}">
-											<input type="hidden" name="topping_quantity[]" value="${topping_quantity}">
-										</c:if>
-										<%--order_idと複数トッピングのtopping_order_idが同じでない場合 --%>
-										<c:if test="${order_id != topping_order_id}">
-											<input type="hidden" name="topping_id[]" value="${topping_id}">
-											<input type="hidden" name="topping_order_id[]" value="0">
-											<input type="hidden" name="topping_name[]" value="${topping_name}">
-											<input type="hidden" name="topping_price[]" value="0">
-											<input type="hidden" name="topping_quantity[]" value="0">
-										</c:if>
+									<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
+										<c:set var="topping_name" value="${order_list.topping_name[topping.index]}" />
+										<c:set var="topping_price" value="${order_list.topping_price[topping.index]}" />
+										<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
+										<input type="hidden" name="topping_id[]" value="${topping_id}">
+										<input type="hidden" name="topping_order_id[]" value="${topping_order_id}">
+										<input type="hidden" name="topping_name[]" value="${topping_name}">
+										<input type="hidden" name="topping_price[]" value="${topping_price}">
+										<input type="hidden" name="topping_quantity[]" value="${topping_quantity}">
 									</c:forEach>
 								<button class="change-btn">変更</button>
 							</form>
@@ -126,8 +113,26 @@
 								<p>この商品を削除します</p>
 								<p>よろしいですか？</p>
 								<button class="popup-close" id="close-popup">いいえ</button>
-								<button class="popup-proceed" id="confirm-button">はい
-								</button>
+								<!-- 商品を削除 -->
+								<form action="OrderRemove" method="post">
+									<input type="hidden" name="product_id" value="${product_id}">
+									<input type="hidden" name="product_name" value="${product_name}">
+									<input type="hidden" name="product_price" value="${product_price}">
+									<input type="hidden" name="category_name" value="${category_name}"> 
+									<input type="hidden" name="product_subtotal" value="${menu_subtotal}">
+									<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
+										<c:set var="topping_name" value="${order_list.topping_name[topping.index]}" />
+										<c:set var="topping_price" value="${order_list.topping_price[topping.index]}" />
+										<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
+										<input type="hidden" name="topping_id[]" value="${topping_id}">
+										<input type="hidden" name="topping_order_id[]" value="${topping_order_id}">
+										<input type="hidden" name="topping_name[]" value="${topping_name}">
+										<input type="hidden" name="topping_price[]" value="${topping_price}">
+										<input type="hidden" name="topping_quantity[]" value="${topping_quantity}">
+									</c:forEach>
+									<button class="popup-proceed" id="confirm-button">はい</button>
+								</form>
+								
 							</div>
 						</div>
 					</li>
@@ -141,10 +146,10 @@
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
 				<form action="OrderCompleted" method="post">
-					<c:forEach var="order" items="${sessionScope.orderList.order_id}" varStatus="order">
-						<input type="hidden" id="menu_id" name="order_id[]" value="${order_id}">
-						<input type="hidden" id="countField" name="product_quantity[]" value="${menu_quantity}">
-						<input type="hidden" id="priceField" name="order_price[]" value="${menu_subtotal}">
+					<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
+						<input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
+						<input type="hidden" id="countField" name="product_quantity[]" value="${order_list.menu_quantity}">
+						<input type="hidden" id="priceField" name="order_price[]" value="${order_list.menu_subtotal}">
 					</c:forEach>
 					<input type="hidden" name="tableNumber" value="3">
 					<button class="fixed-right-button">
@@ -166,20 +171,17 @@
 	</footer>
 </body>
 <!-- 小計・合計の更新 -->
-<c:forEach var="order_id" items="${sessionScope.orderList.order_id}" varStatus="product">
-	<c:set var="product_price" value="${sessionScope.orderList.product_price[product.index]}" />
-	<c:set var="menu_quantity" value="${sessionScope.orderList.menu_quantity[product.index]}" />
-	<c:set var="menu_stock" value="${sessionScope.orderList.menu_stock[product.index]}" />
-	<c:set var="menu_subtotal" value="${sessionScope.orderList.menu_subtotal[product.index]}" />
+<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="product">
+    <c:set var="order_id" value="${order_list.order_id}" />
+	<c:set var="product_price" value="${order_list.product_price}" />
+	<c:set var="menu_quantity" value="${order_list.menu_quantity}" />
+	<c:set var="menu_stock" value="${order_list.menu_stock}" />
+	<c:set var="menu_subtotal" value="${order_list.menu_subtotal}" />
 	<c:set var="menu_subtotal" value="${product_price * menu_quantity}" />
-	<c:forEach var="topping_id" items="${sessionScope.orderList.topping_id}" varStatus="topping">
-		<c:set var="topping_order_id" value="${sessionScope.orderList.topping_order_id[topping.index]}" />
-		<%--order_idと複数トッピングのtopping_order_idが同じである場合 --%>
-		<c:if test="${order_id==topping_order_id}">
-			<c:set var="topping_price" value="${sessionScope.orderList.topping_price[topping.index]}" />
-			<c:set var="topping_quantity" value="${sessionScope.orderList.topping_quantity[topping.index]}" />
-			<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
-		</c:if>
+	<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
+		<c:set var="topping_price" value="${order_list.topping_price[topping.index]}" />
+		<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
+		<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
 		<!-- JavaScriptで埋め込む -->
 		<script>updateOrderState(${order_id}, ${menu_quantity},${menu_stock},${menu_subtotal});</script>
 	</c:forEach>

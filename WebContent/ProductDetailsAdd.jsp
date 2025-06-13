@@ -152,6 +152,9 @@ if("OrderMenu.jsp".equals(fromPage)){
 				<form action="OrderList" method="post">
 					<button class="fixed-right-button">
 					    <input type="hidden" name="product_id" value="${sessionScope.productList.id}">
+					    <input type="hidden" name="product_name" value="${sessionScope.productList.name}">
+					    <input type="hidden" name="product_price" value="${sessionScope.productList.price}">
+					    <input type="hidden" name="category_name" value="${sessionScope.productList.category}">
 					    <input type="hidden" name="tableNo" value="3">
 	                    <c:forEach var="topping" items="${topping_list}" varStatus="status">
 	                        <input type="hidden" name="topping" value="${topping.id}">

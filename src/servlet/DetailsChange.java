@@ -18,8 +18,8 @@ public class DetailsChange extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+		throws ServletException, IOException {
+		
 		//パラメータを取得
 		String o_id = request.getParameter("order_id");
 		String p_id = request.getParameter("product_id");
@@ -80,6 +80,6 @@ public class DetailsChange extends HttpServlet {
 		request.setAttribute("topping_list", toppingList);
 		
 		// JSPに転送
-		request.getRequestDispatcher("/WEB-INF/JSP/ProductDetailsAdd.jsp").forward(request, response);
+		request.getRequestDispatcher("/ProductDetailsAdd.jsp").forward(request, response);
 	}
 }

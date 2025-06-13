@@ -61,6 +61,6 @@ public class Details extends HttpServlet {
 		request.setAttribute("topping_list", toppingList);
 
 		// JSPに転送
-		request.getRequestDispatcher("/WEB-INF/JSP/ProductDetails.jsp").forward(request, response);
+		request.getRequestDispatcher("/ProductDetails.jsp").forward(request, response);
 	}
 }

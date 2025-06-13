@@ -21,7 +21,7 @@ public class OrderCompleted extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		//データベース接続
@@ -37,7 +37,7 @@ public class OrderCompleted extends HttpServlet {
 			pstmt = conn.prepareStatement(sql);
 
 			//パラメータを設定
-			String[] order_id = request.getParameterValues("order_id");
+			String[] order_id = request.getParameterValues("order_id[]");
 			String[] product_quantity = request.getParameterValues("product_quantity[]");
 			String[] order_price = request.getParameterValues("order_price[]");
 			String table_number = request.getParameter("tableNumber");
@@ -75,6 +75,6 @@ public class OrderCompleted extends HttpServlet {
 			}
 		}
 
-		request.getRequestDispatcher("/WEB-INF/JSP/OrderCompleted.jsp").forward(request, response);
+		request.getRequestDispatcher("/OrderCompleted.jsp").forward(request, response);
 	}
 }

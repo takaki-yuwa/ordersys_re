@@ -4,46 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class order_list {
-	private List<Integer> order_id;
-	private List<Integer> product_id;
+	private Integer order_id;
+	private Integer product_id;
 	private List<Integer> topping_id;
-	private List<Integer> topping_order_id;
-	private List<String> product_name;
-	private List<String> category_name;
+	private String product_name;
+	private String category_name;
 	private List<String> topping_name;
-	private List<Integer> product_price;
+	private Integer product_price;
 	private List<Integer> topping_price;
 	private List<Integer> topping_quantity;
-	private List<Integer> menu_quantity;
-	private List<Integer> menu_stock;
-	private List<Integer> menu_subtotal;
+	private Integer menu_quantity;
+	private Integer menu_stock;
+	private Integer menu_subtotal;
 
 	private int menu_total;
 
-	public order_list(List<Integer> order_id, List<Integer> product_id, List<Integer> topping_id, List<Integer> topping_order_id, List<String> product_name, List<String> category_name, List<String> topping_name,
-			List<Integer> product_price, List<Integer> topping_price, List<Integer> topping_quantity,
-			List<Integer> menu_quantity, List<Integer> menu_stock, List<Integer> menu_subtotal, int menu_total) {
-		this.order_id = new ArrayList<>(order_id);
-		this.product_id=new ArrayList<>(product_id);
+	public order_list(Integer order_id, Integer product_id, List<Integer> topping_id, String product_name, String category_name, List<String> topping_name,
+			Integer product_price, List<Integer> topping_price, List<Integer> topping_quantity,
+			Integer menu_quantity, Integer menu_stock, Integer menu_subtotal, int menu_total) {
+		this.order_id = order_id;
+		this.product_id=product_id;
 		this.topping_id=new ArrayList<>(topping_id);
-		this.topping_order_id=new ArrayList<>(topping_order_id);
-		this.product_name = new ArrayList<>(product_name);
-		this.category_name=new ArrayList<>(category_name);
+		this.product_name = product_name;
+		this.category_name=category_name;
 		this.topping_name = new ArrayList<>(topping_name);
-		this.product_price = new ArrayList<>(product_price);
+		this.product_price = product_price;
 		this.topping_price = new ArrayList<>(topping_price);
 		this.topping_quantity = new ArrayList<>(topping_quantity);
-		this.menu_quantity = new ArrayList<>(menu_quantity);
-		this.menu_stock = new ArrayList<>(menu_stock);
-		this.menu_subtotal = new ArrayList<>(menu_subtotal);
+		this.menu_quantity = menu_quantity;
+		this.menu_stock = menu_stock;
+		this.menu_subtotal = menu_subtotal;
 		this.menu_total = menu_total;
 	}
 
-	public List<Integer> getOrder_id() {
+	public Integer getOrder_id() {
 		return order_id;
 	}
 
-	public List<Integer> getProduct_id() {
+	public Integer getProduct_id() {
 		return product_id;
 	}
 
@@ -51,15 +49,11 @@ public class order_list {
 		return topping_id;
 	}
 
-	public List<Integer> getTopping_order_id() {
-		return topping_order_id;
-	}
-
-	public List<String> getProduct_name() {
+	public String getProduct_name() {
 		return product_name;
 	}
 
-	public List<String> getCategory_name() {
+	public String getCategory_name() {
 		return category_name;
 	}
 
@@ -67,7 +61,7 @@ public class order_list {
 		return topping_name;
 	}
 
-	public List<Integer> getProduct_price() {
+	public Integer getProduct_price() {
 		return product_price;
 	}
 
@@ -79,15 +73,15 @@ public class order_list {
 		return topping_quantity;
 	}
 
-	public List<Integer> getMenu_quantity() {
+	public Integer getMenu_quantity() {
 		return menu_quantity;
 	}
 
-	public List<Integer> getMenu_stock() {
+	public Integer getMenu_stock() {
 		return menu_stock;
 	}
 
-	public List<Integer> getMenu_subtotal() {
+	public Integer getMenu_subtotal() {
 		return menu_subtotal;
 	}
 
