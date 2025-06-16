@@ -130,7 +130,7 @@
 										<input type="hidden" name="topping_price[]" value="${topping_price}">
 										<input type="hidden" name="topping_quantity[]" value="${topping_quantity}">
 									</c:forEach>
-									<button class="popup-proceed" id="confirm-button">はい</button>
+									<button class="popup-proceed" id="confirm-button">は　い</button>
 								</form>
 								
 							</div>
