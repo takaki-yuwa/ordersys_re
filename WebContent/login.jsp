@@ -10,6 +10,6 @@
 <meta http-equiv="refresh" content="0;URL=OrderSystem">
 </head>
 <body>
-ログイン中です。しばらくお待ちください...
+接続中です。しばらくお待ちください...
 </body>
 </html>
