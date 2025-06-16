@@ -65,7 +65,8 @@ public class OrderCompleted extends HttpServlet {
             response.getWriter().println("エラーが発生しました: " + e.getMessage());
             e.printStackTrace();
         }
-
+        
+        request.getSession().invalidate(); // セッションの取得と情報削除
         request.getRequestDispatcher("/OrderCompleted.jsp").forward(request, response);
     }
 }
