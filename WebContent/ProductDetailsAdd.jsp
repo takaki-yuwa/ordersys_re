@@ -114,8 +114,7 @@ if("OrderMenu.jsp".equals(fromPage)){
 					<c:if test="${not empty topping_list}">
 						<c:forEach var="topping" items="${topping_list}"
 							varStatus="status">
-							<c:set var="topping_oder_id"
-								value="${sessionScope.changeList.topping_order_id[status.index]}" />
+
 							<c:set var="topping_quantity"
 								value="${sessionScope.changeList.topping_quantity[status.index]}" />
 							<li class="topping-row">
