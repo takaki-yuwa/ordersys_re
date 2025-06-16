@@ -68,11 +68,7 @@ public class DetailsChange extends HttpServlet {
 		//詳細変更リストオブジェクトの作成
 		details_change_list changeList = new details_change_list(order_id, product_id, product_name, product_price,
 				category_name, product_subtotal, topping_id, topping_name, topping_price, topping_quantity);
-		
-		//詳細変更リストオブジェクトの作成
-//				details_change_list changeList = new details_change_list(order_id, product_id, product_name, product_price,
-//						category_name, product_subtotal, topping_order_id, topping_id, topping_name, topping_price, topping_quantity);
-
+	
 		//セッションに詳細変更情報をセット
 		HttpSession session = request.getSession();
 		session.setAttribute("changeList", changeList);
