@@ -32,6 +32,9 @@
 	</header>
 	<main class="list-main">
 		<div class="orderlist">
+		<c:choose>
+        <c:when test="${not empty sessionScope.orderList}">
+            <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
 			<c:if test="${not empty sessionScope.orderList}">
 				<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
                     <c:set var="order_id" value="${order_list.order_id}" />
@@ -99,6 +102,12 @@
 					</li>
 				</c:forEach>
 			</c:if>
+			 </c:forEach>
+	        </c:when>
+	        <c:otherwise>
+	            <div class="break-word bold-text">カートが空です</div>
+	        </c:otherwise>
+	    </c:choose>
 		</div>
 	</main>
 	<!--ポップアップの背景-->
@@ -119,17 +128,20 @@
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
-				<form action="OrderCompleted" method="post">
-					<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
-						<input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
-						<input type="hidden" id="countField" name="product_quantity[]" value="${order_list.menu_quantity}">
-						<input type="hidden" id="priceField" name="order_price[]" value="${order_list.menu_subtotal}">
-					</c:forEach>
-					<input type="hidden" name="tableNumber" value="3">
-					<button class="fixed-right-button">
-						<img src="Image/Vector.png" alt="注文のボタン">注文する
-					</button>
-				</form>
+				<c:if test="${not empty sessionScope.orderList}">
+				    <form action="OrderCompleted" method="post">
+				        <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
+				            <input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
+				            <input type="hidden" id="countField" name="product_quantity[]" value="${order_list.menu_quantity}">
+				            <input type="hidden" id="priceField" name="order_price[]" value="${order_list.menu_subtotal}">
+				        </c:forEach>
+				        <input type="hidden" name="tableNumber" value="3">
+				        <button class="fixed-right-button">
+				            <img src="Image/Vector.png" alt="注文のボタン">注文する
+				        </button>
+				    </form>
+				</c:if>
+
 			<!--メニューへ遷移-->
 			<a href="OrderSystem">
 				<button class="fixed-left-button">
@@ -138,11 +150,14 @@
 			</a>
 		</div>
 	</footer>
-	<footer class="footer-subtotal">
-		<div class="footer-subtotal-wrapper">
-			<div class="subtotal-text" id="total">合計:${total}円(税込)</div>
-		</div>
-	</footer>
+	<c:if test="${not empty sessionScope.orderList}">
+    <footer class="footer-subtotal">
+        <div class="footer-subtotal-wrapper">
+            <div class="subtotal-text" id="total">合計:${total}円(税込)</div>
+        </div>
+    </footer>
+	</c:if>
+
 </body>
 <!-- 小計・合計の更新 -->
 <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="product">

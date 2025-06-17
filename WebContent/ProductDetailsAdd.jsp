@@ -157,6 +157,7 @@ if("OrderMenu.jsp".equals(fromPage)){
 					    <input type="hidden" name="tableNo" value="3">
 	                    <c:forEach var="topping" items="${topping_list}" varStatus="status">
 	                        <input type="hidden" name="topping" value="${topping.id}">
+	                        <input type="hidden" name="topping_name" value="${topping.name}">
 	                        <input type="hidden" name="topping_quantity" id="topping-${topping.id}" value="0">
 	                    </c:forEach>
 	                    <input type="hidden" name="total" id="input-total" value="">
