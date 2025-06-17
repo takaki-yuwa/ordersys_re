@@ -90,18 +90,7 @@
 							</form>
 							<!-- 増減ボタンを追加 -->
 							<div class="quantity-buttons">
-								<c:choose>
-									<%-- 数量が1の場合、ゴミ箱ボタンを表示 --%>
-									<c:when test="${menu_quantity == 1}">
-										<button type="button" onclick="showDeletePopup(${order_list.order_id})" name="quantity" value="${menu_quantity - 1}" class="decrease-btn" id="decrement-${order_id}">
-											<img class="dustbox-img" src="Image/dustbox.png" alt="ゴミ箱ボタン">
-										</button>
-									</c:when>
-									<%-- 数量が1以外の場合、マイナスボタンを表示 --%>
-									<c:otherwise>
-										<button type="submit" name="quantity" value="${menu_quantity - 1}" class="decrease-btn" id="decrement-${order_id}">−</button>
-									</c:otherwise>
-								</c:choose>
+								<button type="button" name="quantity" value="${menu_quantity - 1}" class="decrease-btn" id="decrement-${order_id}"></button>
 								<!-- 数量を表示する要素、変数にバインド -->
 								<span class="quantity" id="counter-${order_id}">${menu_quantity}</span>
 								<button type="button" name="quantity" value="${menu_quantity + 1}" class="increase-btn" id="increment-${order_id}">+</button>

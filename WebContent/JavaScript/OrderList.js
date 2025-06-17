@@ -34,21 +34,24 @@ function updateOrderState(menuId, menuQuantity, menuStock, menuSubtotal) {
             }
         });
 		//減少処理
-        newDecrementBtn.addEventListener('click', () => {
-            if (orderstate.count > 0) {
-                if (orderstate.count === 1) {
-                    showDeletePopup(menuId);
-                } else {
-                    const quantityValue = --orderstate.count;
-                    counter.innerHTML = quantityValue;
-                    const subtotalValue = parseFloat(menuSubtotal) * orderstate.count;
-                    subtotal.innerHTML = subtotalValue;
-                    setQuantity(quantityValue);
-                    setPrice(subtotalValue);
-                    updateButtonDisplay(menuId, orderstate.count);
-                    updateTotal();
-                }
-            }
+        newDecrementBtn.addEventListener('click', (event) => {
+			event.preventDefault(); 
+			const mode=newDecrementBtn.getAttribute('data-mode');
+			
+			if(mode==='delete'){
+				showDeletePopup(menuId);
+			}else{
+        		if (orderstate.count > 0) {
+            		orderstate.count--;
+            		counter.innerHTML = orderstate.count;
+            		const subtotalValue = parseFloat(menuSubtotal) * orderstate.count;
+            		subtotal.innerHTML = subtotalValue;
+            		setQuantity(orderstate.count);
+            		setPrice(subtotalValue);
+            		updateButtonDisplay(menuId, orderstate.count);
+            		updateTotal();
+        		}
+			}
         });
 
         updateButtonDisplay(menuId, orderstate.count);
@@ -62,10 +65,21 @@ function updateButtonDisplay(orderId, quantity) {
     const decrementBtn = document.getElementById(`decrement-${orderId}`);
     if (!decrementBtn) return;
 
+    // 中の子要素だけを書き換える
+    decrementBtn.innerHTML = ''; // 中身を空にする
+
     if (quantity === 1) {
-        decrementBtn.innerHTML = '<img class="dustbox-img" src="Image/dustbox.png" alt="ゴミ箱ボタン">';
+        const img = document.createElement('img');
+        img.src = 'Image/dustbox.png';
+        img.alt = 'ゴミ箱ボタン';
+        img.classList.add('dustbox-img');
+        decrementBtn.appendChild(img);
+
+        // 状態フラグを属性に持たせる
+        decrementBtn.setAttribute('data-mode', 'delete');
     } else {
-        decrementBtn.innerHTML = '−';
+        decrementBtn.textContent = '−';
+        decrementBtn.setAttribute('data-mode', 'decrement');
     }
 }
 //ポップアップ処理
