@@ -18,7 +18,8 @@ public class OrderDetailsDAO {
         try (Connection con = DBUtil.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT order_details_id, order_id, product_quantity, order_price, table_number, accounting_flag FROM order_details where table_number = " 
-            + search_table_number + " AND order_price = " + search_order_price + " AND accounting_flag = " + 0))
+            + search_table_number + " AND accounting_flag = " + 0))
+            //+ search_table_number + " AND order_price = " + search_order_price + " AND accounting_flag = " + 0))
             {
 
             while (rs.next()) {
