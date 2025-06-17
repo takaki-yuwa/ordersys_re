@@ -69,7 +69,8 @@ public class OrderList extends HttpServlet {
 			//外部キー(トッピング名):topping_name
 			//外部キー(トッピング価格):topping_price
 			//外部キー(トッピング在庫):topping_stock
-			Integer order_id = 1;
+			Integer maxOrderId=orderList.stream().mapToInt(order -> order.getOrder_id()).max().orElse(0);
+			Integer order_id = maxOrderId+1;
 			List<Integer> topping_id = new ArrayList<Integer>();
 			String product_name = request.getParameter("product_name");
 			String category_name = request.getParameter("category_name");

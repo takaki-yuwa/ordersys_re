@@ -21,18 +21,22 @@ public class OrderRemove extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		List<order_list> orderList = (List<order_list>) session.getAttribute(SESSION_LIST_KEY);
+		Integer order_id=Integer.valueOf(request.getParameter("order_id"));
+		//削除対象のデバッグ確認
+		System.out.println("削除対象："+order_id);
 		if (null == orderList) {
 			orderList = new ArrayList<>();
 		}
+		//セッションから対象のorder_idを削除する
 		if(orderList!=null) {
-			Integer product_id=Integer.parseInt(request.getParameter("product_id"));
-			Iterator<order_list> iterator=orderList.iterator();
-			while(iterator.hasNext()) {
-				order_list order=iterator.next();
-				if(order.getProduct_id().equals(product_id)) {
-					iterator.remove();
-					break;
-				}
+			
+			Iterator<order_list> iterator = orderList.iterator();
+			while (iterator.hasNext()) {
+			    order_list order = iterator.next();
+			    if (order.getOrder_id().equals(order_id)) {
+			        iterator.remove();
+			        break;
+			    }
 			}
 			
 			session.setAttribute("orderList", orderList);

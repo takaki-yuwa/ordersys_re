@@ -45,7 +45,7 @@
 					<c:set var="menu_subtotal" value="${product_price * menu_quantity}" />
 					<li>
 						<div class="order-item">
-							<div class="product-name">${product_name}</div>
+							<div class="product-name">${product_name}：${order_id}</div>
 							<div class="product-price">${product_price}円</div>
 						</div> 
 						<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
@@ -93,7 +93,7 @@
 								<c:choose>
 									<%-- 数量が1の場合、ゴミ箱ボタンを表示 --%>
 									<c:when test="${menu_quantity == 1}">
-										<button type="submit" name="quantity" value="${menu_quantity - 1}" class="decrease-btn" id="decrement-${order_id}">
+										<button type="button" onclick="showDeletePopup(${order_list.order_id})" name="quantity" value="${menu_quantity - 1}" class="decrease-btn" id="decrement-${order_id}">
 											<img class="dustbox-img" src="Image/dustbox.png" alt="ゴミ箱ボタン">
 										</button>
 									</c:when>
@@ -106,40 +106,25 @@
 								<span class="quantity" id="counter-${order_id}">${menu_quantity}</span>
 								<button type="button" name="quantity" value="${menu_quantity + 1}" class="increase-btn" id="increment-${order_id}">+</button>
 							</div>
-							<!--ポップアップの背景-->
-							<div class="popup-overlay" id="popup-overlay"></div>
-							<!--ポップアップの内容-->
-							<div class="popup-content" id="popup-content">
-								<p>この商品を削除します</p>
-								<p>よろしいですか？</p>
-								<button class="popup-close" id="close-popup">いいえ</button>
-								<!-- 商品を削除 -->
-								<form action="OrderRemove" method="post">
-									<input type="hidden" name="product_id" value="${product_id}">
-									<input type="hidden" name="product_name" value="${product_name}">
-									<input type="hidden" name="product_price" value="${product_price}">
-									<input type="hidden" name="category_name" value="${category_name}"> 
-									<input type="hidden" name="product_subtotal" value="${menu_subtotal}">
-									<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
-										<c:set var="topping_name" value="${order_list.topping_name[topping.index]}" />
-										<c:set var="topping_price" value="${order_list.topping_price[topping.index]}" />
-										<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
-										<input type="hidden" name="topping_id[]" value="${topping_id}">
-										<input type="hidden" name="topping_order_id[]" value="${topping_order_id}">
-										<input type="hidden" name="topping_name[]" value="${topping_name}">
-										<input type="hidden" name="topping_price[]" value="${topping_price}">
-										<input type="hidden" name="topping_quantity[]" value="${topping_quantity}">
-									</c:forEach>
-									<button class="popup-proceed" id="confirm-button">は　い</button>
-								</form>
-								
-							</div>
 						</div>
 					</li>
 				</c:forEach>
 			</c:if>
 		</div>
 	</main>
+	<!--ポップアップの背景-->
+	<div class="popup-overlay" id="popup-overlay"></div>
+	<!--ポップアップの内容-->
+	<div class="popup-content" id="popup-content">
+		<p>この商品を削除します</p>
+		<p>よろしいですか？</p>
+		<button class="popup-close" id="close-popup">いいえ</button>
+		<!-- 商品を削除 -->
+		<form action="OrderRemove" method="post">
+			<input type="hidden" name="order_id" id="popup-order-id" />
+			<button  type="submit" class="popup-proceed" id="confirm-button">は　い</button>
+		</form>
+	</div>
 	<footer class="footer-buttons">
 		<div class="table-number">3卓</div>
 		<div class="footer-wrapper">
@@ -183,7 +168,9 @@
 		<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
 		<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
 		<!-- JavaScriptで埋め込む -->
-		<script>updateOrderState(${order_id}, ${menu_quantity},${menu_stock},${menu_subtotal});</script>
+		<script>
+			updateOrderState(${order_id}, ${menu_quantity},${menu_stock},${menu_subtotal});
+		</script>
 	</c:forEach>
 </c:forEach>
 </html>

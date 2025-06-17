@@ -74,6 +74,13 @@ function showDeletePopup(orderId) {
     const popupContent = document.getElementById('popup-content');
     const closePopupButton = document.getElementById('close-popup');
     const confirmButton = document.getElementById('confirm-button');
+    const hiddenInput = document.getElementById('popup-order-id');
+
+    // ✅ order_id をセット
+    if (hiddenInput) {
+        hiddenInput.value = orderId;
+        console.log("設定された order_id:", orderId); // デバッグ用
+    }
 
     popupOverlay.classList.add('show');
     popupContent.classList.add('show');
