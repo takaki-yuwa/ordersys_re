@@ -23,7 +23,7 @@ public class OrderRemove extends HttpServlet {
 		List<order_list> orderList = (List<order_list>) session.getAttribute(SESSION_LIST_KEY);
 		Integer order_id=Integer.valueOf(request.getParameter("order_id"));
 		//削除対象のデバッグ確認
-		System.out.println("削除対象："+order_id);
+		System.out.println("削除対象 order_id："+order_id);
 		if (null == orderList) {
 			orderList = new ArrayList<>();
 		}

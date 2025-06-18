@@ -170,11 +170,22 @@ if("OrderMenu.jsp".equals(fromPage)){
 			%>
 				<form action="OrderList" method="post">
 					<button class="fixed-right-button">
+						<input type="hidden" name="order_id" value="${sessionScope.changeList.order_id}">
                         <input type="hidden" name="product_id" value="${sessionScope.changeList.product_id}">
+                        <input type="hidden" name="product_name" value="${sessionScope.changeList.product_name}">
+                        <input type="hidden" name="product_price" value="${sessionScope.changeList.product_price}">
+                        <input type="hidden" name="category_name" value="${sessionScope.changeList.category_name}">
+                        <input type="hidden" name="product_subtotal" value="${sessionScope.changeList.product_subtotal}">
                         <input type="hidden" name="tableNo" value="3">
-                        <c:forEach var="topping" items="${sessionScope.changeList.topping_id}" varStatus="status">
-                            <input type="hidden" name="topping" value="${topping}">
-                            <input type="hidden" name="topping_quantity" id="topping-${topping}" value="0">
+                        <c:forEach var="topping_id" items="${sessionScope.changeList.topping_id}" varStatus="status">
+                        	<c:set var="topping_name" value="${sessionScope.changeList.topping_name[status.index]}" />
+                        	<c:set var="topping_price" value="${sessionScope.changeList.topping_price[status.index]}" />
+                        	<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}" />
+                            <input type="hidden" name="topping_id[]" value="${topping_id}">
+                            <input type="hidden" name="topping_name[]" value="${topping_name}">
+                            <input type="hidden" name="topping_price[]" value="${topping_price}">
+                            <%--valueに変更していない個数がリセットされないように取得した${topping_quantity}を入れる--%>
+                            <input type="hidden" name="topping_quantity[]" id="topping-${topping_id}" value="${topping_quantity}">
                         </c:forEach>
                         <input type="hidden" name="total" id="input-total" value="">
 						<img src="Image/changeCart.png" alt="変更のボタン"> 変更

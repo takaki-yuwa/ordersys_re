@@ -123,8 +123,8 @@
 				    <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
 				        <input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
 				        <input type="hidden" name="product_id[]" value="${order_list.product_id}">
-				        <input type="hidden" id="countField" name="product_quantity[]" value="${order_list.menu_quantity}">
-				        <input type="hidden" id="priceField" name="order_price[]" value="${total}">
+				        <input type="hidden" id="countField-${order_list.order_id}" name="product_quantity[]" value="${order_list.menu_quantity}">
+				        <input type="hidden" id="priceField-${order_list.order_id}" name="order_price[]" value="${order_list.menu_subtotal}">
 			
 				        <!-- トッピングがある場合にループ -->
 				        <c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">

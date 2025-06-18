@@ -52,23 +52,9 @@ public class OrderList extends HttpServlet {
 		}
 
 		String urlDetailsAdd = "DetailsAdd";
+		String urlDetailsChange= "DetailsChange";
 		if (urlDetailsAdd.equals(pageName)) {
 			// リストの初期化
-			//商品詳細テーブルから取得するもの
-			//主キー(注文ID):order_id
-			//外部キー(商品ID):product_id
-			//外部キー(商品名):product_name
-			//外部キー(カテゴリー名):category_name
-			//外部キー(商品価格):product_price
-			//外部キー(商品在庫):product_stock
-
-			//複数トッピングテーブルから取得するもの
-			//主キー(複数トッピングID):multiple_toppings_id
-			//トッピング個数:topping_quantity
-			//外部キー(トッピングID):topping_id
-			//外部キー(トッピング名):topping_name
-			//外部キー(トッピング価格):topping_price
-			//外部キー(トッピング在庫):topping_stock
 			Integer maxOrderId=orderList.stream().mapToInt(order -> order.getOrder_id()).max().orElse(0);
 			Integer order_id = maxOrderId+1;
 			List<Integer> topping_id = new ArrayList<Integer>();
@@ -143,24 +129,97 @@ public class OrderList extends HttpServlet {
 			orderList.add(new order_list(order_id, iProductId, topping_id, product_name, category_name, topping_name,
 					product_price, topping_price,
 					iToppingQuantity, menu_quantity, menu_stock, menu_subtotal, menu_total));
-		} else {
-			//			List<Integer> order_id = List.of(1, 2, 3, 4, 5, 6, 7);
-			//			List<Integer> product_id=List.of(1, 2, 3, 4, 5, 6, 7);
-			//			List<Integer> topping_id=List.of(1, 2, 3, 4, 5, 6);
-			//			List<Integer> topping_order_id = List.of(1, 1, 1, 1, 1, 1);
-			//			List<String> product_name = List.of("納豆お好み焼き", "納豆もんじゃ焼き", "ウィンナー", "山芋磯辺揚げ", "ラムネ", "生ビール",
-			//					"JINRO");
-			//			List<String> category_name=List.of("お好み焼き","もんじゃ焼き","鉄板焼き","サイドメニュー","ソフトドリンク","お酒","ボトル");
-			//			List<String> topping_name = List.of("コーン", "カレー", "チーズ", "もち", "ツナ", "ベビースター");
-			//			List<Integer> product_price = List.of(660, 660, 500, 420, 280, 600, 2500);
-			//			List<Integer> topping_price = List.of(110, 110, 110, 110, 110, 110);
-			//			List<Integer> topping_quantity = List.of(1, 2, 3, 4, 5, 6);
-			//			List<Integer> menu_quantity = List.of(1, 1, 1, 1, 1, 1, 1);
-			//			List<Integer> menu_stock = List.of(10, 20, 21, 22, 23, 24, 25);
-			//			List<Integer> menu_subtotal = List.of(0, 0, 0, 0, 0, 0, 0);
-			//			int menu_total = 0;
-			//			orderList = new order_list(order_id, product_id, topping_id,  product_name, category_name, topping_name, product_price, topping_price,
-			//					topping_quantity, menu_quantity, menu_stock, menu_subtotal, menu_total);
+		
+		} else if (urlDetailsChange.equals(pageName)) {
+			//パラメータを取得
+			String o_id = request.getParameter("order_id");
+			String p_id = request.getParameter("product_id");
+			String product_name = request.getParameter("product_name");
+			String p_price = request.getParameter("product_price");
+			String category_name = request.getParameter("category_name");
+			String p_subtotal=request.getParameter("product_subtotal");
+			String[] t_id = request.getParameterValues("topping_id[]");
+			String[] t_name = request.getParameterValues("topping_name[]");
+			String[] t_price = request.getParameterValues("topping_price[]");
+			String[] t_quantity = request.getParameterValues("topping_quantity[]");
+			
+			Integer order_id = 0;
+			Integer product_id = 0;
+			Integer product_price = 0;
+			Integer product_subtotal=0;
+			
+			// 配列 → Listへ変換
+			List<Integer> topping_id = new ArrayList<>();
+			List<String> topping_name = new ArrayList<>();
+			List<Integer> topping_price = new ArrayList<>();
+			List<Integer> topping_quantity = new ArrayList<>();
+			
+			//int型への変換処理
+			if (o_id != null && !o_id.isEmpty() && p_id != null && !p_id.isEmpty() && p_price != null
+					&& !p_price.isEmpty() && p_subtotal!=null && !p_subtotal.isEmpty()) {
+				try {
+					order_id = Integer.parseInt(o_id);
+					product_id = Integer.parseInt(p_id);
+					product_price = Integer.parseInt(p_price);
+					product_subtotal=Integer.parseInt(p_subtotal);
+				} catch (NumberFormatException e) {
+					System.out.println("無効な数値: order_id=" + o_id);
+					System.out.println("無効な数値: product_id=" + p_id);
+					System.out.println("無効な数値: product_price=" + p_price);
+
+				}
+			}
+			
+			
+			// 配列がnullでないことを確認してから処理
+			//order_idとproduct_idが一致しているか確認
+			for(order_list order : orderList) {
+				if(order.getOrder_id()== order_id && order.getProduct_id() == product_id) {
+					if (t_id != null && t_name != null && t_price != null && t_quantity != null) {
+					    for (String id : t_id) {
+					        try {
+					        	topping_id.add(Integer.parseInt(id));
+					        } catch (NumberFormatException e) {
+					            // 必要ならロギングなど
+					        }
+					    }
+					    for (String name : t_name) {
+					        topping_name.add(name);
+					    }
+					    for (String price : t_price) {
+					        try {
+					        	topping_price.add(Integer.parseInt(price));
+					        } catch (NumberFormatException e) {
+					            // 必要ならロギングなど
+					        }
+					    }
+					    for (String qty : t_quantity) {
+					        try {
+					        	topping_quantity.add(Integer.parseInt(qty));
+					        } catch (NumberFormatException e) {
+					            // 必要ならロギングなど
+					        }
+					    }
+					}
+					//トッピングの変更内容をセットする
+					order.setTopping_id(topping_id);
+					order.setTopping_name(topping_name);
+					order.setTopping_price(topping_price);
+					order.setTopping_quantity(topping_quantity);
+					
+					//デバッグ確認
+					System.out.println("注文ID："+order_id);
+					System.out.println("商品ID："+product_id);
+					System.out.println("商品名："+product_name);
+					System.out.println("商品価格："+product_price);
+					System.out.println("カテゴリー名："+category_name);
+					for(int i=0;i<topping_id.size();i++) {
+						System.out.println("トッピングID："+topping_id.get(i)+"　名前："+topping_name.get(i)+"　個数："+topping_quantity.get(i));
+					}
+					
+				}
+			}
+			
 		}
 		session.setAttribute(SESSION_LIST_KEY, orderList);
 
