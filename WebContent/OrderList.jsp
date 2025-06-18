@@ -16,12 +16,8 @@
 <link rel="stylesheet" href="CSS/OrderList.css">
 <link rel="stylesheet" href="CSS/Popup.css">
 <link rel="icon" href="data:," />
-
 <script src="JavaScript/OrderList.js"></script>
 </head>
-<%
-	boolean menu_flag=true;	//注文リスト表示フラグ
-%>
 <body>
 	<!--ヘッダー(店の名前)-->
 	<header class="header-storename">
@@ -32,9 +28,6 @@
 	</header>
 	<main class="list-main">
 		<div class="orderlist">
-		<c:choose>
-        <c:when test="${not empty sessionScope.orderList}">
-            <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
 			<c:if test="${not empty sessionScope.orderList}">
 				<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
                     <c:set var="order_id" value="${order_list.order_id}" />
@@ -50,12 +43,13 @@
 						<div class="order-item">
 							<div class="product-name">${product_name}：${order_id}</div>
 							<div class="product-price">${product_price}円</div>
-						</div> 
+						</div>
 						<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
 							<c:set var="topping_name" value="${order_list.topping_name[topping.index]}" />
 							<c:set var="topping_price" value="${order_list.topping_price[topping.index]}" />
 							<c:set var="topping_quantity" value="${order_list.topping_quantity[topping.index]}" />
 							<c:if test="${topping_quantity>=1 }">
+								<%--トッピング表示--%>
 								<div class="order-item">
 									<div class="topping-name">・${topping_name}✕${topping_quantity}</div>
 									<div class="topping-price">${topping_price * topping_quantity}円</div>
@@ -67,7 +61,7 @@
 							<div class="subtotal-price">
 								小計: <span id="subtotal-${order_id}">${menu_subtotal}</span>円
 							</div>
-						</div> <c:set var="total" value="${total+menu_subtotal}" /> 
+						</div> <c:set var="total" value="${total+menu_subtotal}" />
 						<!-- ボタンを横並びに配置 -->
 						<div class="order-item buttons-container">
 							<!-- 変更ボタン -->
@@ -76,8 +70,8 @@
 								<input type="hidden" name="order_id" value="${order_id}">
 								<input type="hidden" name="product_id" value="${product_id}">
 								<input type="hidden" name="product_name" value="${product_name}">
-								<input type="hidden" name="product_price" value="${product_price}"> 
-								<input type="hidden" name="category_name" value="${category_name}"> 
+								<input type="hidden" name="product_price" value="${product_price}">
+								<input type="hidden" name="category_name" value="${category_name}">
 								<input type="hidden" name="product_subtotal" value="${menu_subtotal}">
 									<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
 										<c:set var="topping_name" value="${order_list.topping_name[topping.index]}" />
@@ -102,12 +96,9 @@
 					</li>
 				</c:forEach>
 			</c:if>
-			 </c:forEach>
-	        </c:when>
-	        <c:otherwise>
-	            <div class="break-word bold-text">カートが空です</div>
-	        </c:otherwise>
-	    </c:choose>
+			<c:if test="${empty sessionScope.orderList}">
+			<div class="break-word bold-text">カートが空です</div>
+			</c:if>
 		</div>
 	</main>
 	<!--ポップアップの背景-->
@@ -128,20 +119,28 @@
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
-				<c:if test="${not empty sessionScope.orderList}">
-				    <form action="OrderCompleted" method="post">
-				        <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
-				            <input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
-				            <input type="hidden" id="countField" name="product_quantity[]" value="${order_list.menu_quantity}">
-				            <input type="hidden" id="priceField" name="order_price[]" value="${order_list.menu_subtotal}">
+				<form action="OrderCompleted" method="post">
+				    <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
+				        <input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
+				        <input type="hidden" name="product_id[]" value="${order_list.product_id}">
+				        <input type="hidden" id="countField" name="product_quantity[]" value="${order_list.menu_quantity}">
+				        <input type="hidden" id="priceField" name="order_price[]" value="${total}">
+			
+				        <!-- トッピングがある場合にループ -->
+				        <c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
+				            <input type="hidden" name="topping_id[]" value="${topping_id}">
+				            <input type="hidden" name="topping_quantity[]" value="${order_list.topping_quantity[topping.index]}">
 				        </c:forEach>
-				        <input type="hidden" name="tableNumber" value="3">
-				        <button class="fixed-right-button">
-				            <img src="Image/Vector.png" alt="注文のボタン">注文する
-				        </button>
-				    </form>
-				</c:if>
-
+				    </c:forEach>
+				
+				    <input type="hidden" name="tableNumber" value="3">
+					<c:if test="${not empty sessionScope.orderList}">
+				    <button class="fixed-right-button">
+				        <img src="Image/Vector.png" alt="注文のボタン">注文する
+				    </button>
+				    </c:if>
+				</form>
+				
 			<!--メニューへ遷移-->
 			<a href="OrderSystem">
 				<button class="fixed-left-button">
@@ -157,7 +156,6 @@
         </div>
     </footer>
 	</c:if>
-
 </body>
 <!-- 小計・合計の更新 -->
 <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="product">
