@@ -54,83 +54,66 @@ public class OrderCompletedDAO {
     }
 
     // 商品の在庫を更新するメソッド
-//    public void updateProductStock(Connection conn, String[] product_ids, String[] product_quantities) throws SQLException {
-//        String selectStockSQL = "SELECT product_stock FROM product WHERE product_id = ?";
-//        String updateStockSQL = "UPDATE product SET product_stock = ? WHERE product_id = ?";
-//
-//        try (
-//            PreparedStatement selectStmt = conn.prepareStatement(selectStockSQL);
-//            PreparedStatement updateStmt = conn.prepareStatement(updateStockSQL);
-//        ) {
-//            for (int i = 0; i < product_ids.length; i++) {
-//                int productId = Integer.parseInt(product_ids[i]);
-//                int quantity = Integer.parseInt(product_quantities[i]);
-//
-//                // 1. 現在のstockを取得
-//                selectStmt.setInt(1, productId);
-//                try (ResultSet rs = selectStmt.executeQuery()) {
-//                    if (rs.next()) {
-//                        int currentStock = rs.getInt("product_stock");
-//
-//                        // 2. Java側で計算
-//                        int newStock = currentStock - quantity;
-//                        if (newStock < 0) {
-//                            newStock = 0; // 在庫がマイナスにならないように調整
-//                        }
-//
-//                        // 3. 更新用SQLにセット
-//                        updateStmt.setInt(1, newStock);
-//                        updateStmt.setInt(2, productId);
-//                        updateStmt.addBatch();
-//                    } else {
-//                        // product_idが見つからなかった場合の処理
-//                        System.out.println("商品ID " + productId + " の在庫が見つかりません。");
-//                    }
-//                }
-//            }
-//            // バッチで更新
-//            updateStmt.executeBatch();
-//        }
-//    }
-//    
-//    //トッピング在庫を更新するメソッド
-//    public void updateToppingStock(Connection conn, String[] topping_ids, String[] topping_quantities) throws SQLException {
-//        String selectStockSQL = "SELECT topping_stock FROM topping WHERE topping_id = ?";
-//        String updateStockSQL = "UPDATE topping SET topping_stock = ? WHERE topping_id = ?";
-//
-//        try (
-//            PreparedStatement selectStmt = conn.prepareStatement(selectStockSQL);
-//            PreparedStatement updateStmt = conn.prepareStatement(updateStockSQL);
-//        ) {
-//            for (int i = 0; i < topping_ids.length; i++) {
-//                int toppingId = Integer.parseInt(topping_ids[i]);
-//                int quantity = Integer.parseInt(topping_quantities[i]);
-//
-//                // 1. 現在のstockを取得
-//                selectStmt.setInt(1, toppingId);
-//                try (ResultSet rs = selectStmt.executeQuery()) {
-//                    if (rs.next()) {
-//                        int currentStock = rs.getInt("topping_stock");
-//
-//                        // 2. Java側で在庫計算
-//                        int newStock = currentStock - quantity;
-//                        if (newStock < 0) {
-//                            newStock = 0;  // 在庫がマイナスにならないよう調整
-//                        }
-//
-//                        // 3. 更新SQLにセット
-//                        updateStmt.setInt(1, newStock);
-//                        updateStmt.setInt(2, toppingId);
-//                        updateStmt.addBatch();
-//                    } else {
-//                        System.out.println("トッピングID " + toppingId + " の在庫が見つかりません。");
-//                    }
-//                }
-//            }
-//
-//            // バッチで更新
-//            updateStmt.executeBatch();
-//        }
-//    }
+    public void updateProductStock(Connection conn, String[] product_ids, String[] product_quantities) throws SQLException {
+        String selectStockSQL = "SELECT product_stock FROM product WHERE product_id = ?";
+        String updateStockSQL = "UPDATE product SET product_stock = ? WHERE product_id = ?";
+
+        try (
+            PreparedStatement selectStmt = conn.prepareStatement(selectStockSQL);
+            PreparedStatement updateStmt = conn.prepareStatement(updateStockSQL);
+        ) {
+            for (int i = 0; i < product_ids.length; i++) {
+                int productId = Integer.parseInt(product_ids[i]);
+                int quantity = Integer.parseInt(product_quantities[i]);
+
+                // 1. 現在のstockを取得
+                selectStmt.setInt(1, productId);
+                try (ResultSet rs = selectStmt.executeQuery()) {
+                    if (rs.next()) {
+                        int currentStock = rs.getInt("product_stock");
+
+                        // 2. Java側で計算
+                        int newStock = currentStock - quantity;
+                        if (newStock < 0) {
+                            newStock = 0; // 在庫がマイナスにならないように調整
+                        }
+
+                        // 3. 更新用SQLにセット
+                        updateStmt.setInt(1, newStock);
+                        updateStmt.setInt(2, productId);
+                        updateStmt.addBatch();
+                    } else {
+                        // product_idが見つからなかった場合の処理
+                        System.out.println("商品ID " + productId + " の在庫が見つかりません。");
+                    }
+                }
+            }
+            // バッチで更新
+            updateStmt.executeBatch();
+        }
+    }
+    
+    //トッピング在庫を更新するメソッド
+	public void updateToppingStock(Connection conn, String[] topping_ids, String[] topping_quantities) throws SQLException {
+	    String updateSQL = "UPDATE topping SET topping_stock = topping_stock - ? WHERE topping_id = ? AND topping_stock >= ?";
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+	        for (int i = 0; i < topping_ids.length; i++) {
+	            int toppingId = Integer.parseInt(topping_ids[i]);
+	            int quantity = Integer.parseInt(topping_quantities[i]);
+
+	            // 数量が0以下はスキップ
+	            if (quantity <= 0) continue;
+
+	            pstmt.setInt(1, quantity);     // 減らす量
+	            pstmt.setInt(2, toppingId);    // 対象のトッピングID
+	            pstmt.setInt(3, quantity);     // topping_stock >= quantity のチェック用
+	            pstmt.addBatch();
+	        }
+
+	        int[] updateCounts = pstmt.executeBatch();
+	        System.out.println("更新件数: " + java.util.Arrays.toString(updateCounts));
+	    }
+	}
 
 }

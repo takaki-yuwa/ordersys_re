@@ -55,8 +55,8 @@ public class OrderCompleted extends HttpServlet {
             boolean insertSuccess = dao.insertOrderDetails(conn, order_id, product_quantity, order_price, table_number);
 
             if (insertSuccess) {
-//                dao.updateProductStock(conn, product_id, product_quantity);//商品在庫を更新
-//                dao.updateToppingStock(conn, topping_id, topping_quantity);
+                dao.updateProductStock(conn, product_id, product_quantity);//商品在庫を更新
+                dao.updateToppingStock(conn, topping_id, topping_quantity);
                 conn.commit();
                 response.getWriter().println("すべてのデータが正常に追加されました！");
             } else {
