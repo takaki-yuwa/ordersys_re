@@ -26,7 +26,7 @@
 				<div class="table-number">1卓</div>
 			</div>
 		</div>
-		<p class="center-text">いらっしゃいませ</p>
+		<p class="center-text">いらっしゃいませ！</p>
 	</main>
 
 </body>

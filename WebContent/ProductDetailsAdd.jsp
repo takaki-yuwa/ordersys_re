@@ -231,7 +231,7 @@ function handleCounterClick(event) {
     const button = event.currentTarget;
     const isMinusButton = button.classList.contains('minus');
     const isPlusButton = button.classList.contains('plus');
-    const max = parseInt(button.getAttribute('data-max'))|| 20;
+    const max = parseInt(button.getAttribute('data-max')) || 20;
     const min = parseInt(button.getAttribute('data-min')) || 0;
     
     // 対応する input 要素を取得
@@ -255,12 +255,12 @@ function handleCounterClick(event) {
     }
 
     // トッピングの値段は固定値を設定しているので修正が必要
-    totalElem.textContent  = total +(110 * topping);
+    totalElem.textContent = total + (110 * topping);
     inputTotalElem.value = total + (110 * topping);
 
     const minusButton = button.parentElement.querySelector('.counter-button.minus');
     const plusButton = button.parentElement.querySelector('.counter-button.plus');
-    changeButtonColor(input.value,min,max,minusButton,plusButton);
+    changeButtonColor(input.value, min, max, minusButton, plusButton);
     const btnId = button.dataset.id;  // data-item-id を取得
     console.log(JSON.stringify(btnId));
     console.log('topping-' + btnId);
@@ -269,23 +269,33 @@ function handleCounterClick(event) {
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeCounterButtons();
+
+    // ページの読み込み時にボタンの見た目を初期化
+    document.querySelectorAll('.counter-button').forEach(button => {
+        const input = button.parentElement.querySelector('.counter-input');
+        const currentValue = parseInt(input.value) || 0;
+        const min = parseInt(button.getAttribute('data-min')) || 0;
+        const max = parseInt(button.getAttribute('data-max')) || 20;
+        
+        const minusButton = button.parentElement.querySelector('.counter-button.minus');
+        const plusButton = button.parentElement.querySelector('.counter-button.plus');
+        changeButtonColor(currentValue, min, max, minusButton, plusButton);
+    });
+
+    // 初期値を反映
+    totalElem.textContent = total + (110 * topping);
+    inputTotalElem.value = total + (110 * topping);
 });
 
 const buttons = document.getElementsByClassName("counter-button");
 const totalElem = document.getElementById('total');
 const inputTotalElem = document.getElementById('input-total');
-document.addEventListener("DOMContentLoaded", function() {
-	  // ページのDOMが完全に読み込まれた後に実行される処理
-	totalElem.textContent = total +(110 * topping);
-	inputTotalElem.value = total + (110 * topping);
-});
-function changeButtonColor(currentValue,min,max,minusButton,plusButton) {
+
+function changeButtonColor(currentValue, min, max, minusButton, plusButton) {
     // - ボタン
-    if (currentValue <= min) {
-        minusButton.classList.add('disabled');
+    if (currentValue == min) {
         minusButton.setAttribute('disabled', 'true');
     } else {
-        minusButton.classList.remove('disabled');
         minusButton.removeAttribute('disabled');
     }
 
