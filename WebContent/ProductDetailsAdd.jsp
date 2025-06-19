@@ -141,7 +141,7 @@ if("OrderMenu.jsp".equals(fromPage)){
 	</main>
 
 	<footer class="footer-buttons">
-		<div class="table-number">3卓</div>
+		<div class="table-number">${sessionScope.tableNumber}卓</div>
 		<div class="footer-wrapper">
 			<!-- ボタン -->
 			<%

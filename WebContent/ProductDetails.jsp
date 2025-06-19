@@ -100,7 +100,7 @@
 	</main>
 
 	<footer class="footer-buttons">
-		<div class="table-number">3卓</div>
+		<div class="table-number">${sessionScope.tableNumber}卓</div>
 		<div class="footer-wrapper">
 			<!-- ボタン -->
 			<a href="OrderList.html">

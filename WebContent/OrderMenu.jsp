@@ -109,7 +109,7 @@
 
 
 	<footer class="footer-buttons">
-		<div class="table-number">3卓</div>
+		<div class="table-number">${sessionScope.tableNumber}卓</div>
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--注文リストへ遷移-->
@@ -121,7 +121,6 @@
 			<!--履歴・お会計へ遷移-->
 			<form action="OrderHistory" method="post">
 				<button class="fixed-left-button">
-					<input type="hidden" name="tableNo" value="3">
 					<input type="hidden" name="orderPrice" value="0">
 					<img src="Image/menuhistory.png" alt="履歴・お会計のボタン"> 履歴・お会計
 				</button>

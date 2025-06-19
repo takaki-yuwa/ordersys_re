@@ -3,13 +3,14 @@ package servlet;
 import java.io.IOException;
 import java.util.List;
 
-import dao.ToppingDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.ToppingDAO;
 
 @WebServlet("/Details")
 public class Details extends HttpServlet {
@@ -52,6 +53,15 @@ public class Details extends HttpServlet {
 		// セッションに製品情報をセット
 		HttpSession session = request.getSession();
 		session.setAttribute("productList", productList);
+		
+		// tableNumberをセッションから取得
+        Integer tableNumber = (Integer) session.getAttribute("tableNumber");
+
+        // tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
+        if (tableNumber == null) {
+            tableNumber = 0;  // またはエラーメッセージを表示するなど
+            session.setAttribute("tableNumber", 0);
+        }
 
 		// トッピング情報の取得
 		ToppingDAO dao = new ToppingDAO();

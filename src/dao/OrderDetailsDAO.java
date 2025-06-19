@@ -12,14 +12,14 @@ import servlet.order_details_list;
 
 public class OrderDetailsDAO {
 
-    public List<order_details_list> findOrderHistory(int search_table_number, int search_order_price)
+    public List<order_details_list> findOrderHistory(Integer tableNumber, int search_order_price)
     {
         List<order_details_list> orderDetailsList = new ArrayList<>();
 
         try (Connection con = DBUtil.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT order_details_id, order_id, product_quantity, order_price, table_number, accounting_flag FROM order_details where table_number = " 
-            + search_table_number + " AND accounting_flag = " + 0))
+            + tableNumber + " AND accounting_flag = " + 0))
             //+ search_table_number + " AND order_price = " + search_order_price + " AND accounting_flag = " + 0))
         {
 
@@ -75,4 +75,5 @@ public class OrderDetailsDAO {
 
         return orderDetailsList;
     }
+
 }

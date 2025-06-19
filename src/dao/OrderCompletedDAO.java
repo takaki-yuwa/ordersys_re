@@ -34,7 +34,7 @@ public class OrderCompletedDAO {
 
 	
 	// 注文詳細を挿入するメソッド
-    public boolean insertOrderDetails(Connection conn, String[] order_id, String[] product_quantity, String[] order_price, String table_number) throws SQLException {
+    public boolean insertOrderDetails(Connection conn, String[] order_id, String[] product_quantity, String[] order_price, int tableNumberInt) throws SQLException {
         String insertOrderDetailsSQL = "INSERT INTO order_details (order_id, product_quantity, order_price, table_number, accounting_flag) VALUES (?, ?, ?, ?, ?)";
         
         try (PreparedStatement pstmt = conn.prepareStatement(insertOrderDetailsSQL)) {
@@ -42,7 +42,7 @@ public class OrderCompletedDAO {
                 pstmt.setInt(1, Integer.parseInt(order_id[i]));  // order_id
                 pstmt.setInt(2, Integer.parseInt(product_quantity[i]));  // product_quantity
                 pstmt.setDouble(3, Double.parseDouble(order_price[i]));  // order_price
-                pstmt.setInt(4, Integer.parseInt(table_number));  // table_number
+                pstmt.setInt(4, tableNumberInt);  // table_number
                 pstmt.setInt(5, 0);  // accounting_flag (全て0)
 
                 pstmt.addBatch();

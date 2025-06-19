@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpSession;
 public class OrderList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String SESSION_LIST_KEY = "orderList";
-	private int tableNo = 3;
 
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -31,6 +30,15 @@ public class OrderList extends HttpServlet {
 		if (null == orderList) {
 			orderList = new ArrayList<>();
 		}
+		
+		// tableNumberをセッションから取得
+        Integer tableNumber = (Integer) session.getAttribute("tableNumber");
+
+        // tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
+        if (tableNumber == null) {
+            tableNumber = 0;  // またはエラーメッセージを表示するなど
+            System.out.println("卓番が設定されていません。デフォルト値0を設定します。");
+        }
 
 		// 遷移元を確認
 		String url = request.getHeader("REFERER");
@@ -79,16 +87,7 @@ public class OrderList extends HttpServlet {
 					System.out.println("無効な数値: 商品ID=" + strProductId);
 				}
 			}
-			// 卓番
-			String strTableNo = request.getParameter("tableNo");
-			// idの変換
-			if (strTableNo != null && !strTableNo.isEmpty()) {
-				try {
-					tableNo = Integer.parseInt(strTableNo);
-				} catch (NumberFormatException e) {
-					System.out.println("無効な数値: 卓番=" + strTableNo);
-				}
-			}
+
 			// トッピングID
 			String[] strToppingId = request.getParameterValues("topping");
 			if (strToppingId != null) {
