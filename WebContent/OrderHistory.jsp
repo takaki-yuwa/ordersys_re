@@ -77,10 +77,12 @@
                     aiOrderDetailsId.add(p.getorder_details_id());
                 }
         %>
-                <div class="order-total">
-                    <div><%= iTotalQuantity%>点</div>
-                    <div><%= iTotalPrice%>円(税込)</div>
-                </div>
+			    <footer class="footer-subtotal">
+			        <div class="footer-subtotal-wrapper">
+			            <div class="order-footer-text"><%= iTotalQuantity%>点</div>
+			            <div class="order-footer-text"><%= iTotalPrice%>円(税込)</div>
+			        </div>
+			    </footer>
         <%
             }else{
         %>

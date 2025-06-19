@@ -39,5 +39,7 @@
 		<p class="center-text">レジにてお支払いください</p>
 		<p class="center-text">またのご利用をお待ちしております</p>
 	</main>
+	<uji:dispatch />
+    <uji:resourceText id="uji.disableBack"/>
 </body>
 </html>
