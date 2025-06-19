@@ -25,6 +25,17 @@ public class DetailsAdd extends HttpServlet {
 		String name = request.getParameter("name");
 		String p_price = request.getParameter("price");
 		String category = request.getParameter("category");
+		
+		// stockのnullチェックと変換処理
+        int stock = 0;
+        String stockStr = request.getParameter("stock");
+        if (stockStr != null && !stockStr.isEmpty()) {
+            try {
+                stock = Integer.parseInt(stockStr);
+            } catch (NumberFormatException e) {
+                System.out.println("無効な数値: stock=" + stockStr);
+            }
+        }
 
 		int id = 0;
 		int price = 0;
@@ -48,7 +59,7 @@ public class DetailsAdd extends HttpServlet {
 		}
 
 		// 製品リストオブジェクトの作成
-		product_list productList = new product_list(id, name, price, category);
+		product_list productList = new product_list(id, name, price, category, stock);
 
 		// セッションに製品情報をセット
 		HttpSession session = request.getSession();

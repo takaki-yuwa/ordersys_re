@@ -53,58 +53,65 @@
 		categoryMap.put("07", "ボトル");
 		%>
 		<!--リストを取得-->
-		<%
-		List<product_list> productList = (List<product_list>) request.getAttribute("product_list");
+		<% 
+    // 商品情報リストを取得
+    	List<product_list> productList = (List<product_list>) request.getAttribute("product_list");
 		%>
-
+		
 		<%
-		if (productList != null && !productList.isEmpty()) {
-			for (Map.Entry<String, String> entry : categoryMap.entrySet()) {
-				String categoryId = entry.getKey();
-				String categoryName = entry.getValue();
+		    if (productList != null && !productList.isEmpty()) {
+		        for (Map.Entry<String, String> entry : categoryMap.entrySet()) {
+		            String categoryId = entry.getKey();
+		            String categoryName = entry.getValue();
 		%>
-		<h1 id="<%=categoryId%>"><%=categoryName%></h1>
+		<h1 id="<%= categoryId %>"><%= categoryName %></h1>
 		<div class="menu">
-			<%
-			boolean hasProducts = false;
-			for (product_list p : productList) {
-				if (categoryName.equals(p.getCategory())) {
-					hasProducts = true;
-			%>
-			<li>
-				<div class="menu-row">
-					<div class="break-word bold-text"><%=p.getName()%></div>
-					<div>
-						<form action="DetailsAdd" method="post">
-							<input type="hidden" name="from" value="OrderMenu.jsp"> 
-							<input type="hidden" name="id" value="<%=p.getId()%>"> 
-							<input type="hidden" name="name" value="<%=p.getName()%>"> 
-							<input type="hidden" name="price" value="<%=p.getPrice()%>">
-							<input type="hidden" name="category" value="<%=p.getCategory()%>"> 
-							<input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-						</form>
-					</div>
-				</div>
-				<div><%=p.getPrice()%>円</div>
-			</li>
-			<%
-				}
-			}
-			if (!hasProducts) {
-			%>
-			<p>商品情報がありません。</p>
-			<%
-			}
-			%>
-		</div>
 		<%
-			}
-		} else {
+		            boolean hasProducts = false;
+		            for (product_list p : productList) {
+		                if (categoryName.equals(p.getCategory())) {
+		                    hasProducts = true;
+		                    int stock = p.getStock(); // 商品の在庫数を取得
+		                    boolean isSoldOut = (stock == 0); // 在庫がない場合は売り切れとする
+		%>
+		<li>
+		    <div class="menu-row">
+		        <div class="break-word bold-text"><%= p.getName() %></div>
+		        <div>
+		            <%-- 在庫がない場合 --%>
+		            <% if (isSoldOut) { %>
+		                <img src="Image/soldout.png" alt="売り切れ">
+		            <% } else { %>
+		                <%-- 在庫がある場合は商品詳細画面へ遷移 --%>
+		                <form action="DetailsAdd" method="post">
+		                    <input type="hidden" name="from" value="OrderMenu.jsp"> 
+		                    <input type="hidden" name="id" value="<%= p.getId() %>"> 
+		                    <input type="hidden" name="name" value="<%= p.getName() %>"> 
+		                    <input type="hidden" name="price" value="<%= p.getPrice() %>">
+		                    <input type="hidden" name="category" value="<%= p.getCategory() %>"> 
+		                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+		                </form>
+		            <% } %>
+		        </div>
+		    </div>
+		    <div><%= p.getPrice() %>円</div>
+		</li>
+		<%
+		                }
+		            }
+		            if (!hasProducts) {
 		%>
 		<p>商品情報がありません。</p>
 		<%
-		}
+		            }
+		        }
+		    } else {
 		%>
+		<p>商品情報がありません。</p>
+		<%
+		    }
+		%>
+
 	</main>
 
 

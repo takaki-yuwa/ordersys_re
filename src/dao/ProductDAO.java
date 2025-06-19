@@ -17,14 +17,15 @@ public class ProductDAO {
 		try (Connection con = DBUtil.getConnection();
 				Statement st = con.createStatement();
 				ResultSet rs = st
-						.executeQuery("SELECT product_id, product_name, product_price, category_name FROM product")) {
+						.executeQuery("SELECT * FROM product")) {
 
 			while (rs.next()) {
 				int id = rs.getInt("product_id");
 				String name = rs.getString("product_name");
 				int price = rs.getInt("product_price");
 				String category = rs.getString("category_name");
-				productNameList.add(new product_list(id, name, price, category));
+				int stock = rs.getInt("product_stock");
+				productNameList.add(new product_list(id, name, price, category, stock));
 			}
 
 		} catch (SQLException e) {
