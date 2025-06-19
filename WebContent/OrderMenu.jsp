@@ -80,7 +80,7 @@
 		        <div>
 		            <%-- 在庫がない場合 --%>
 		            <% if (isSoldOut) { %>
-		                <img src="Image/soldout.png" alt="売り切れ">
+		                <img src="Image/soldout.png" alt="売り切れ" style="width: 55px; height: auto;">
 		            <% } else { %>
 		                <%-- 在庫がある場合は商品詳細画面へ遷移 --%>
 		                <form action="DetailsAdd" method="post">
