@@ -1,54 +1,51 @@
 //増減ボタン処理
-function updateOrderState(menuId, menuQuantity, menuStock, menuSubtotal) {
-	//セッションストレージから復元
+function updateOrderState(menuId, menuQuantity, menuStock, _menuSubtotal, toppings) {
     const storedQuantity = sessionStorage.getItem(`menu_quantity_${menuId}`);
     const initialQuantity = storedQuantity !== null ? parseInt(storedQuantity) : menuQuantity;
-    var orderstate = { count: initialQuantity };
+    const orderstate = { count: initialQuantity };
 
     const incrementbtn = document.getElementById(`increment-${menuId}`);
     const decrementbtn = document.getElementById(`decrement-${menuId}`);
     const counter = document.getElementById(`counter-${menuId}`);
     const subtotal = document.getElementById(`subtotal-${menuId}`);
-    const totalElem = document.getElementById('total');
+
+    const pricePerItem = parseFloat(subtotal?.dataset.price || 0); // ここで単価取得
 
     if (counter) counter.innerHTML = orderstate.count;
-    if (subtotal) subtotal.innerHTML = parseFloat(menuSubtotal) * orderstate.count;
+    if (subtotal) subtotal.innerHTML = pricePerItem * orderstate.count;
 
-    if (incrementbtn && decrementbtn && counter && subtotal && totalElem) {
-		//イベントリスナー重複防止の為、一度クローンで置き換え
+    if (incrementbtn && decrementbtn && counter && subtotal) {
         incrementbtn.replaceWith(incrementbtn.cloneNode(true));
         decrementbtn.replaceWith(decrementbtn.cloneNode(true));
 
         const newIncrementBtn = document.getElementById(`increment-${menuId}`);
         const newDecrementBtn = document.getElementById(`decrement-${menuId}`);
-		//増加処理
+
         newIncrementBtn.addEventListener('click', () => {
             if (orderstate.count < menuStock) {
                 const quantityValue = ++orderstate.count;
                 counter.innerHTML = quantityValue;
-                const subtotalValue = parseFloat(menuSubtotal) * quantityValue;
+                const subtotalValue = pricePerItem * quantityValue;
                 subtotal.innerHTML = subtotalValue;
-                setQuantity(quantityValue, menuId);
+                setQuantity(quantityValue, toppings, menuId);
                 setPrice(subtotalValue, menuId);
                 updateButtonDisplay(menuId, orderstate.count);
                 updateTotal();
             }
         });
-		//減少処理
+
         newDecrementBtn.addEventListener('click', (event) => {
             event.preventDefault();
             const mode = newDecrementBtn.getAttribute('data-mode');
-			//状態が削除のとき
             if (mode === 'delete') {
                 showDeletePopup(menuId);
-            //状態が減少のとき
             } else {
                 if (orderstate.count > 0) {
                     const quantityValue = --orderstate.count;
                     counter.innerHTML = quantityValue;
-                    const subtotalValue = parseFloat(menuSubtotal) * quantityValue;
+                    const subtotalValue = pricePerItem * quantityValue;
                     subtotal.innerHTML = subtotalValue;
-                    setQuantity(quantityValue, menuId);
+                    setQuantity(quantityValue, toppings, menuId);
                     setPrice(subtotalValue, menuId);
                     updateButtonDisplay(menuId, orderstate.count);
                     updateTotal();
@@ -109,6 +106,8 @@ function showDeletePopup(orderId) {
             counter.innerHTML = '0';
             subtotal.innerHTML = '0';
             sessionStorage.removeItem(`menu_quantity_${orderId}`);
+            sessionStorage.removeItem(`menu_subtotal_${orderId}`);
+            sessionStorage.removeItem(`topping_quantity_${menuId}_${topping.id}`);
             setPrice(0, orderId);
             updateButtonDisplay(orderId, 0);
             updateTotal();
@@ -133,35 +132,66 @@ function updateTotal() {
 function setPrice(price, menuId) {
     const priceField = document.getElementById(`priceField-${menuId}`);
     if (priceField) priceField.value = price;
+    
+    sessionStorage.setItem(`menu_subtotal_${menuId}`, price);
 }
 //個数の更新処理
-function setQuantity(count, menuId) {
+function setQuantity(count, toppings, menuId) {
     const countField = document.getElementById(`countField-${menuId}`);
     if (countField) countField.value = count;
 
+    toppings.forEach(topping => {
+        const toppingcountField = document.getElementById(`toppingcountField-${menuId}-${topping.id}`);
+        const quantity = topping.quantity * count;
+        if (toppingcountField) {
+            toppingcountField.value = quantity;
+        }
+        
+        sessionStorage.setItem(`topping_quantity_${menuId}_${topping.id}`,quantity);
+    });
+
     sessionStorage.setItem(`menu_quantity_${menuId}`, count);
 }
+
 //ページ読み込み初期化
 window.addEventListener('DOMContentLoaded', () => {
     const allCounters = document.querySelectorAll('[id^="counter-"]');
 
     allCounters.forEach(counterElem => {
         const menuId = counterElem.id.replace('counter-', '');
-        const storedQuantity = sessionStorage.getItem(`menu_quantity_${menuId}`);
+        const subtotal = document.getElementById(`subtotal-${menuId}`);
+        const pricePerItem = parseFloat(subtotal?.dataset.price || 0);
 
-        if (storedQuantity !== null) {
-            counterElem.innerHTML = storedQuantity;
+        let count = parseInt(sessionStorage.getItem(`menu_quantity_${menuId}`));
+        if (isNaN(count)) {
+            const countField = document.getElementById(`countField-${menuId}`);
+            count = countField ? parseInt(countField.value) : 1;
+        }
+
+        if (!isNaN(count)) {
+            // 個数を復元
+            counterElem.innerHTML = count;
 
             const countField = document.getElementById(`countField-${menuId}`);
-            if (countField) countField.value = storedQuantity;
+            if (countField) countField.value = count;
 
-            const subtotal = document.getElementById(`subtotal-${menuId}`);
-            const pricePerItem = parseFloat(subtotal.dataset.price);
-            if (subtotal && pricePerItem) {
-                subtotal.innerHTML = storedQuantity * pricePerItem;
-            }
+            // 小計を復元
+            const subtotalValue = pricePerItem * count;
+            if (subtotal) subtotal.innerHTML = subtotalValue;
+            setPrice(subtotalValue, menuId);
+
+            // トッピングの復元処理を追加
+            const toppingFields = document.querySelectorAll(`[id^="toppingcountField-${menuId}-"]`);
+            toppingFields.forEach(toppingField => {
+                const toppingId = toppingField.id.replace(`toppingcountField-${menuId}-`, '');
+                const storedToppingQty = sessionStorage.getItem(`topping_quantity_${menuId}_${toppingId}`);
+                if (storedToppingQty !== null) {
+                    toppingField.value = storedToppingQty;
+                }
+            });
         }
     });
 
     updateTotal();
 });
+

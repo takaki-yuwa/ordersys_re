@@ -23,3 +23,10 @@
 	text-decoration:underline;
 	font-size: 20px;
 }
+
+.soldout-img {
+    width: 80px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}

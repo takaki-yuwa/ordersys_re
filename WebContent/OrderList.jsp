@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ page import="java.util.List, java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
@@ -51,7 +52,7 @@
 							<c:if test="${topping_quantity>=1 }">
 								<%--トッピング表示--%>
 								<div class="order-item">
-									<div class="topping-name">・${topping_name}✕${topping_quantity}</div>
+									<div class="topping-name">・${topping_name}✕<span>${topping_quantity}</span></div>
 									<div class="topping-price">${topping_price * topping_quantity}円</div>
 								</div>
 								<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
@@ -59,7 +60,7 @@
 						</c:forEach>
 						<div class="order-item">
 							<div class="subtotal-price">
-								小計: <span id="subtotal-${order_id}">${menu_subtotal}</span>円
+								小計: <span id="subtotal-${order_id}" data-price="${menu_subtotal}">${menu_subtotal}</span>円
 							</div>
 						</div> <c:set var="total" value="${total+menu_subtotal}" />
 						<!-- ボタンを横並びに配置 -->
@@ -120,7 +121,7 @@
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
 				<form action="OrderCompleted" method="post">
-				    <c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="order_status">
+				    <c:forEach var="order_list" items="${sessionScope.orderList}">
 				        <input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
 				        <input type="hidden" name="product_id[]" value="${order_list.product_id}">
 				        <input type="hidden" id="countField-${order_list.order_id}" name="product_quantity[]" value="${order_list.menu_quantity}">
@@ -129,7 +130,7 @@
 				        <!-- トッピングがある場合にループ -->
 				        <c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
 				            <input type="hidden" name="topping_id[]" value="${topping_id}">
-				            <input type="hidden" name="topping_quantity[]" value="${order_list.topping_quantity[topping.index]}">
+				            <input type="hidden" id="toppingcountField-${order_list.order_id}-${topping_id}" name="topping_quantity[]" value="${order_list.topping_quantity[topping.index]}">
 				        </c:forEach>
 				    </c:forEach>
 				
@@ -171,7 +172,17 @@
 		<c:set var="menu_subtotal" value="${menu_subtotal+(topping_price * topping_quantity)}" />
 		<!-- JavaScriptで埋め込む -->
 		<script>
-			updateOrderState(${order_id}, ${menu_quantity},${menu_stock},${menu_subtotal});
+		(function() {
+			  const toppings = [
+			    <c:forEach var="i" begin="0" end="${fn:length(order_list.topping_id) - 1}" varStatus="loop">
+			      {
+			        id: "${order_list.topping_id[i]}",
+			        quantity: ${order_list.topping_quantity[i]}
+			      }<c:if test="${!loop.last}">,</c:if>
+			    </c:forEach>
+			  ];
+			  updateOrderState(${order_id}, ${menu_quantity}, ${menu_stock}, ${menu_subtotal}, toppings);
+		})();
 		</script>
 	</c:forEach>
 </c:forEach>

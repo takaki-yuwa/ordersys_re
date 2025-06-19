@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="CSS/Import.css">
 <link rel="stylesheet" href="CSS/OrderCompleted.css">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+<script src="JavaScript/OrderCompleted.js"></script>
 </head>
 <body>
 	<!--ヘッダー(店の名前)-->
