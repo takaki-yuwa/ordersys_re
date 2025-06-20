@@ -23,6 +23,11 @@ public class OrderList extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		  // キャッシュ制御ヘッダーを設定
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP/1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP/1.0
+        response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
 
 		// seccionからorderList取得
 		HttpSession session = request.getSession();

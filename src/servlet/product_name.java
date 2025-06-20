@@ -18,6 +18,11 @@ public class product_name extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	 // キャッシュ制御ヘッダーを設定
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP/1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP/1.0
+        response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
 
         // 卓番パラメータを取得
         String table_num = request.getParameter("tableNumber");

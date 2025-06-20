@@ -21,6 +21,11 @@ public class DetailsChange extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 		
+		  // キャッシュ制御ヘッダーを設定
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP/1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP/1.0
+        response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
+		
 		//パラメータを取得
 		String o_id = request.getParameter("order_id");
 		String p_id = request.getParameter("product_id");
