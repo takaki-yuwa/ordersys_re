@@ -26,7 +26,7 @@
       <img src="Image/biglogo.png" alt="店の名前" class="header-image">
     </div>
 </header>
-<main>
+<main class="details-main">
 	<!--注文履歴を取得-->
 	    <%
 	        List<order_details_list> orderDetailsList = (List<order_details_list>)request.getAttribute("orderHistory");
