@@ -42,7 +42,7 @@ public class OrderCompleted extends HttpServlet {
         // tableNumberをセッションから取得（Integer型で取得）
         Integer tableNumber = (Integer) session.getAttribute("tableNumber");
 
-        // tableNumberがnullの場合はデフォルト値0を設定
+        // tableNumberがnullの場合はエラー画面に遷移
         if (tableNumber == null) {
         	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
         }

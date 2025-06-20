@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import dao.AccountingDAO;
 
@@ -18,6 +18,17 @@ public class Accounting extends HttpServlet {
     // POSTリクエストを処理
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	// セッションを取得
+        HttpSession session = request.getSession();
+
+        // tableNumberをセッションから取得（Integer型で取得）
+        Integer tableNumber = (Integer) session.getAttribute("tableNumber");
+
+        // tableNumberがnullの場合はエラー画面に遷移
+        if (tableNumber == null) {
+        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+        }
 
         // パラメータの取得
         String strTableNo = request.getParameter("tableNo"); // テーブル番号
@@ -38,13 +49,6 @@ public class Accounting extends HttpServlet {
         // セッションの取得と情報削除
         request.getSession().invalidate(); 
         
-        // クライアント側のセッションIDを保持するクッキーを削除
-        // クッキーの有効期限を過去に設定し、削除
-        Cookie cookie = new Cookie("JSESSIONID", null);
-        cookie.setMaxAge(0); // クッキーを無効化するための設定（すぐに削除）
-        cookie.setPath("/"); // クッキーのパスを設定（すべてのパスに対して有効）
-        response.addCookie(cookie);
-
         
         // JSPへフォワード
         request.setAttribute("accountingList", accountingList);
