@@ -44,8 +44,7 @@ public class OrderCompleted extends HttpServlet {
 
         // tableNumberがnullの場合はデフォルト値0を設定
         if (tableNumber == null) {
-            tableNumber = 0;  // デフォルト値
-            session.setAttribute("tableNumber", 0);
+        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
         }
 
         Connection conn = null;

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +34,18 @@ public class Accounting extends HttpServlet {
 
         // accounting_list オブジェクトを作成
         accounting_list accountingList = new accounting_list(strTableNo, strTotalPrice);
+        
+        // セッションの取得と情報削除
+        request.getSession().invalidate(); 
+        
+        // クライアント側のセッションIDを保持するクッキーを削除
+        // クッキーの有効期限を過去に設定し、削除
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setMaxAge(0); // クッキーを無効化するための設定（すぐに削除）
+        cookie.setPath("/"); // クッキーのパスを設定（すべてのパスに対して有効）
+        response.addCookie(cookie);
 
+        
         // JSPへフォワード
         request.setAttribute("accountingList", accountingList);
         request.getRequestDispatcher("/Accounting.jsp").forward(request, response);

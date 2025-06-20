@@ -76,6 +76,14 @@ public class DetailsChange extends HttpServlet {
 		//セッションに詳細変更情報をセット
 		HttpSession session = request.getSession();
 		session.setAttribute("changeList", changeList);
+		
+		// tableNumberをセッションから取得
+        Integer tableNumber = (Integer) session.getAttribute("tableNumber");
+
+        // tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
+        if (tableNumber == null) {
+        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+        }
 
 		// トッピング情報の取得
 		ToppingDAO dao = new ToppingDAO();

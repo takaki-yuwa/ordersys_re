@@ -36,8 +36,7 @@ public class OrderList extends HttpServlet {
 
         // tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
         if (tableNumber == null) {
-            tableNumber = 0;  // またはエラーメッセージを表示するなど
-            System.out.println("卓番が設定されていません。デフォルト値0を設定します。");
+        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
         }
 
 		// 遷移元を確認

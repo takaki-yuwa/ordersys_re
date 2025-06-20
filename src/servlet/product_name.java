@@ -36,8 +36,7 @@ public class product_name extends HttpServlet {
 
 	        // tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
 	        if (tableNumber == null) {
-	            tableNumber = 0;  // またはエラーメッセージを表示するなど
-	            session.setAttribute("tableNumber", 0);
+	        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
 	        }
 	    }
 
