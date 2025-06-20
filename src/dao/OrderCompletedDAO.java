@@ -52,6 +52,25 @@ public class OrderCompletedDAO {
             return rowsAffected.length > 0;
         }
     }
+    
+    // トッピング詳細を挿入するメソッド
+    public boolean insertTopingDetails(Connection conn, String[] topping_id, String[] topping_quantity, String[] order_id) throws SQLException {
+        String insertOrderDetailsSQL = "INSERT INTO multiple_toppings (topping_id, topping_quantity, order_id) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(insertOrderDetailsSQL)) {
+            for (int i = 0; i < order_id.length; i++) {
+                pstmt.setInt(1, Integer.parseInt(topping_id[i]));  // topping_id
+                pstmt.setInt(2, Integer.parseInt(topping_quantity[i]));  // topping_quantity
+                pstmt.setInt(3, Integer.parseInt(order_id[i]));  // order_id
+
+                pstmt.addBatch();
+            }
+
+            int[] rowsAffected = pstmt.executeBatch();
+            return rowsAffected.length > 0;
+        }
+    }
+
 
     // 商品の在庫を更新するメソッド
     public void updateProductStock(Connection conn, String[] product_ids, String[] product_quantities) throws SQLException {

@@ -23,19 +23,20 @@ public class OrderCompleted extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
-    	  // キャッシュ制御ヘッダーを設定
+
+        // キャッシュ制御ヘッダーを設定
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP/1.1
         response.setHeader("Pragma", "no-cache"); // HTTP/1.0
         response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
-        
-    	//パラメータの取得
+
+        // パラメータの取得
         String[] product_id = request.getParameterValues("product_id[]");
         String[] product_quantity = request.getParameterValues("product_quantity[]");
         String[] topping_id = request.getParameterValues("topping_id[]");
         String[] topping_quantity = request.getParameterValues("topping_quantity[]");
         String[] order_price = request.getParameterValues("order_price[]");
-        //パラメータの値の確認
+
+        // パラメータの値の確認
         System.out.println("product_id: " + Arrays.toString(product_id));
         System.out.println("product_quantity: " + Arrays.toString(product_quantity));
         System.out.println("order_price: " + Arrays.toString(order_price));
@@ -50,7 +51,8 @@ public class OrderCompleted extends HttpServlet {
 
         // tableNumberがnullの場合はエラー画面に遷移
         if (tableNumber == null) {
-        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+            request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+            return; // return で処理を終了させる
         }
 
         Connection conn = null;
@@ -68,17 +70,33 @@ public class OrderCompleted extends HttpServlet {
             String[] order_id = orderIdList.stream().map(String::valueOf).toArray(String[]::new);
 
             // 3. order_details に挿入
-         // tableNumberはInteger型なので、intに変換して渡す
+            // tableNumberはInteger型なので、intに変換して渡す
             boolean insertSuccess = dao.insertOrderDetails(conn, order_id, product_quantity, order_price, tableNumber.intValue());
 
             if (insertSuccess) {
-                dao.updateProductStock(conn, product_id, product_quantity);//商品在庫を更新
+                // 商品在庫を更新
+                dao.updateProductStock(conn, product_id, product_quantity);
+
+               
+
+                
+            } else {
+                // 注文詳細の挿入が失敗した場合
+                conn.rollback();
+                response.getWriter().println("注文詳細の追加に失敗しました。");
+            }
+            
+            // トッピングのデータ挿入
+            boolean toppingInsertSuccess = dao.insertTopingDetails(conn, topping_id, topping_quantity, order_id);
+            if (toppingInsertSuccess) {
+                // トッピングの挿入が成功した場合
                 dao.updateToppingStock(conn, topping_id, topping_quantity);
                 conn.commit();
                 response.getWriter().println("すべてのデータが正常に追加されました！");
             } else {
+                // トッピング挿入が失敗した場合
                 conn.rollback();
-                response.getWriter().println("注文詳細の追加に失敗しました。");
+                response.getWriter().println("トッピング詳細の追加に失敗しました。");
             }
 
         } catch (SQLException e) {
@@ -98,7 +116,7 @@ public class OrderCompleted extends HttpServlet {
             }
         }
 
-        request.getSession().removeAttribute("orderList");//注文リストのセッションのみ削除
+        request.getSession().removeAttribute("orderList"); // 注文リストのセッションのみ削除
         request.getRequestDispatcher("/OrderCompleted.jsp").forward(request, response);
     }
 }
