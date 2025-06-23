@@ -3,14 +3,14 @@
     border-bottom-style: 2px solid #000000;
     background-color: #FFFFFF;
     width: 96vw;
-    height: 100px;
+    height: 220px;
 }
 
 .order-details-gray{
     border-bottom-style: 2px solid #000000;
     background-color: #EBEBEB;
     width: 96vw;
-    height: 100px;
+    height: 220px;
 }
 
 .order-total{
@@ -37,4 +37,63 @@
 html, body {
   height: 100%;
   overflow: auto;
+}
+
+.order-history-row {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+/* ヘッダーの各列だけ中央揃えにする */
+.order-item-header .order-item-left,
+.order-item-header .order-item-center,
+.order-item-header .order-item-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* 通常データ行は既存のままでOK */
+.order-item-left {
+    flex: 2;
+    text-align: left;
+    padding-right: 10px;
+}
+
+.order-item-center {
+    flex: 1;
+    text-align: center;
+    border-left: 1px solid #ccc;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-item-right {
+    flex: 1;
+    text-align: right;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.order-item-header {
+    border-bottom: 2px solid #000;
+    background-color: #FFE2C5;
+    font-weight: bold;
+}
+
+.order-item-left div:not(:first-child) {
+    margin-left: 10px;
 }

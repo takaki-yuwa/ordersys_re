@@ -21,12 +21,14 @@
 		</div>
 	</header>
 	<main>
-		<div class="center-container">
-			<div class="square-box">
-				<p class="center-text bold-text">卓番が取得できていません</p>
-				<p class="center-text bold-text">もう一度URLから取得してください</p>
+		<c:if test="${empty sessionScope.tableNumber}">
+			<div class="center-container">
+				<div class="square-box">
+					<p class="center-text bold-text">卓番が取得できていません</p>
+					<p class="center-text bold-text">もう一度URLから取得してください</p>
+				</div>
 			</div>
-		</div>
+		</c:if>
 	</main>
 	<!--<footer class="footer-buttons">
 		<div class="table-number">3卓</div>

@@ -28,6 +28,5 @@
 		</div>
 		<p class="center-text">いらっしゃいませ！</p>
 	</main>
-
 </body>
 </html>

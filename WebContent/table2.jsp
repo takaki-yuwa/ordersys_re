@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,7 @@
 <meta http-equiv="refresh" content="3;URL=OrderSystem?tableNumber=table2">
 </head>
 <body>
-<!--ヘッダー(店の名前)-->
+	<!--ヘッダー(店の名前)-->
 	<header class="header-storename">
 		<div class="header-image-wrapper">
 			<img src="Image/木目3.jpg" alt="背景" class="header-background-image">
@@ -28,6 +28,5 @@
 		</div>
 		<p class="center-text">いらっしゃいませ</p>
 	</main>
-
 </body>
 </html>

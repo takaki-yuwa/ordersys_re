@@ -58,10 +58,15 @@ public class OrderCompletedDAO {
         String insertOrderDetailsSQL = "INSERT INTO multiple_toppings (topping_id, topping_quantity, order_id) VALUES (?, ?, ?)";
         
         try (PreparedStatement pstmt = conn.prepareStatement(insertOrderDetailsSQL)) {
-            for (int i = 0; i < order_id.length; i++) {
+            for (int i = 0; i < topping_id.length; i++) {
+            	int toppingQuantity = Integer.parseInt(topping_quantity[i]);
+            	
+            	if(toppingQuantity == 0) {
+            		continue;
+            	}
                 pstmt.setInt(1, Integer.parseInt(topping_id[i]));  // topping_id
                 pstmt.setInt(2, Integer.parseInt(topping_quantity[i]));  // topping_quantity
-                pstmt.setInt(3, Integer.parseInt(order_id[i]));  // order_id
+                pstmt.setInt(3, Integer.parseInt(order_id[0]));  // order_id
 
                 pstmt.addBatch();
             }

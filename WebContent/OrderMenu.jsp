@@ -10,8 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <!--サイトのサイズ自動調整-->
-<meta name="viewport"
-	content="width=device-width,height=device-height,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0">
 <title>メニュー画面</title>
 <!--.cssの呼び出し-->
 <link rel="stylesheet" href="CSS/Import.css">
@@ -29,7 +28,6 @@
 			<img src="Image/biglogo.png" alt="店の名前" class="header-image">
 		</div>
 	</header>
-
 	<main class="default-main">
 		<!--カテゴリー-->
 		<div class="category-wrapper">
@@ -41,7 +39,6 @@
 			<button class="category-button" onclick="location.href='#06'">お酒</button>
 			<button class="category-button" onclick="location.href='#07'">ボトル</button>
 		</div>
-
 		<%
 		Map<String, String> categoryMap = new HashMap<>();
 		categoryMap.put("01", "お好み焼き");
@@ -53,68 +50,71 @@
 		categoryMap.put("07", "ボトル");
 		%>
 		<!--リストを取得-->
-		<% 
-    // 商品情報リストを取得
-    	List<product_list> productList = (List<product_list>) request.getAttribute("product_list");
-		%>
-		
 		<%
-		    if (productList != null && !productList.isEmpty()) {
-		        for (Map.Entry<String, String> entry : categoryMap.entrySet()) {
-		            String categoryId = entry.getKey();
-		            String categoryName = entry.getValue();
+		// 商品情報リストを取得
+		List<product_list> productList = (List<product_list>) request.getAttribute("product_list");
 		%>
-		<h1 id="<%= categoryId %>"><%= categoryName %></h1>
+		<%
+		if (productList != null && !productList.isEmpty()) {
+			for (Map.Entry<String, String> entry : categoryMap.entrySet()) {
+				String categoryId = entry.getKey();
+				String categoryName = entry.getValue();
+		%>
+		<h1 id="<%=categoryId%>"><%=categoryName%></h1>
 		<div class="menu">
-		<%
-		            boolean hasProducts = false;
-		            for (product_list p : productList) {
-		                if (categoryName.equals(p.getCategory())) {
-		                    hasProducts = true;
-		                    int stock = p.getStock(); // 商品の在庫数を取得
-		                    boolean isSoldOut = (stock == 0); // 在庫がない場合は売り切れとする
-		%>
-		<li>
-		    <div class="menu-row">
-		        <div class="break-word bold-text"><%= p.getName() %></div>
-		        <div>
-		            <%-- 在庫がない場合 --%>
-		            <% if (isSoldOut) { %>
-		                <img src="Image/soldout.png" alt="売り切れ" style="width: 55px; height: auto;">
-		            <% } else { %>
-		                <%-- 在庫がある場合は商品詳細画面へ遷移 --%>
-		                <form action="DetailsAdd" method="post">
-		                    <input type="hidden" name="from" value="OrderMenu.jsp"> 
-		                    <input type="hidden" name="id" value="<%= p.getId() %>"> 
-		                    <input type="hidden" name="name" value="<%= p.getName() %>"> 
-		                    <input type="hidden" name="price" value="<%= p.getPrice() %>">
-		                    <input type="hidden" name="category" value="<%= p.getCategory() %>"> 
-		                    <input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
-		                </form>
-		            <% } %>
-		        </div>
-		    </div>
-		    <div><%= p.getPrice() %>円</div>
-		</li>
-		<%
-		                }
-		            }
-		            if (!hasProducts) {
-		%>
-		<p>商品情報がありません。</p>
-		<%
-		            }
-		        }
-		    } else {
-		%>
-		<p>商品情報がありません。</p>
-		<%
-		    }
-		%>
-
+			<%
+			boolean hasProducts = false;
+			for (product_list p : productList) {
+				if (categoryName.equals(p.getCategory())) {
+					hasProducts = true;
+					int stock = p.getStock(); // 商品の在庫数を取得
+					boolean isSoldOut = (stock == 0); // 在庫がない場合は売り切れとする
+			%>
+			<li>
+				<div class="menu-row">
+					<div class="break-word bold-text"><%=p.getName()%></div>
+					<div>
+						<%-- 在庫がない場合 --%>
+						<%
+						if (isSoldOut) {
+						%>
+						<img src="Image/soldout.png" alt="売り切れ" style="width: 55px; height: auto;">
+						<%
+						} else {
+						%>
+						<%-- 在庫がある場合は商品詳細画面へ遷移 --%>
+						<form action="DetailsAdd" method="post">
+							<input type="hidden" name="from" value="OrderMenu.jsp"> 
+							<input type="hidden" name="id" value="<%=p.getId()%>"> 
+							<input type="hidden" name="name" value="<%=p.getName()%>"> 
+							<input type="hidden" name="price" value="<%=p.getPrice()%>"> 
+							<input type="hidden" name="category" value="<%=p.getCategory()%>">
+							<input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+						</form>
+						<%
+						}
+						%>
+					</div>
+				</div>
+				<div><%=p.getPrice()%>円
+				</div>
+			</li>
+			<%
+			}
+			}
+			if (!hasProducts) {
+			%>
+			<p>商品情報がありません。</p>
+			<%
+			}
+			}
+			} else {
+			%>
+			<p>商品情報がありません。</p>
+			<%
+			}
+			%>
 	</main>
-
-
 	<footer class="footer-buttons">
 		<div class="table-number">${sessionScope.tableNumber}卓</div>
 		<div class="footer-wrapper">
@@ -128,7 +128,7 @@
 			<!--履歴・お会計へ遷移-->
 			<form action="OrderHistory" method="post">
 				<button class="fixed-left-button">
-					<input type="hidden" name="orderPrice" value="0">
+					<input type="hidden" name="orderPrice" value="0"> 
 					<img src="Image/menuhistory.png" alt="履歴・お会計のボタン"> 履歴・お会計
 				</button>
 			</form>
