@@ -76,9 +76,7 @@ public class OrderCompleted extends HttpServlet {
             if (insertSuccess) {
                 // 商品在庫を更新
                 dao.updateProductStock(conn, product_id, product_quantity);
-
-               
-
+                conn.commit();
                 
             } else {
                 // 注文詳細の挿入が失敗した場合

@@ -33,25 +33,27 @@ public class OrderCompletedDAO {
 	}
 
 	
-	// 注文詳細を挿入するメソッド
-    public boolean insertOrderDetails(Connection conn, String[] order_id, String[] product_quantity, String[] order_price, int tableNumberInt) throws SQLException {
-        String insertOrderDetailsSQL = "INSERT INTO order_details (order_id, product_quantity, order_price, table_number, accounting_flag) VALUES (?, ?, ?, ?, ?)";
-        
-        try (PreparedStatement pstmt = conn.prepareStatement(insertOrderDetailsSQL)) {
-            for (int i = 0; i < order_id.length; i++) {
-                pstmt.setInt(1, Integer.parseInt(order_id[i]));  // order_id
-                pstmt.setInt(2, Integer.parseInt(product_quantity[i]));  // product_quantity
-                pstmt.setDouble(3, Double.parseDouble(order_price[i]));  // order_price
-                pstmt.setInt(4, tableNumberInt);  // table_number
-                pstmt.setInt(5, 0);  // accounting_flag (全て0)
+	public boolean insertOrderDetails(Connection conn, String[] order_id, String[] product_quantity, String[] order_price, int tableNumberInt) throws SQLException {
+	    String insertOrderDetailsSQL = "INSERT INTO order_details (order_id, product_quantity, order_price, table_number, order_time) VALUES (?, ?, ?, ?, ?)";
 
-                pstmt.addBatch();
-            }
+	    try (PreparedStatement pstmt = conn.prepareStatement(insertOrderDetailsSQL)) {
+	        for (int i = 0; i < order_id.length; i++) {
+	            pstmt.setInt(1, Integer.parseInt(order_id[i]));  // order_id
+	            pstmt.setInt(2, Integer.parseInt(product_quantity[i]));  // product_quantity
+	            pstmt.setDouble(3, Double.parseDouble(order_price[i]));  // order_price
+	            pstmt.setInt(4, tableNumberInt);  // table_number
+	            pstmt.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));  // order_time 
 
-            int[] rowsAffected = pstmt.executeBatch();
-            return rowsAffected.length > 0;
-        }
-    }
+
+	            pstmt.addBatch();
+	        }
+
+	        int[] rowsAffected = pstmt.executeBatch();
+	        return rowsAffected.length > 0;
+	    }
+	}
+
+
     
     // トッピング詳細を挿入するメソッド
     public boolean insertTopingDetails(Connection conn, String[] topping_id, String[] topping_quantity, String[] order_id) throws SQLException {
