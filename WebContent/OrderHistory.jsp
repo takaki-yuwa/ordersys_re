@@ -69,8 +69,7 @@
 					<%
 					for (multiple_topping_list m : p.getMultipleToppingList()) {
 					%>
-					<div>
-						・<%=m.getTopping_name()%>✕<%=m.getTopping_quantity()%></div>
+					<div>・<%=m.getTopping_name()%>✕<%=m.getTopping_quantity()%></div>
 					<%
 					}
 					%>

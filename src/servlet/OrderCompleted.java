@@ -6,15 +6,14 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import dao.DBUtil;
+import dao.OrderCompletedDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import dao.DBUtil;
-import dao.OrderCompletedDAO;
 
 @WebServlet("/OrderCompleted")
 public class OrderCompleted extends HttpServlet {
@@ -30,18 +29,32 @@ public class OrderCompleted extends HttpServlet {
         response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
 
         // パラメータの取得
+        String[] order_ids = request.getParameterValues("order_id[]");
         String[] product_id = request.getParameterValues("product_id[]");
         String[] product_quantity = request.getParameterValues("product_quantity[]");
-        String[] topping_id = request.getParameterValues("topping_id[]");
-        String[] topping_quantity = request.getParameterValues("topping_quantity[]");
+        String[][] topping_ids = new String[order_ids.length][];
+        String[][] topping_quantities = new String[order_ids.length][];
         String[] order_price = request.getParameterValues("order_price[]");
+        String[] toppingId = null;
+        String[] toppingQuantity = null;
+        for(int i=0;i<order_ids.length;i++) {
+        	topping_ids[i] = request.getParameterValues("topping_id_"+i);
+        	String[] topping_quantity = request.getParameterValues("topping_quantity_"+i);
+        	toppingId = request.getParameterValues("topping_id_"+i);
+            toppingQuantity = request.getParameterValues("topping_quantity_"+i);
+        	topping_quantities[i]=new String[topping_quantity.length];
+        	for(int j=0;j<topping_quantity.length;j++) {
+        		topping_quantities[i][j]=topping_quantity[j];
+        	}
+        }
+        
 
         // パラメータの値の確認
         System.out.println("product_id: " + Arrays.toString(product_id));
         System.out.println("product_quantity: " + Arrays.toString(product_quantity));
         System.out.println("order_price: " + Arrays.toString(order_price));
-        System.out.println("topping_id: " + Arrays.toString(topping_id));
-        System.out.println("topping_quantity: " + Arrays.toString(topping_quantity));
+        System.out.println("topping_id: " + Arrays.toString(toppingId));
+        System.out.println("topping_quantity: " + Arrays.toString(toppingQuantity));
 
         // セッションを取得
         HttpSession session = request.getSession();
@@ -85,10 +98,10 @@ public class OrderCompleted extends HttpServlet {
             }
             
             // トッピングのデータ挿入
-            boolean toppingInsertSuccess = dao.insertTopingDetails(conn, topping_id, topping_quantity, order_id);
+            boolean toppingInsertSuccess = dao.insertTopingDetails(conn, topping_ids, topping_quantities, order_id);
             if (toppingInsertSuccess) {
                 // トッピングの挿入が成功した場合
-                dao.updateToppingStock(conn, topping_id, topping_quantity);
+                dao.updateToppingStock(conn, toppingId, toppingQuantity);
                 conn.commit();
                 response.getWriter().println("すべてのデータが正常に追加されました！");
             } else {

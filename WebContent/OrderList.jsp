@@ -120,15 +120,15 @@
 			<!--ボタン-->
 			<!--注文完了へ遷移-->
 			<form action="OrderCompleted" method="post">
-				<c:forEach var="order_list" items="${sessionScope.orderList}">
+				<c:forEach var="order_list" items="${sessionScope.orderList}" varStatus="product">
 					<input type="hidden" id="menu_id" name="order_id[]" value="${order_list.order_id}">
 					<input type="hidden" name="product_id[]" value="${order_list.product_id}">
 					<input type="hidden" id="countField-${order_list.order_id}" name="product_quantity[]" value="${order_list.menu_quantity}">
 					<input type="hidden" id="priceField-${order_list.order_id}" name="order_price[]" value="${order_list.menu_subtotal}">
 					<!-- トッピングがある場合にループ -->
 					<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">
-						<input type="hidden" name="topping_id[]" value="${topping_id}">
-						<input type="hidden" id="toppingcountField-${order_list.order_id}-${topping_id}" name="topping_quantity[]" value="${order_list.topping_quantity[topping.index]}">
+						<input type="hidden" name="topping_id_${product.index}" value="${topping_id}">
+						<input type="hidden" id="toppingcountField-${order_list.order_id}-${topping_id}" name="topping_quantity_${product.index}" value="${order_list.topping_quantity[topping.index]}">
 					</c:forEach>
 				</c:forEach>
 				<input type="hidden" name="tableNumber" value="${sessionScope.tableNumber}">
