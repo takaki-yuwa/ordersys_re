@@ -42,7 +42,7 @@
 					<c:set var="menu_subtotal" value="${product_price * menu_quantity}" />
 					<li>
 						<div class="order-item">
-							<div class="product-name">${product_name}：${order_id}</div>
+							<div class="product-name">${product_name}</div>
 							<div class="product-price">${product_price}円</div>
 						</div> 
 						<c:forEach var="topping_id" items="${order_list.topping_id}" varStatus="topping">

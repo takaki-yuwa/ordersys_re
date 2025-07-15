@@ -118,7 +118,7 @@
 					<input type="hidden" name="tableNo" value="<%=iTableNo%>">
 					<input type="hidden" name="orderDetailsId"
 						value="<%=aiOrderDetailsId%>"> <input type="hidden"
-						name="totalPrice" value="<%=iTotalPrice%>"> はい
+						name="totalPrice" value="<%=iTotalPrice%>"> は　い
 				</button>
 			</form>
 		</div>
