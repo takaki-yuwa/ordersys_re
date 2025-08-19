@@ -25,7 +25,8 @@ public class ProductDAO {
 				int price = rs.getInt("product_price");
 				String category = rs.getString("category_name");
 				int stock = rs.getInt("product_stock");
-				productNameList.add(new product_list(id, name, price, category, stock));
+				int displayflag = rs.getInt("product_display_flag");
+				productNameList.add(new product_list(id, name, price, category, stock, displayflag));
 			}
 
 		} catch (SQLException e) {

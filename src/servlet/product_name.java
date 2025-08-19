@@ -1,8 +1,11 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import dao.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,49 +13,58 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import dao.ProductDAO;
-
 @WebServlet("/OrderSystem")
 public class product_name extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    	
-    	 // キャッシュ制御ヘッダーを設定
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP/1.1
-        response.setHeader("Pragma", "no-cache"); // HTTP/1.0
-        response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        // 卓番パラメータを取得
-        String table_num = request.getParameter("tableNumber");
+		// キャッシュ制御ヘッダーを設定
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP/1.1
+		response.setHeader("Pragma", "no-cache"); // HTTP/1.0
+		response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
 
-        // セッションを取得
-        HttpSession session = request.getSession();
+		// 卓番パラメータを取得
+		String table_num = request.getParameter("tableNumber");
 
-        // 卓番を設定
-        if ("table1".equals(table_num)) {
-            session.setAttribute("tableNumber", 1);  // table1からの遷移は卓番1
-        } else if ("table2".equals(table_num)) {
-            session.setAttribute("tableNumber", 2);  // table2からの遷移は卓番2
-	    } else {
-	        // tableNumberをセッションから取得
-	        Integer tableNumber = (Integer) session.getAttribute("tableNumber");
+		// セッションを取得
+		HttpSession session = request.getSession();
 
-	        // tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
-	        if (tableNumber == null) {
-	        	request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-	        }
-	    }
+		// 卓番を設定
+		if ("table1".equals(table_num)) {
+			session.setAttribute("tableNumber", 1); // table1からの遷移は卓番1
+		} else if ("table2".equals(table_num)) {
+			session.setAttribute("tableNumber", 2); // table2からの遷移は卓番2
+		} else {
+			// tableNumberをセッションから取得
+			Integer tableNumber = (Integer) session.getAttribute("tableNumber");
 
-        // 商品リストを取得
-        ProductDAO dao = new ProductDAO();
-        List<product_list> productNameList = dao.getAllProductNames();
+			// tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
+			if (tableNumber == null) {
+				request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+			}
+		}
 
-        // 商品リストをリクエスト属性にセット
-        request.setAttribute("product_list", productNameList);
+		// 商品リストを取得
+		ProductDAO dao = new ProductDAO();
+		List<product_list> productNameList = dao.getAllProductNames();
 
-        // 次のページ (OrderMenu.jsp) へフォワード
-        request.getRequestDispatcher("/OrderMenu.jsp").forward(request, response);
-    }
+		// 商品リストをリクエスト属性にセット
+		request.setAttribute("product_list", productNameList);
+
+		// カテゴリーマップを作成してリクエスト属性にセット
+		Map<String, String> categoryMap = new LinkedHashMap<>();
+		categoryMap.put("01", "お好み焼き");
+		categoryMap.put("02", "もんじゃ焼き");
+		categoryMap.put("03", "鉄板焼き");
+		categoryMap.put("04", "サイドメニュー");
+		categoryMap.put("05", "ソフトドリンク");
+		categoryMap.put("06", "お酒");
+		categoryMap.put("07", "ボトル");
+		request.setAttribute("categoryMap", categoryMap);
+
+		// 次のページ (OrderMenu.jsp) へフォワード
+		request.getRequestDispatcher("/OrderMenu.jsp").forward(request, response);
+	}
 }

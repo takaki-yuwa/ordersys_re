@@ -82,14 +82,16 @@
 						<p>トッピング:110円</p>
 						<c:forEach var="topping" items="${topping_list}" varStatus="status">
 							<li class="topping-row">
-								<div class="break-topping">${topping.name}</div> 
-								<c:if test="${topping.stock > 0 }">
-									<button class="counter-button minus" id="toppingButton" data-id="${topping.id}" data-index="${status.index}">-</button>
-									<input type="text" value="0" class="counter-input" readonly>
-									<button class="counter-button plus" data-index="${status.index}" id="toppingButton" data-id="${topping.id}" data-max="${topping.stock}">+</button>
-								</c:if> 
-								<c:if test="${topping.stock == 0}">
-									<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
+								<c:if test="${topping.displayflag == 1}">
+									<div class="break-topping">${topping.name}</div> 
+									<c:if test="${topping.stock > 0}">
+										<button class="counter-button minus" id="toppingButton" data-id="${topping.id}" data-index="${status.index}">-</button>
+										<input type="text" value="0" class="counter-input" readonly>
+										<button class="counter-button plus" data-index="${status.index}" id="toppingButton" data-id="${topping.id}" data-max="${topping.stock}">+</button>
+									</c:if> 
+									<c:if test="${topping.stock == 0}">
+										<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
+									</c:if>
 								</c:if>
 							</li>
 						</c:forEach>
@@ -114,14 +116,16 @@
 						<c:forEach var="topping" items="${topping_list}" varStatus="status">
 							<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}" />
 							<li class="topping-row">
-								<div class="break-topping">${topping.name}</div> 
-								<c:if test="${topping.stock > 0}">
-									<button class="counter-button minus" id="toppingButton" data-id="${topping.id}" data-index="${status.index}">-</button>
-									<input type="text" value="${topping_quantity}" class="counter-input" readonly>
-									<button class="counter-button plus" data-index="${status.index}" id="toppingButton" data-id="${topping.id}" data-max="${topping.stock}">+</button>
-								</c:if> 
-								<c:if test="${topping.stock == 0}">
-									<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
+								<c:if test="${topping.displayflag == 1}">
+									<div class="break-topping">${topping.name}</div> 
+									<c:if test="${topping.stock > 0}">
+										<button class="counter-button minus" id="toppingButton" data-id="${topping.id}" data-index="${status.index}">-</button>
+										<input type="text" value="${topping_quantity}" class="counter-input" readonly>
+										<button class="counter-button plus" data-index="${status.index}" id="toppingButton" data-id="${topping.id}" data-max="${topping.stock}">+</button>
+									</c:if> 
+									<c:if test="${topping.stock == 0}">
+										<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
+									</c:if>
 								</c:if>
 							</li>
 						</c:forEach>

@@ -15,14 +15,17 @@ public class ToppingDAO {
 
 		try (Connection con = DBUtil.getConnection();
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT tp.topping_id, tp.topping_name, tp.topping_price, tp.topping_stock FROM topping tp INNER JOIN product_topping pt ON tp.topping_id = pt.topping_id WHERE pt.product_id = " + product_id)) {
+				ResultSet rs = st.executeQuery(
+						"SELECT tp.topping_id, tp.topping_name, tp.topping_price, tp.topping_stock, tp.topping_display_flag FROM topping tp INNER JOIN product_topping pt ON tp.topping_id = pt.topping_id WHERE pt.product_id = "
+								+ product_id)) {
 
 			while (rs.next()) {
 				int id = rs.getInt("topping_id");
 				String name = rs.getString("topping_name");
 				int price = rs.getInt("topping_price");
 				int stock = rs.getInt("topping_stock");
-				toppingList.add(new topping_list(id, name, price, stock));
+				int displayflag = rs.getInt("topping_display_flag");
+				toppingList.add(new topping_list(id, name, price, stock, displayflag));
 			}
 
 		} catch (Exception e) {
@@ -44,7 +47,8 @@ public class ToppingDAO {
 				String name = rs.getString("topping_name");
 				int price = rs.getInt("topping_price");
 				int stock = rs.getInt("topping_stock");
-				toppingList.add(new topping_list(id, name, price, stock));
+				int displayflag = rs.getInt("topping_display_flag");
+				toppingList.add(new topping_list(id, name, price, stock, displayflag));
 			}
 
 		} catch (Exception e) {
