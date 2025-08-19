@@ -37,14 +37,12 @@
 			<!-- ラジオボタン（表示制御のキーになる） -->
 			<!-- 直前に押されていたボタンを呼び出す -->
 			<c:forEach var="category" items="${categoryList}" varStatus="status">
-				<input type="radio" name="tab" class="tab-item"
-					id="tab${status.index}" ${status.index == 0 ? "checked" : ""}>
+				<input type="radio" name="tab" class="tab-item" id="tab${status.index}" ${status.index == 0 ? "checked" : ""}>
 			</c:forEach>
 			<div class="tab-wrapper">
 				<!-- ラベル（横スクロール） -->
 				<div class="tab-labels">
-					<c:forEach var="category" items="${categoryList}"
-						varStatus="status">
+					<c:forEach var="category" items="${categoryList}" varStatus="status">
 						<label for="tab${status.index}"><c:out value="${category}" /></label>
 					</c:forEach>
 				</div>
@@ -52,31 +50,28 @@
 			<div class="tab-contents">
 				<c:if test="${not empty product_list}">
 					<c:forEach var="product" items="${product_list}">
-						<div class="order_row hidden-row"
-							data-category="<c:out value='${product.category}'/>">
+						<div class="order_row hidden-row" data-category="<c:out value='${product.category}'/>">
 							<div class="menu">
 							<c:if test="${product.displayflag == 1}">
 								<li>
 									<div class="menu-row">
-										<div class="break-word bold-text">${product.name}</div>
+										<div class="break-word bold-text"><c:out value="${product.name}" /></div>
 										<c:if test="${product.stock != 0}">
 											<%-- 在庫がある場合は商品詳細画面へ遷移 --%>
 											<form action="DetailsAdd" method="post">
 												<input type="hidden" name="from" value="OrderMenu.jsp">
-												<input type="hidden" name="id" value="${product.id}">
-												<input type="hidden" name="name" value="${product.name}">
-												<input type="hidden" name="price" value="${product.price}">
-												<input type="hidden" name="category"
-													value="${product.category}"> <input type="image"
-													src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
+												<input type="hidden" name="id" value="<c:out value="${product.id}" />">
+												<input type="hidden" name="name" value="<c:out value="${product.name}" />">
+												<input type="hidden" name="price" value="<c:out value="${product.price}" />">
+												<input type="hidden" name="category" value="<c:out value="${product.category}" />"> 
+												<input type="image" src="Image/plusButton.png" alt="商品詳細画面へ遷移する">
 											</form>
 										</c:if>
 										<c:if test="${product.stock == 0}">
-											<img src="Image/soldout.png" alt="売り切れ"
-												style="width: 55px; height: auto;">
+											<img src="Image/soldout.png" alt="売り切れ" style="width: 55px; height: auto;">
 										</c:if>
 									</div>
-									<p>${product.price}円</p>
+									<p><c:out value="${product.price}" />円</p>
 								</li>
 								</c:if>
 							</div>
@@ -100,7 +95,7 @@
 	<script
 		src="<%=request.getContextPath()%>/JavaScript/OrderMenuTab.js"></script>
 	<footer class="footer-buttons">
-		<div class="table-number">${sessionScope.tableNumber}卓</div>
+		<div class="table-number"><c:out value="${sessionScope.tableNumber}" />卓</div>
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--注文リストへ遷移-->
@@ -112,8 +107,8 @@
 			<!--履歴・お会計へ遷移-->
 			<form action="OrderHistory" method="post">
 				<button class="fixed-left-button">
-					<input type="hidden" name="orderPrice" value="0"> <img
-						src="Image/menuhistory.png" alt="履歴・お会計のボタン"> 履歴・お会計
+					<input type="hidden" name="orderPrice" value="0"> 
+					<img src="Image/menuhistory.png" alt="履歴・お会計のボタン"> 履歴・お会計
 				</button>
 			</form>
 		</div>
