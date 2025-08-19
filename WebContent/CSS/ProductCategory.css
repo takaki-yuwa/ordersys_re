@@ -1,6 +1,12 @@
 @charset "UTF-8";
+/*<main>の表示範囲*/
+main{
+	margin-top:10px;
+	margin-bottom:90px;
+	padding:20px;
+}
 /*カテゴリーの位置と横スクロールバーの表示*/
-.category-wrapper {
+.tab-wrapper {
   position:fixed;
   top:90px;
   left:0;
@@ -8,45 +14,63 @@
   display: flex;
   overflow-x: auto;
   gap: 10px;
-  padding: 10px 0;
+  padding-top: 10px;
   background-color: seashell;
   z-index:1000;
   scrollbar-width: thin;
   scrollbar-color: #888 #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
 /*スクロールバーの高さ*/
-.category-wrapper::-webkit-scrollbar {
+.tab-wrapper::-webkit-scrollbar {
   height: 8px;
 }
 
 /*スクロールバーの形と色*/
-.category-wrapper::-webkit-scrollbar-thumb {
+.tab-wrapper::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 10px;
 }
 
 /*スクロールバーの背景の色*/
-.category-wrapper::-webkit-scrollbar-track {
+.tab::-webkit-scrollbar-track {
   background-color: #ccc;
 }
 
-/*ボタンの設定*/
-.category-button {
-  flex: 0 0 auto;
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+/*タブ全体*/
+.tab {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding-top: 30px;
+	overflow: hidden;
 }
 
-.category-button:hover {
-  background-color: #007bff;
-  border-color: #0056b3;
-  color: white;
+/* 横スクロールバー非表示 */
+.tab-labels::-webkit-scrollbar {
+	display: none;
 }
 
+/* ラベルを包むラッパーに横スクロールを指定 */
+.tab-labels {
+	display: flex;
+	overflow-x: auto;
+	margin: 0 auto;
+	scroll-behavior: smooth;
+}
+
+/*ラジオボタンを非表示にする*/
+.tab-item {
+	display: none;
+}
+
+/*ラベルの設定*/
+.tab-labels label {
+	flex: 0 0 auto;
+	padding: 8px 12px;
+	color: #999;
+	white-space: nowrap;
+	cursor: pointer;
+	text-align: center;
+}

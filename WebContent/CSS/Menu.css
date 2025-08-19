@@ -10,11 +10,6 @@
 	border-bottom:1px solid #ccc;
 }
 
-.menu li:last-child{
-	border-bottom:none;
-}
-
-
 .menu-row{
 	display:flex;
 	justify-content:space-between;

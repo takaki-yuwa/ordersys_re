@@ -1,17 +1,17 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import dao.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import constants.Constants;
+import dao.ProductDAO;
 
 @WebServlet("/OrderSystem")
 public class product_name extends HttpServlet {
@@ -52,17 +52,7 @@ public class product_name extends HttpServlet {
 
 		// 商品リストをリクエスト属性にセット
 		request.setAttribute("product_list", productNameList);
-
-		// カテゴリーマップを作成してリクエスト属性にセット
-		Map<String, String> categoryMap = new LinkedHashMap<>();
-		categoryMap.put("01", "お好み焼き");
-		categoryMap.put("02", "もんじゃ焼き");
-		categoryMap.put("03", "鉄板焼き");
-		categoryMap.put("04", "サイドメニュー");
-		categoryMap.put("05", "ソフトドリンク");
-		categoryMap.put("06", "お酒");
-		categoryMap.put("07", "ボトル");
-		request.setAttribute("categoryMap", categoryMap);
+		request.setAttribute("categoryList", Constants.CATEGORY_LIST);
 
 		// 次のページ (OrderMenu.jsp) へフォワード
 		request.getRequestDispatcher("/OrderMenu.jsp").forward(request, response);
