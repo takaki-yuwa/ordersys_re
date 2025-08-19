@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*<main>の表示範囲*/
 main{
-	margin-top:10px;
+	margin-top:0px;
 	margin-bottom:90px;
 	padding:20px;
 }
