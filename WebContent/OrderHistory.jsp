@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ page import="java.util.List"%>
-<%@ page import="servlet.order_details_list"%>
-<%@ page import="servlet.multiple_topping_list"%>
-<%@ page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -16,7 +14,6 @@
 <link rel="stylesheet" href="CSS/Popup.css">
 <link rel="stylesheet" href="CSS/OrderDetails.css">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
 <!--.jsの呼び出し-->
 <script src="JavaScript/Popup.js" defer></script>
 </head>
@@ -30,82 +27,76 @@
 	</header>
 	<main class="history-main">
 		<!--注文履歴を取得-->
-		<%
-		List<order_details_list> orderDetailsList = (List<order_details_list>) request.getAttribute("orderHistory");
-		%>
+		<c:set var="orderHistory" value="${orderHistory}" />
 
 		<div class="menu">
-			<%
-			int iTotalQuantity = 0;
-			int iTotalPrice = 0;
-			int iTableNo = 0;
-			ArrayList<Integer> aiOrderDetailsId = new ArrayList<Integer>();
-			if (orderDetailsList != null && !orderDetailsList.isEmpty()) {
-			%>
-			<div class="order-item order-item-header">
-				<div class="order-item-left">
-					<strong>商品名</strong>
-				</div>
-				<div class="order-item-center">
-					<strong>数量</strong>
-				</div>
-				<div class="order-item-right">
-					<strong>金額(税込)</strong>
-				</div>
-			</div>
-			<%
-			for (order_details_list p : orderDetailsList) {
-				// 数量の加算
-				iTotalQuantity += p.getproduct_quantity();
-				// 金額の加算
-				iTotalPrice += p.getorder_price();
-			%>
-			<div class="order-item">
-				<!-- 左：商品名とトッピング -->
-				<div class="order-item-left">
-					<div class="break-word bold-text">
-						<strong><%=p.getProduct_name()%></strong>
+			<c:if test="${not empty orderHistory}">
+				<!-- 合計値の初期化 -->
+				<c:set var="iTotalQuantity" value="0" />
+				<c:set var="iTotalPrice" value="0" />
+				<c:set var="iTableNo" value="0" />
+
+				<div class="order-item order-item-header">
+					<div class="order-item-left">
+						<strong>商品名</strong>
 					</div>
-					<%
-					for (multiple_topping_list m : p.getMultipleToppingList()) {
-					%>
-					<div>・<%=m.getTopping_name()%>✕<%=m.getTopping_quantity()%></div>
-					<%
-					}
-					%>
+					<div class="order-item-center">
+						<strong>数量</strong>
+					</div>
+					<div class="order-item-right">
+						<strong>金額(税込)</strong>
+					</div>
 				</div>
 
-				<!-- 中央：数量 -->
-				<div class="order-item-center">
-					<%=p.getproduct_quantity()%>
-				</div>
+				<!-- 明細の繰り返し -->
+				<c:forEach var="history" items="${orderHistory}">
+					<!-- 合計数量を加算 -->
+					<c:set var="iTotalQuantity" value="${iTotalQuantity + history.product_quantity}" />
+					<!-- 合計金額を加算 -->
+					<c:set var="iTotalPrice" value="${iTotalPrice + history.order_price}" />
+					<!-- 卓番号を保持 -->
+					<c:set var="iTableNo" value="${history.table_number}" />
 
-				<!-- 右：金額 -->
-				<div class="order-item-right">
-					<%=p.getorder_price()%>円
-				</div>
-			</div>
+					<div class="order-item">
+						<!-- 左：商品名とトッピング -->
+						<div class="order-item-left">
+							<div class="break-word bold-text">
+								<strong>${history.product_name}</strong>
+							</div>
+							<c:forEach var="multiple" items="${history.multipleToppingList}">
+								<div>・${multiple.topping_name}✕${multiple.topping_quantity}</div>
+							</c:forEach>
+						</div>
+
+						<!-- 中央：数量 -->
+						<div class="order-item-center">
+							${history.product_quantity}
+						</div>
+
+						<!-- 右：金額 -->
+						<div class="order-item-right">
+							${history.order_price}円
+						</div>
+					</div>
+				</c:forEach>
+			</c:if>
 		</div>
-		<%
-		iTableNo = p.gettable_number();
-		aiOrderDetailsId.add(p.getorder_details_id());
-		}
-		%>
-		<footer class="footer-subtotal">
-			<div class="footer-subtotal-wrapper">
-				<div class="order-footer-text"><%=iTotalQuantity%>点
+
+		<!-- 合計表示 -->
+		<c:if test="${not empty orderHistory}">
+			<footer class="footer-subtotal">
+				<div class="footer-subtotal-wrapper">
+					<div class="order-footer-text">${iTotalQuantity}点</div>
+					<div class="order-footer-text">${iTotalPrice}円(税込)</div>
 				</div>
-				<div class="order-footer-text"><%=iTotalPrice%>円(税込)
-				</div>
-			</div>
-		</footer>
-		<%
-		} else {
-		%>
-		<div class="break-word bold-text">注文履歴なし</div>
-		<%
-		}
-		%>
+			</footer>
+		</c:if>
+
+		<!-- 注文履歴なし -->
+		<c:if test="${empty orderHistory}">
+			<div class="break-word bold-text">注文履歴なし</div>
+		</c:if>
+
 		<!--ポップアップの背景-->
 		<div class="popup-overlay" id="popup-overlay"></div>
 		<!--ポップアップの内容-->
@@ -115,10 +106,9 @@
 			<button class="popup-close" id="close-popup">いいえ</button>
 			<form action="Accounting" method="post">
 				<button class="popup-proceed" id="confirm-button">
-					<input type="hidden" name="tableNo" value="<%=iTableNo%>">
-					<input type="hidden" name="orderDetailsId"
-						value="<%=aiOrderDetailsId%>"> <input type="hidden"
-						name="totalPrice" value="<%=iTotalPrice%>"> は　い
+					<input type="hidden" name="tableNo" value="${iTableNo}">
+					<input type="hidden" name="totalPrice" value="${iTotalPrice}"> 
+					は い
 				</button>
 			</form>
 		</div>
@@ -128,15 +118,11 @@
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--会計確認ポップアップ表示-->
-			<%
-			if (orderDetailsList != null && !orderDetailsList.isEmpty()) {
-			%>
-			<button class="fixed-right-button" id="open-popup">
-				<img src="Image/history.png" alt="会計のボタン"> お会計
-			</button>
-			<%
-			}
-			%>
+			<c:if test="${not empty orderHistory}">
+				<button class="fixed-right-button" id="open-popup">
+					<img src="Image/history.png" alt="会計のボタン"> お会計
+				</button>
+			</c:if>
 			<!--メニューへ遷移-->
 			<a href="OrderSystem">
 				<button class="fixed-left-button">

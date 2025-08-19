@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
-<%@ page import="servlet.accounting_list" %>
+<%@ page import="servlet.accounting_list"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,21 +25,18 @@
 		</div>
 	</header>
 	<main>
-    <%
-        accounting_list Accounting_List = (accounting_list)request.getAttribute("accountingList");
-    %>
 		<div class="center-container">
 			<div class="square-box">
 				<p class="center-text">会計が確定されました</p>
 				<p class="center-text">ご利用ありがとうございます</p>
-            <span class="bold-text size-text"><%= Accounting_List.getTableNo() %>卓</span>
-            <span class="underline-text bold-text size-text">合計:<%= Accounting_List.getTotalPrice() %>円(税込)</span>
+				<span class="bold-text size-text">${accountingList.tableNo}卓</span>
+				<span class="underline-text bold-text size-text">合計:${accountingList.totalPrice}円(税込)</span>
 			</div>
 		</div>
 		<p class="center-text">レジにてお支払いください</p>
 		<p class="center-text">またのご利用をお待ちしております</p>
 	</main>
 	<uji:dispatch />
-    <uji:resourceText id="uji.disableBack"/>
+	<uji:resourceText id="uji.disableBack" />
 </body>
 </html>
