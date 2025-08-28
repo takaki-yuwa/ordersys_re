@@ -10,6 +10,7 @@ public class order_details_list {
     private int product_quantity;
     private int order_price;
     private int table_number;
+    private int order_flag;
     // 商品詳細
     private String product_name;
     private int product_price;
@@ -17,13 +18,14 @@ public class order_details_list {
     // トッピング
     List<multiple_topping_list> multipleToppingList;
 
-    public order_details_list(int order_details_id, int order_id, int product_quantity, int order_price, int table_number,
+    public order_details_list(int order_details_id, int order_id, int product_quantity, int order_price, int table_number, int order_flag,
     		String name, Integer price, List<multiple_topping_list> multipleToppingLis) {
     	this.order_details_id = order_details_id;
     	this.order_id = order_id;
         this.product_quantity = product_quantity;
         this.order_price = order_price;
         this.table_number = table_number;
+        this.order_flag = order_flag;
     	this.product_name = name;
         this.product_price = price;
         this.multipleToppingList = new ArrayList<>(multipleToppingLis);
@@ -46,6 +48,9 @@ public class order_details_list {
 
     public int gettable_number() {
         return table_number;
+    }
+    public int getorder_flag() {
+        return order_flag;
     }
 
     public String getProduct_name() {

@@ -96,22 +96,40 @@
 		<c:if test="${empty orderHistory}">
 			<div class="break-word bold-text">注文履歴なし</div>
 		</c:if>
-
-		<!--ポップアップの背景-->
+		<c:set var="hasFlag1" value="false" />
+		<!-- 注文履歴をループして、未提供の注文（order_flag == 0）が1つでもあれば true にする -->
+		<c:forEach var="order" items="${orderHistory}">
+		    <c:if test="${order.order_flag == 0}">
+		        <c:set var="hasFlag1" value="true" />
+		    </c:if>
+		</c:forEach>
+		
+		<!-- ポップアップの背景（共通） -->
 		<div class="popup-overlay" id="popup-overlay"></div>
-		<!--ポップアップの内容-->
-		<div class="popup-content" id="popup-content">
-			<p>お会計に進みます。</p>
-			<p>よろしいですか？</p>
-			<button class="popup-close" id="close-popup">いいえ</button>
-			<form action="Accounting" method="post">
-				<button class="popup-proceed" id="confirm-button">
-					<input type="hidden" name="tableNo" value="<c:out value='${iTableNo}' />">
-					<input type="hidden" name="totalPrice" value="<c:out value='${iTotalPrice}' />"> 
-					は い
-				</button>
-			</form>
-		</div>
+		
+		<!--未提供の注文があった場合のポップアップ -->
+		<c:if test="${hasFlag1}">
+		    <div class="popup-content" id="popup-content">
+		        <p>未提供の注文があります。</p>
+		        <button class="popup-close" id="close-popup">閉じる</button>
+		    </div>
+		</c:if>
+		
+		<!--未提供の注文がない場合のポップアップ -->
+		<c:if test="${not hasFlag1}">
+		    <div class="popup-content" id="popup-content">
+		        <p>お会計に進みます。</p>
+		        <p>よろしいですか？</p>
+		        <button class="popup-close" id="close-popup">いいえ</button>
+		        <form action="Accounting" method="post">
+		            <button class="popup-proceed" id="confirm-button">
+		                <input type="hidden" name="tableNo" value="<c:out value='${iTableNo}' />">
+		                <input type="hidden" name="totalPrice" value="<c:out value='${iTotalPrice}' />">
+		                は い
+		            </button>
+		        </form>
+		    </div>
+		</c:if>
 	</main>
 	<footer class="footer-buttons">
 		<div class="table-number"><c:out value="${sessionScope.tableNumber}" />卓</div>
