@@ -3,15 +3,14 @@ package servlet;
 import java.io.IOException;
 import java.util.List;
 
+import constants.Constants;
+import dao.ProductDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import constants.Constants;
-import dao.ProductDAO;
 
 @WebServlet("/OrderSystem")
 public class product_name extends HttpServlet {

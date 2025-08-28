@@ -8,7 +8,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0">
+<meta name="viewport"
+	content="width=device-width,height=device-height,initial-scale=1.0">
 <title>商品詳細画面</title>
 <link rel="stylesheet" href="CSS/Import.css">
 <link rel="stylesheet" href="CSS/WordWrap.css">
@@ -32,8 +33,8 @@
 	} else if ("OrderList.jsp".equals(fromPage)) {
 	%>
 	<script>
-	let total = <c:out value="${sessionScope.changeList.product_subtotal}" />;
 	let topping=0;
+	let total = <c:out value="${sessionScope.changeList.product_subtotal}" />;
 	</script>
 	<%
 	}
@@ -53,16 +54,26 @@
 			if ("OrderMenu.jsp".equals(fromPage)) {
 			%>
 			<c:if test="${not empty sessionScope.productList}">
-				<div class="product-text"><c:out value="${sessionScope.productList.name}" /></div>
-				<div class="price-text"><c:out value="${sessionScope.productList.price}" />円(税込)</div>
+				<div class="product-text">
+					<c:out value="${sessionScope.productList.name}" />
+				</div>
+				<div class="price-text">
+					<c:out value="${sessionScope.productList.price}" />
+					円(税込)
+				</div>
 			</c:if>
 			<%
 			//注文リスト画面から遷移してきた場合
 			} else if ("OrderList.jsp".equals(fromPage)) {
 			%>
 			<c:if test="${not empty sessionScope.changeList}">
-				<div class="product-text"><c:out value="${sessionScope.changeList.product_name}" /></div>
-				<div class="price-text"><c:out value="${sessionScope.changeList.product_price}" />円(税込)</div>
+				<div class="product-text">
+					<c:out value="${sessionScope.changeList.product_name}" />
+				</div>
+				<div class="price-text">
+					<c:out value="${sessionScope.changeList.product_price}" />
+					円(税込)
+				</div>
 			</c:if>
 			<%
 			}
@@ -77,24 +88,35 @@
 		<!-- セッションからカテゴリー名を取ってくる -->
 		<c:if test="${not empty sessionScope.productList.category}">
 			<c:choose>
-				<c:when test="${sessionScope.productList.category == 'お好み焼き' || sessionScope.productList.category == 'もんじゃ焼き'}">
+				<c:when
+					test="${sessionScope.productList.category == 'お好み焼き' || sessionScope.productList.category == 'もんじゃ焼き'}">
 					<c:if test="${not empty topping_list}">
-						<p>トッピング:110円</p>
-						<c:forEach var="topping" items="${topping_list}" varStatus="status">
+						<p>トッピング</p>
+						<c:forEach var="topping" items="${topping_list}"
+							varStatus="status">
 							<li class="topping-row">
 								<c:if test="${topping.displayflag == 1}">
-									<div class="break-topping"><c:out value="${topping.name}" /></div> 
+									<div class="break-topping">
+										<c:out value="${topping.name}" />：<c:out value="${topping.price}" />円
+									</div>
 									<c:if test="${topping.stock > 0}">
 										<button class="counter-button minus" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-index="<c:out value='${status.index}' />">-</button>
 										<input type="text" value="0" class="counter-input" readonly>
 										<button class="counter-button plus" data-index="<c:out value='${status.index}' />" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-max="<c:out value='${topping.stock}' />">+</button>
-									</c:if> 
+									</c:if>
 									<c:if test="${topping.stock == 0}">
 										<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
 									</c:if>
-								</c:if>
-							</li>
+								</c:if></li>
 						</c:forEach>
+
+						<!-- JavaScript用に価格を格納する -->
+						<script>
+						const toppingPrices={};
+						<c:forEach var="topping" items="${topping_list}">
+							toppingPrices["${topping.id}"] = ${topping.price};
+						</c:forEach>
+						</script>
 					</c:if>
 					<c:if test="${empty topping_list}">
 						<div>トッピングはありません。</div>
@@ -111,24 +133,33 @@
 			<c:choose>
 				<c:when
 					test="${sessionScope.changeList.category_name == 'お好み焼き' || sessionScope.changeList.category_name == 'もんじゃ焼き'}">
-					<p>トッピング:110円</p>
+					<p>トッピング</p>
 					<c:if test="${not empty topping_list}">
 						<c:forEach var="topping" items="${topping_list}" varStatus="status">
 							<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}" />
 							<li class="topping-row">
 								<c:if test="${topping.displayflag == 1}">
-									<div class="break-topping"><c:out value="${topping.name}" /> </div> 
+									<div class="break-topping">
+										<c:out value="${topping.name}" />：<c:out value="${topping.price}" />円
+									</div>
 									<c:if test="${topping.stock > 0}">
 										<button class="counter-button minus" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-index="<c:out value='${status.index}' />">-</button>
 										<input type="text" value="<c:out value='${topping_quantity}' />" class="counter-input" readonly>
 										<button class="counter-button plus" data-index="<c:out value='${status.index}' />" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-max="<c:out value='${topping.stock}' />">+</button>
-									</c:if> 
+									</c:if>
 									<c:if test="${topping.stock == 0}">
 										<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
 									</c:if>
-								</c:if>
-							</li>
+								</c:if></li>
 						</c:forEach>
+
+						<!-- JavaScript用に価格を格納する -->
+						<script>
+						const toppingPrices={};
+						<c:forEach var="topping" items="${topping_list}">
+							toppingPrices["${topping.id}"] = ${topping.price};
+						</c:forEach>
+						</script>
 					</c:if>
 					<c:if test="${empty topping_list}">
 						<div>トッピングはありません。</div>
@@ -141,7 +172,9 @@
 		%>
 	</main>
 	<footer class="footer-buttons">
-		<div class="table-number"><c:out value="${sessionScope.tableNumber}" />卓</div>
+		<div class="table-number">
+			<c:out value="${sessionScope.tableNumber}" />卓
+		</div>
 		<div class="footer-wrapper">
 			<!-- ボタン -->
 			<%
@@ -150,14 +183,15 @@
 			%>
 			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
-					<input type="hidden" name="product_id" value="<c:out value='${sessionScope.productList.id}' />"> 
-					<input type="hidden" name="product_name" value="<c:out value='${sessionScope.productList.name}' />"> 
-					<input type="hidden" name="product_price" value="<c:out value='${sessionScope.productList.price}' />"> 
-					<input type="hidden" name="category_name" value="<c:out value='${sessionScope.productList.category}' />"> 
+					<input type="hidden" name="product_id" value="<c:out value='${sessionScope.productList.id}' />">
+					<input type="hidden" name="product_name" value="<c:out value='${sessionScope.productList.name}' />">
+					<input type="hidden" name="product_price" value="<c:out value='${sessionScope.productList.price}' />">
+					<input type="hidden" name="category_name" value="<c:out value='${sessionScope.productList.category}' />">
 					<input type="hidden" name="tableNo" value="3">
 					<c:forEach var="topping" items="${topping_list}" varStatus="status">
 						<input type="hidden" name="topping" value="<c:out value='${topping.id}' />">
 						<input type="hidden" name="topping_name" value="<c:out value='${topping.name}' />">
+						<input type="hidden" name="topping_price" value="<c:out value='${topping.price}' />">
 						<input type="hidden" name="topping_quantity" id="topping-<c:out value='${topping.id}' />" value="0">
 					</c:forEach>
 					<input type="hidden" name="total" id="input-total" value="">
@@ -170,12 +204,12 @@
 			%>
 			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
-					<input type="hidden" name="order_id" value="<c:out value='${sessionScope.changeList.order_id}' />"> 
-					<input type="hidden" name="product_id" value="<c:out value='${sessionScope.changeList.product_id}' />"> 
-					<input type="hidden" name="product_name" value="<c:out value='${sessionScope.changeList.product_name}' />"> 
-					<input type="hidden" name="product_price" value="<c:out value='${sessionScope.changeList.product_price}' />"> 
-					<input type="hidden" name="category_name" value="<c:out value='${sessionScope.changeList.category_name}' />"> 
-					<input type="hidden" name="product_subtotal"value="<c:out value='${sessionScope.changeList.product_subtotal}' />"> 
+					<input type="hidden" name="order_id" value="<c:out value='${sessionScope.changeList.order_id}' />">
+					<input type="hidden" name="product_id" value="<c:out value='${sessionScope.changeList.product_id}' />">
+					<input type="hidden" name="product_name" value="<c:out value='${sessionScope.changeList.product_name}' />">
+					<input type="hidden" name="product_price" value="<c:out value='${sessionScope.changeList.product_price}' />">
+					<input type="hidden" name="category_name" value="<c:out value='${sessionScope.changeList.category_name}' />">
+					<input type="hidden" name="product_subtotal" value="<c:out value='${sessionScope.changeList.product_subtotal}' />">
 					<input type="hidden" name="tableNo" value="3">
 					<c:forEach var="topping_id" items="${sessionScope.changeList.topping_id}" varStatus="status">
 						<c:set var="topping_name" value="${sessionScope.changeList.topping_name[status.index]}" />
@@ -228,6 +262,9 @@ function handleCounterClick(event) {
     // 対応する input 要素を取得
     const input = button.parentElement.querySelector('.counter-input');
     let currentValue = parseInt(input.value);
+    
+    const btnId = button.dataset.id;  // data-item-id を取得
+    const toppingPrice = toppingPrices[btnId] || 0;
 
     if (isNaN(currentValue)) {
         currentValue = 0;
@@ -237,22 +274,23 @@ function handleCounterClick(event) {
     if (isMinusButton && currentValue > min) {
         input.value = currentValue - 1;
         topping--;
+        total -= toppingPrice;
     }
 
     // + ボタンがクリックされた場合は値を増やす
     if (isPlusButton && currentValue < max) {
         input.value = currentValue + 1;
         topping++;
+        total += toppingPrice
     }
 
     // トッピングの値段は固定値を設定しているので修正が必要
-    totalElem.textContent = total + (110 * topping);
-    inputTotalElem.value = total + (110 * topping);
+    totalElem.textContent = total;
+    inputTotalElem.value = total;
 
     const minusButton = button.parentElement.querySelector('.counter-button.minus');
     const plusButton = button.parentElement.querySelector('.counter-button.plus');
     changeButtonColor(input.value, min, max, minusButton, plusButton);
-    const btnId = button.dataset.id;  // data-item-id を取得
     console.log(JSON.stringify(btnId));
     console.log('topping-' + btnId);
     document.getElementById('topping-' + btnId).value = input.value;
@@ -272,10 +310,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const plusButton = button.parentElement.querySelector('.counter-button.plus');
         changeButtonColor(currentValue, min, max, minusButton, plusButton);
     });
+    
 
-    // 初期値を反映
-    totalElem.textContent = total + (110 * topping);
-    inputTotalElem.value = total + (110 * topping);
+    // 初期値を反映（トッピングごとの価格を考慮）
+    let toppingTotal = 0;
+    document.querySelectorAll('.counter-input').forEach(input => {
+        const id = input.dataset.id; // ここを修正、button ではなく input に data-id を付与しておくと安全
+        const count = parseInt(input.value) || 0;
+        toppingTotal += count * (toppingPrices[id] || 0);
+    });
+
+    // total の計算をページ読み込み時に一度だけ行う
+    const totalElem = document.getElementById('total'); // total表示用要素
+    const inputTotalElem = document.getElementById('input-total'); // hidden input
+    totalElem.textContent = total + toppingTotal;
+    inputTotalElem.value = total + toppingTotal;
 });
 
 const buttons = document.getElementsByClassName("counter-button");
