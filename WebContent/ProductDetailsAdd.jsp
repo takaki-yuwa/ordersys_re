@@ -25,16 +25,16 @@
 	%>
 	<script>
 	let topping = 0;
-	let total = ${sessionScope.productList.price};
-</script>
+	let total = <c:out value="${sessionScope.productList.price}" />;
+	</script>
 	<%
 	//注文リスト画面から遷移してきた場合
 	} else if ("OrderList.jsp".equals(fromPage)) {
 	%>
 	<script>
-	let total = ${sessionScope.changeList.product_subtotal};
+	let total = <c:out value="${sessionScope.changeList.product_subtotal}" />;
 	let topping=0;
-</script>
+	</script>
 	<%
 	}
 	%>
@@ -53,16 +53,16 @@
 			if ("OrderMenu.jsp".equals(fromPage)) {
 			%>
 			<c:if test="${not empty sessionScope.productList}">
-				<div class="product-text">${sessionScope.productList.name}</div>
-				<div class="price-text">${sessionScope.productList.price}円(税込)</div>
+				<div class="product-text"><c:out value="${sessionScope.productList.name}" /></div>
+				<div class="price-text"><c:out value="${sessionScope.productList.price}" />円(税込)</div>
 			</c:if>
 			<%
 			//注文リスト画面から遷移してきた場合
 			} else if ("OrderList.jsp".equals(fromPage)) {
 			%>
 			<c:if test="${not empty sessionScope.changeList}">
-				<div class="product-text">${sessionScope.changeList.product_name}</div>
-				<div class="price-text">${sessionScope.changeList.product_price}円(税込)</div>
+				<div class="product-text"><c:out value="${sessionScope.changeList.product_name}" /></div>
+				<div class="price-text"><c:out value="${sessionScope.changeList.product_price}" />円(税込)</div>
 			</c:if>
 			<%
 			}
@@ -83,11 +83,11 @@
 						<c:forEach var="topping" items="${topping_list}" varStatus="status">
 							<li class="topping-row">
 								<c:if test="${topping.displayflag == 1}">
-									<div class="break-topping">${topping.name}</div> 
+									<div class="break-topping"><c:out value="${topping.name}" /></div> 
 									<c:if test="${topping.stock > 0}">
-										<button class="counter-button minus" id="toppingButton" data-id="${topping.id}" data-index="${status.index}">-</button>
+										<button class="counter-button minus" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-index="<c:out value='${status.index}' />">-</button>
 										<input type="text" value="0" class="counter-input" readonly>
-										<button class="counter-button plus" data-index="${status.index}" id="toppingButton" data-id="${topping.id}" data-max="${topping.stock}">+</button>
+										<button class="counter-button plus" data-index="<c:out value='${status.index}' />" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-max="<c:out value='${topping.stock}' />">+</button>
 									</c:if> 
 									<c:if test="${topping.stock == 0}">
 										<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
@@ -117,11 +117,11 @@
 							<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}" />
 							<li class="topping-row">
 								<c:if test="${topping.displayflag == 1}">
-									<div class="break-topping">${topping.name}</div> 
+									<div class="break-topping"><c:out value="${topping.name}" /></div> 
 									<c:if test="${topping.stock > 0}">
-										<button class="counter-button minus" id="toppingButton" data-id="${topping.id}" data-index="${status.index}">-</button>
-										<input type="text" value="${topping_quantity}" class="counter-input" readonly>
-										<button class="counter-button plus" data-index="${status.index}" id="toppingButton" data-id="${topping.id}" data-max="${topping.stock}">+</button>
+										<button class="counter-button minus" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-index="<c:out value='${status.index}' />">-</button>
+										<input type="text" value="<c:out value='${topping_quantity}' />" class="counter-input" readonly>
+										<button class="counter-button plus" data-index="<c:out value='${status.index}' />" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-max="<c:out value='${topping.stock}' />">+</button>
 									</c:if> 
 									<c:if test="${topping.stock == 0}">
 										<img src="Image/soldout.png" alt="Sold Out" class="soldout-img" />
@@ -141,7 +141,7 @@
 		%>
 	</main>
 	<footer class="footer-buttons">
-		<div class="table-number">${sessionScope.tableNumber}卓</div>
+		<div class="table-number"><c:out value="${sessionScope.tableNumber}" />卓</div>
 		<div class="footer-wrapper">
 			<!-- ボタン -->
 			<%
@@ -150,15 +150,15 @@
 			%>
 			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
-					<input type="hidden" name="product_id" value="${sessionScope.productList.id}"> 
-					<input type="hidden" name="product_name" value="${sessionScope.productList.name}"> 
-					<input type="hidden" name="product_price" value="${sessionScope.productList.price}"> 
-					<input type="hidden" name="category_name" value="${sessionScope.productList.category}"> 
+					<input type="hidden" name="product_id" value="<c:out value='${sessionScope.productList.id}' />"> 
+					<input type="hidden" name="product_name" value="<c:out value='${sessionScope.productList.name}' />"> 
+					<input type="hidden" name="product_price" value="<c:out value='${sessionScope.productList.price}' />"> 
+					<input type="hidden" name="category_name" value="<c:out value='${sessionScope.productList.category}' />"> 
 					<input type="hidden" name="tableNo" value="3">
 					<c:forEach var="topping" items="${topping_list}" varStatus="status">
-						<input type="hidden" name="topping" value="${topping.id}">
-						<input type="hidden" name="topping_name" value="${topping.name}">
-						<input type="hidden" name="topping_quantity" id="topping-${topping.id}" value="0">
+						<input type="hidden" name="topping" value="<c:out value='${topping.id}' />">
+						<input type="hidden" name="topping_name" value="<c:out value='${topping.name}' />">
+						<input type="hidden" name="topping_quantity" id="topping-<c:out value='${topping.id}' />" value="0">
 					</c:forEach>
 					<input type="hidden" name="total" id="input-total" value="">
 					<img src="Image/addCart.png" alt="追加のボタン"> 追加
@@ -170,22 +170,22 @@
 			%>
 			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
-					<input type="hidden" name="order_id" value="${sessionScope.changeList.order_id}"> 
-					<input type="hidden" name="product_id" value="${sessionScope.changeList.product_id}"> 
-					<input type="hidden" name="product_name" value="${sessionScope.changeList.product_name}"> 
-					<input type="hidden" name="product_price" value="${sessionScope.changeList.product_price}"> 
-					<input type="hidden" name="category_name" value="${sessionScope.changeList.category_name}"> 
-					<input type="hidden" name="product_subtotal"value="${sessionScope.changeList.product_subtotal}"> 
+					<input type="hidden" name="order_id" value="<c:out value='${sessionScope.changeList.order_id}' />"> 
+					<input type="hidden" name="product_id" value="<c:out value='${sessionScope.changeList.product_id}' />"> 
+					<input type="hidden" name="product_name" value="<c:out value='${sessionScope.changeList.product_name}' />"> 
+					<input type="hidden" name="product_price" value="<c:out value='${sessionScope.changeList.product_price}' />"> 
+					<input type="hidden" name="category_name" value="<c:out value='${sessionScope.changeList.category_name}' />"> 
+					<input type="hidden" name="product_subtotal"value="<c:out value='${sessionScope.changeList.product_subtotal}' />"> 
 					<input type="hidden" name="tableNo" value="3">
 					<c:forEach var="topping_id" items="${sessionScope.changeList.topping_id}" varStatus="status">
 						<c:set var="topping_name" value="${sessionScope.changeList.topping_name[status.index]}" />
 						<c:set var="topping_price" value="${sessionScope.changeList.topping_price[status.index]}" />
 						<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}" />
-						<input type="hidden" name="topping_id[]" value="${topping_id}">
-						<input type="hidden" name="topping_name[]" value="${topping_name}">
-						<input type="hidden" name="topping_price[]" value="${topping_price}">
+						<input type="hidden" name="topping_id[]" value="<c:out value='${topping_id}' />">
+						<input type="hidden" name="topping_name[]" value="<c:out value='${topping_name}' />">
+						<input type="hidden" name="topping_price[]" value="<c:out value='${topping_price}' />">
 						<%--valueに変更していない個数がリセットされないように取得した${topping_quantity}を入れる--%>
-						<input type="hidden" name="topping_quantity[]" id="topping-${topping_id}" value="${topping_quantity}">
+						<input type="hidden" name="topping_quantity[]" id="topping-<c:out value='${topping_id}' />" value="<c:out value='${topping_quantity}' />">
 					</c:forEach>
 					<input type="hidden" name="total" id="input-total" value="">
 					<img src="Image/changeCart.png" alt="変更のボタン"> 変更

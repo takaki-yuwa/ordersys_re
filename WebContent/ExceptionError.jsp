@@ -30,17 +30,5 @@
 			</div>
 		</c:if>
 	</main>
-	<!--<footer class="footer-buttons">
-		<div class="table-number">3卓</div>
-		<div class="footer-wrapper">
-			<!--ボタン-->
-			<!--メニューへ遷移-->
-			<!--<a href="OrderMenu.html">
-				<button class="fixed-left-button">
-					<img src="Image/menu.png" alt="メニューのボタン"> メニュー
-				</button>
-			</a>
-		</div>
-	</footer>-->
 </body>
 </html>

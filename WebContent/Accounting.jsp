@@ -29,8 +29,8 @@
 			<div class="square-box">
 				<p class="center-text">会計が確定されました</p>
 				<p class="center-text">ご利用ありがとうございます</p>
-				<span class="bold-text size-text">${accountingList.tableNo}卓</span>
-				<span class="underline-text bold-text size-text">合計:${accountingList.totalPrice}円(税込)</span>
+				<span class="bold-text size-text"><c:out value="${accountingList.tableNo}" />卓</span>
+				<span class="underline-text bold-text size-text">合計:<c:out value="${accountingList.totalPrice}" />円(税込)</span>
 			</div>
 		</div>
 		<p class="center-text">レジにてお支払いください</p>

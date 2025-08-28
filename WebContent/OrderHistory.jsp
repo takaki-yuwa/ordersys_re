@@ -61,21 +61,21 @@
 						<!-- 左：商品名とトッピング -->
 						<div class="order-item-left">
 							<div class="break-word bold-text">
-								<strong>${history.product_name}</strong>
+								<strong><c:out value="${history.product_name}" /></strong>
 							</div>
 							<c:forEach var="multiple" items="${history.multipleToppingList}">
-								<div>・${multiple.topping_name}✕${multiple.topping_quantity}</div>
+								<div>・<c:out value="${multiple.topping_name}" />✕<c:out value="${multiple.topping_quantity}" /></div>
 							</c:forEach>
 						</div>
 
 						<!-- 中央：数量 -->
 						<div class="order-item-center">
-							${history.product_quantity}
+							<c:out value="${history.product_quantity}" />
 						</div>
 
 						<!-- 右：金額 -->
 						<div class="order-item-right">
-							${history.order_price}円
+							<c:out value="${history.order_price}" />円
 						</div>
 					</div>
 				</c:forEach>
@@ -86,8 +86,8 @@
 		<c:if test="${not empty orderHistory}">
 			<footer class="footer-subtotal">
 				<div class="footer-subtotal-wrapper">
-					<div class="order-footer-text">${iTotalQuantity}点</div>
-					<div class="order-footer-text">${iTotalPrice}円(税込)</div>
+					<div class="order-footer-text"><c:out value="${iTotalQuantity}" />点</div>
+					<div class="order-footer-text"><c:out value="${iTotalPrice}" />円(税込)</div>
 				</div>
 			</footer>
 		</c:if>
@@ -106,15 +106,15 @@
 			<button class="popup-close" id="close-popup">いいえ</button>
 			<form action="Accounting" method="post">
 				<button class="popup-proceed" id="confirm-button">
-					<input type="hidden" name="tableNo" value="${iTableNo}">
-					<input type="hidden" name="totalPrice" value="${iTotalPrice}"> 
+					<input type="hidden" name="tableNo" value="<c:out value='${iTableNo}' />">
+					<input type="hidden" name="totalPrice" value="<c:out value='${iTotalPrice}' />"> 
 					は い
 				</button>
 			</form>
 		</div>
 	</main>
 	<footer class="footer-buttons">
-		<div class="table-number">${sessionScope.tableNumber}卓</div>
+		<div class="table-number"><c:out value="${sessionScope.tableNumber}" />卓</div>
 		<div class="footer-wrapper">
 			<!--ボタン-->
 			<!--会計確認ポップアップ表示-->
