@@ -117,7 +117,7 @@
 							<c:set var="topping_quantity" value="${sessionScope.changeList.topping_quantity[status.index]}" />
 							<li class="topping-row">
 								<c:if test="${topping.displayflag == 1}">
-									<div class="break-topping"><c:out value="${topping.name}" /></div> 
+									<div class="break-topping"><c:out value="${topping.name}" /> </div> 
 									<c:if test="${topping.stock > 0}">
 										<button class="counter-button minus" id="toppingButton" data-id="<c:out value='${topping.id}' />" data-index="<c:out value='${status.index}' />">-</button>
 										<input type="text" value="<c:out value='${topping_quantity}' />" class="counter-input" readonly>
