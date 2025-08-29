@@ -2,13 +2,14 @@ package servlet;
 
 import java.io.IOException;
 
-import dao.AccountingDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.AccountingDAO;
 
 @WebServlet("/Accounting")
 public class Accounting extends HttpServlet {
@@ -20,6 +21,8 @@ public class Accounting extends HttpServlet {
 
 		// セッションを取得
 		HttpSession session = request.getSession();
+
+		String sessionId = (String) session.getAttribute("sessionNumber");
 
 		// パラメータの取得
 		String strTableNo = request.getParameter("tableNo"); // テーブル番号
@@ -37,6 +40,9 @@ public class Accounting extends HttpServlet {
 
 		// accounting_list オブジェクトを作成
 		accounting_list accountingList = new accounting_list(strTableNo, strTotalPrice);
+		
+		// 卓番セッション
+		accountingDAO.processSession(tableNo, sessionId);
 
 		// セッションの取得と情報削除
 		request.getSession().invalidate();
