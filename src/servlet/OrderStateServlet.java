@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/OrderStart/*")
+@WebServlet("/OrderStart")
 public class OrderStateServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -20,13 +20,8 @@ public class OrderStateServlet extends HttpServlet {
 			response.setHeader("Pragma", "no-cache"); // HTTP/1.0
 			response.setDateHeader("Expires", 0); // プロキシ／Expiresヘッダー用
 
-			// パス情報からトークンを取得
-            String pathInfo = request.getPathInfo();
-            if (pathInfo == null || pathInfo.length() <= 1) {
-                request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-                return;
-            }
-            String table_token = pathInfo.substring(1); // 最初の "/" を除去
+			//卓番パラメータを取得
+			String table_token = request.getParameter("tt");
 
 			System.out.println("トークンの値：" + table_token);
 
