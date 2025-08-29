@@ -21,23 +21,6 @@ public class Accounting extends HttpServlet {
 		// セッションを取得
 		HttpSession session = request.getSession();
 
-		String tableNumberStr = (String) session.getAttribute("tableNumber");
-		int tableNumber = 0;
-		if (tableNumberStr != null) {
-			try {
-				tableNumber = Integer.parseInt(tableNumberStr);
-			} catch (NumberFormatException e) {
-				// 無効な数値の場合はエラー処理
-				System.out.println("無効な tableNumber: " + tableNumberStr);
-				request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-				return;
-			}
-		} else {
-			// null の場合はエラー画面へ
-			request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-			return;
-		}
-
 		// パラメータの取得
 		String strTableNo = request.getParameter("tableNo"); // テーブル番号
 		String strTotalPrice = request.getParameter("totalPrice"); // 総額

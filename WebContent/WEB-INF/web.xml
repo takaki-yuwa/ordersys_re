@@ -2,7 +2,6 @@
 <display-name>ordersys_re</display-name>
 <welcome-file-list>
 <welcome-file>OrderStart</welcome-file>
-<welcome-file>OrderStart</welcome-file>
 </welcome-file-list>
 <servlet>
 <servlet-name>jsp</servlet-name>
