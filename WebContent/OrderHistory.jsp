@@ -34,7 +34,6 @@
 				<!-- 合計値の初期化 -->
 				<c:set var="iTotalQuantity" value="0" />
 				<c:set var="iTotalPrice" value="0" />
-				<c:set var="iTableNo" value="0" />
 
 				<div class="order-item order-item-header">
 					<div class="order-item-left">
@@ -54,8 +53,6 @@
 					<c:set var="iTotalQuantity" value="${iTotalQuantity + history.product_quantity}" />
 					<!-- 合計金額を加算 -->
 					<c:set var="iTotalPrice" value="${iTotalPrice + history.order_price}" />
-					<!-- 卓番号を保持 -->
-					<c:set var="iTableNo" value="${history.table_number}" />
 
 					<div class="order-item">
 						<!-- 左：商品名とトッピング -->
@@ -123,7 +120,7 @@
 		        <button class="popup-close" id="close-popup">いいえ</button>
 		        <form action="Accounting" method="post">
 		            <button class="popup-proceed" id="confirm-button">
-		                <input type="hidden" name="tableNo" value="<c:out value='${iTableNo}' />">
+		                <input type="hidden" name="tableNo" value="<c:out value='${sessionScope.tableNumber}' />">
 		                <input type="hidden" name="totalPrice" value="<c:out value='${iTotalPrice}' />">
 		                は い
 		            </button>

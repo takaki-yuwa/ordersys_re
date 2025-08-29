@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class AccountingDAO {
 
 	// 会計情報を挿入後、関連するorder_detailsとmultiple_order_detailsの処理を行うメソッド
-	public void processAccountingData(int totalPrice, int tableNo) {
+	public void processAccountingData(int totalPrice, int sessionId) {
 		// トランザクション開始
 		try (Connection con = DBUtil.getConnection()) {
 			// 自動コミットを無効にする
@@ -21,7 +21,7 @@ public class AccountingDAO {
 			System.out.println("会計情報ID: " + accountingInformationId);
 
 			// 2. order_detailsテーブルからaccounting_flagが0のorder_details_idをすべて取ってくる
-			String selectSql = "SELECT order_details_id, table_number FROM order_details WHERE accounting_flag = 0";
+			String selectSql = "SELECT order_details_id, session_id FROM order_details WHERE accounting_flag = 0";
 			try (PreparedStatement ps = con.prepareStatement(selectSql);
 					ResultSet rs = ps.executeQuery()) {
 
@@ -34,9 +34,9 @@ public class AccountingDAO {
 					String updateSql = "UPDATE order_details SET accounting_flag = 1 WHERE order_details_id = ?";
 					try (PreparedStatement updatePs = con.prepareStatement(updateSql)) {
 						while (rs.next()) {
-							int orderTableNo = rs.getInt("table_number");
+							int orderSessionId = rs.getInt("session_id");
 							int orderDetailsId = rs.getInt("order_details_id");
-							if (tableNo == orderTableNo) {
+							if (sessionId == orderSessionId) {
 								// 5. multiple_order_detailsにorder_details_idと会計情報IDを挿入
 								insertPs.setInt(1, orderDetailsId);
 								insertPs.setInt(2, accountingInformationId);
@@ -105,7 +105,7 @@ public class AccountingDAO {
 		return accountingInformationId;
 	}
 
-	public void processSession(int tableNo, String sessionId) {
+	public void processSession(int tableNo, String sessionNumberStr) {
 		// 挿入するSQL文
 		String updateSql = "UPDATE table_sessions AS s\n"
 				+ "JOIN table_master AS m ON s.table_id = m.table_id\n"
@@ -128,7 +128,7 @@ public class AccountingDAO {
 		        con.setAutoCommit(false);
 				
 				// プレースホルダーにsessionIdをセット
-				updatePs.setString(1, sessionId);
+				updatePs.setString(1, sessionNumberStr);
 				updatePs.executeUpdate();
 				
 				// プレースホルダーにtableNoをセット

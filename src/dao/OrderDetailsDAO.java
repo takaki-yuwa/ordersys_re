@@ -12,14 +12,14 @@ import servlet.order_details_list;
 
 public class OrderDetailsDAO {
 
-    public List<order_details_list> findOrderHistory(Integer tableNumber, int search_order_price)
+    public List<order_details_list> findOrderHistory(Integer sessionId, int search_order_price)
     {
         List<order_details_list> orderDetailsList = new ArrayList<>();
 
         try (Connection con = DBUtil.getConnection();
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT order_details_id, order_id, product_quantity, order_price, table_number, accounting_flag, order_flag FROM order_details where table_number = " 
-            + tableNumber + " AND accounting_flag = " + 0))
+            ResultSet rs = st.executeQuery("SELECT order_details_id, order_id, product_quantity, order_price, session_id, accounting_flag, order_flag FROM order_details where session_id = " 
+            + sessionId + " AND accounting_flag = " + 0))
             //+ search_table_number + " AND order_price = " + search_order_price + " AND accounting_flag = " + 0))
         {
 
@@ -29,7 +29,7 @@ public class OrderDetailsDAO {
                 int order_id = rs.getInt("order_id");
                 int product_quantity = rs.getInt("product_quantity");
                 int order_price = rs.getInt("order_price");
-                int table_number = rs.getInt("table_number");
+                int session_id = rs.getInt("session_id");
                 int order_flag = rs.getInt("order_flag");
 
                 // 商品詳細テーブル取得
@@ -60,7 +60,7 @@ public class OrderDetailsDAO {
 					                    int topping_quantity = rs_topping.getInt("topping_quantity");
 					                    multipleToppingList.add(new multiple_topping_list(topping_name, topping_quantity));
 					                }
-					                orderDetailsList.add(new order_details_list(order_details_id, order_id, product_quantity, order_price, table_number, order_flag,
+					                orderDetailsList.add(new order_details_list(order_details_id, order_id, product_quantity, order_price, session_id, order_flag,
 					                        product_name, product_price, multipleToppingList));
 				                }
 		                    }

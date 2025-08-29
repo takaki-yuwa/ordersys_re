@@ -33,15 +33,15 @@ public class OrderCompletedDAO {
 	}
 
 	public boolean insertOrderDetails(Connection conn, String[] order_id, String[] product_quantity,
-			String[] order_price, int tableNumberInt) throws SQLException {
-		String insertOrderDetailsSQL = "INSERT INTO order_details (order_id, product_quantity, order_price, table_number, order_time) VALUES (?, ?, ?, ?, ?)";
+			String[] order_price, int session_id) throws SQLException {
+		String insertOrderDetailsSQL = "INSERT INTO order_details (order_id, product_quantity, order_price, session_id, order_time) VALUES (?, ?, ?, ?, ?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(insertOrderDetailsSQL)) {
 			for (int i = 0; i < order_id.length; i++) {
 				pstmt.setInt(1, Integer.parseInt(order_id[i])); // order_id
 				pstmt.setInt(2, Integer.parseInt(product_quantity[i])); // product_quantity
 				pstmt.setDouble(3, Double.parseDouble(order_price[i])); // order_price
-				pstmt.setInt(4, tableNumberInt); // table_number
+				pstmt.setInt(4, session_id);
 				pstmt.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis())); // order_time 
 
 				pstmt.addBatch();

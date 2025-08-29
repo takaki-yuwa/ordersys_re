@@ -6,14 +6,15 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import dao.DBUtil;
-import dao.OrderCompletedDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.DBUtil;
+import dao.OrderCompletedDAO;
 
 @WebServlet("/OrderCompleted")
 public class OrderCompleted extends HttpServlet {
@@ -67,12 +68,23 @@ public class OrderCompleted extends HttpServlet {
 
 		// セッションを取得
 		HttpSession session = request.getSession();
+		
+		String sessionNumberStr = (String) session.getAttribute("sessionNumber");
+
+		int sessionId = 0;
+		if (sessionNumberStr != null) {
+		    try {
+		        sessionId = Integer.parseInt(sessionNumberStr);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace();
+		    }
+		}
+		
 
 		String tableNumberStr = (String) session.getAttribute("tableNumber");
-		int tableNumber = 0;
 		if (tableNumberStr != null) {
 			try {
-				tableNumber = Integer.parseInt(tableNumberStr);
+				Integer.parseInt(tableNumberStr);
 			} catch (NumberFormatException e) {
 				// 無効な数値の場合はエラー処理
 				System.out.println("無効な tableNumber: " + tableNumberStr);
@@ -101,7 +113,7 @@ public class OrderCompleted extends HttpServlet {
 
 			// 3. order_details に挿入
 			// tableNumberはInteger型なので、intに変換して渡す
-			boolean insertSuccess = dao.insertOrderDetails(conn, order_id, product_quantity, order_price, tableNumber);
+			boolean insertSuccess = dao.insertOrderDetails(conn, order_id, product_quantity, order_price, sessionId);
 
 			if (insertSuccess) {
 				// 商品在庫を更新
@@ -117,14 +129,17 @@ public class OrderCompleted extends HttpServlet {
 			// トッピングのデータ挿入
 			boolean toppingInsertSuccess = dao.insertTopingDetails(conn, topping_ids, topping_quantities, order_id);
 			if (toppingInsertSuccess) {
-				// トッピングの挿入が成功した場合
-				dao.updateToppingStock(conn, toppingId, toppingQuantity);
-				conn.commit();
-				response.getWriter().println("すべてのデータが正常に追加されました！");
+			    // 注文ごとにトッピング在庫を更新する
+			    for (int i = 0; i < topping_ids.length; i++) {
+			        if (topping_ids[i] != null && topping_quantities[i] != null) {
+			            dao.updateToppingStock(conn, topping_ids[i], topping_quantities[i]);
+			        }
+			    }
+			    conn.commit();
+			    response.getWriter().println("すべてのデータが正常に追加されました！");
 			} else {
-				// トッピング挿入が失敗した場合
-				conn.rollback();
-				response.getWriter().println("トッピング詳細の追加に失敗しました。");
+			    conn.rollback();
+			    response.getWriter().println("トッピング詳細の追加に失敗しました。");
 			}
 
 		} catch (SQLException e) {

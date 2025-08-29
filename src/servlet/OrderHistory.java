@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.OrderDetailsDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.OrderDetailsDAO;
 
 @WebServlet("/OrderHistory")
 public class OrderHistory extends HttpServlet {
@@ -26,12 +27,21 @@ public class OrderHistory extends HttpServlet {
 
 		// セッションを取得
 		HttpSession session = request.getSession();
+		
+		String sessionNumberStr = (String) session.getAttribute("sessionNumber");
+
+		int sessionId = 0;
+		if (sessionNumberStr != null) {
+		    try {
+		        sessionId = Integer.parseInt(sessionNumberStr);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace();
+		    }
+		}
 
 		String tableNumberStr = (String) session.getAttribute("tableNumber");
-		int tableNumber = 0;
 		if (tableNumberStr != null) {
 			try {
-				tableNumber = Integer.parseInt(tableNumberStr);
 			} catch (NumberFormatException e) {
 				// 無効な数値の場合はエラー処理
 				System.out.println("無効な tableNumber: " + tableNumberStr);
@@ -60,12 +70,12 @@ public class OrderHistory extends HttpServlet {
 			for (int i = 0; i < strOrderPrice.length; i++) {
 				try {
 					price = Integer.parseInt(strOrderPrice[i]); // 注文金額を整数に変換
-					List<order_details_list> orderHistory = dao.findOrderHistory(tableNumber, price); // 注文履歴を取得
+					List<order_details_list> orderHistory = dao.findOrderHistory(sessionId, price); // 注文履歴を取得
 
 					if (orderHistory != null && !orderHistory.isEmpty()) {
 						OrderDetailsList.addAll(orderHistory); // 注文履歴をリストに追加
 					} else {
-						System.out.println("卓番 " + tableNumber + " と注文金額 " + price + " の注文履歴は見つかりませんでした。");
+						System.out.println("卓番 " + sessionId + " と注文金額 " + price + " の注文履歴は見つかりませんでした。");
 					}
 
 				} catch (NumberFormatException e) {
