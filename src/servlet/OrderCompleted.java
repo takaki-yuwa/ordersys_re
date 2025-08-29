@@ -40,11 +40,21 @@ public class OrderCompleted extends HttpServlet {
 		for (int i = 0; i < order_ids.length; i++) {
 			topping_ids[i] = request.getParameterValues("topping_id_" + i);
 			String[] topping_quantity = request.getParameterValues("topping_quantity_" + i);
+
 			toppingId = request.getParameterValues("topping_id_" + i);
 			toppingQuantity = request.getParameterValues("topping_quantity_" + i);
-			topping_quantities[i] = new String[topping_quantity.length];
-			for (int j = 0; j < topping_quantity.length; j++) {
-				topping_quantities[i][j] = topping_quantity[j];
+
+			if (topping_quantity != null) {
+				topping_quantities[i] = new String[topping_quantity.length];
+				for (int j = 0; j < topping_quantity.length; j++) {
+					topping_quantities[i][j] = topping_quantity[j];
+				}
+			} else {
+				topping_quantities[i] = new String[0]; // トッピングなしの場合は空配列
+			}
+
+			if (topping_ids[i] == null) {
+				topping_ids[i] = new String[0]; // トッピングが存在しない場合も空配列
 			}
 		}
 
