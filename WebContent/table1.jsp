@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1卓</title>
+<title>注文開始画面</title>
 <!--.cssの呼び出し-->
 <link rel="stylesheet" href="CSS/Import.css">
 <link rel="stylesheet" href="CSS/OrderCompleted.css">

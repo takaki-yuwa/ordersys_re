@@ -35,12 +35,21 @@ public class OrderList extends HttpServlet {
 			orderList = new ArrayList<>();
 		}
 
-		// tableNumberをセッションから取得
-		Integer tableNumber = (Integer) session.getAttribute("tableNumber");
-
-		// tableNumberがnullの場合はデフォルト値0を設定（またはエラー処理を行う）
-		if (tableNumber == null) {
+		String tableNumberStr = (String) session.getAttribute("tableNumber");
+		int tableNumber = 0;
+		if (tableNumberStr != null) {
+			try {
+				tableNumber = Integer.parseInt(tableNumberStr);
+			} catch (NumberFormatException e) {
+				// 無効な数値の場合はエラー処理
+				System.out.println("無効な tableNumber: " + tableNumberStr);
+				request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+				return;
+			}
+		} else {
+			// null の場合はエラー画面へ
 			request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
+			return;
 		}
 
 		// 遷移元を確認
