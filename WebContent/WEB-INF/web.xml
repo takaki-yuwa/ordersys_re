@@ -1,19 +1,32 @@
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
-<display-name>ordersys_re</display-name>
-<welcome-file-list>
-<welcome-file>OrderStart</welcome-file>
-</welcome-file-list>
-<servlet>
-<servlet-name>jsp</servlet-name>
-<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
-<init-param>
-<param-name>development</param-name>
-<param-value>true</param-value>
-</init-param>
-<load-on-startup>3</load-on-startup>
-</servlet>
-<servlet-mapping>
-<servlet-name>jsp</servlet-name>
-<url-pattern>*.jsp</url-pattern>
-</servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="https://jakarta.ee/xml/ns/jakartaee"
+	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+	id="WebApp_ID" version="6.0">
+	<display-name>ordersys_re</display-name>
+	<welcome-file-list>
+		<welcome-file>OrderStart</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>jsp</servlet-name>
+		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+		<init-param>
+			<param-name>development</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jsp</servlet-name>
+		<url-pattern>*.jsp</url-pattern>
+	</servlet-mapping>
+	<!-- SessionFilter の設定 -->
+	<filter>
+		<filter-name>SessionFilter</filter-name>
+		<filter-class>filter.SessionFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>

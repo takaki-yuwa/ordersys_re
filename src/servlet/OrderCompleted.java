@@ -79,23 +79,6 @@ public class OrderCompleted extends HttpServlet {
 		        e.printStackTrace();
 		    }
 		}
-		
-
-		String tableNumberStr = (String) session.getAttribute("tableNumber");
-		if (tableNumberStr != null) {
-			try {
-				Integer.parseInt(tableNumberStr);
-			} catch (NumberFormatException e) {
-				// 無効な数値の場合はエラー処理
-				System.out.println("無効な tableNumber: " + tableNumberStr);
-				request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-				return;
-			}
-		} else {
-			// null の場合はエラー画面へ
-			request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-			return;
-		}
 
 		Connection conn = null;
 

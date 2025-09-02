@@ -39,20 +39,6 @@ public class OrderHistory extends HttpServlet {
 		    }
 		}
 
-		String tableNumberStr = (String) session.getAttribute("tableNumber");
-		if (tableNumberStr != null) {
-			try {
-			} catch (NumberFormatException e) {
-				// 無効な数値の場合はエラー処理
-				System.out.println("無効な tableNumber: " + tableNumberStr);
-				request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-				return;
-			}
-		} else {
-			// null の場合はエラー画面へ
-			request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-			return;
-		}
 		// パラメータの取得
 		int price = 0; // 注文金額の初期化
 

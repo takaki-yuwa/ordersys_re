@@ -3,13 +3,14 @@ package servlet;
 import java.io.IOException;
 import java.util.List;
 
-import dao.ToppingDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import dao.ToppingDAO;
 
 @WebServlet("/DetailsAdd")
 public class DetailsAdd extends HttpServlet {
@@ -79,23 +80,6 @@ public class DetailsAdd extends HttpServlet {
 		// セッションに製品情報をセット
 		HttpSession session = request.getSession();
 		session.setAttribute("productList", productList);
-
-		String tableNumberStr = (String) session.getAttribute("tableNumber");
-		int tableNumber = 0;
-		if (tableNumberStr != null) {
-			try {
-				tableNumber = Integer.parseInt(tableNumberStr);
-			} catch (NumberFormatException e) {
-				// 無効な数値の場合はエラー処理
-				System.out.println("無効な tableNumber: " + tableNumberStr);
-				request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-				return;
-			}
-		} else {
-			// null の場合はエラー画面へ
-			request.getRequestDispatcher("/ExceptionError.jsp").forward(request, response);
-			return;
-		}
 
 		// トッピング情報の取得
 		ToppingDAO dao = new ToppingDAO();
