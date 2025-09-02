@@ -4,7 +4,6 @@
 //要素の取得
 const openPopupButton = document.getElementById('open-popup');
 const closePopupButton = document.getElementById('close-popup');
-const confirmButton = document.getElementById('confirm-button');
 const popupOverlay = document.getElementById('popup-overlay');
 const popupContent = document.getElementById('popup-content');
 
@@ -20,7 +19,3 @@ closePopupButton.addEventListener('click', () => {
 	popupContent.classList.remove('show');
 });
 
-//会計完了画面へ遷移する
-confirmButton.addEventListener('click', () => {
-	window.location.href = 'Accounting.html';
-});
