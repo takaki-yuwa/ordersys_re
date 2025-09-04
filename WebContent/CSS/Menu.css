@@ -29,3 +29,16 @@
 	height:100%;
 	object-fit:contain;
 }
+
+.count{
+	display: inline-block;
+	font-size: 10px;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	background: #fff5ee;
+	text-align: center;
+	line-height: 16px;
+	position: relative;
+	top: -55px;
+}

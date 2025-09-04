@@ -101,7 +101,7 @@
 			<!--注文リストへ遷移-->
 			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
-					<img src="Image/cart.png" alt="注文リストのボタン"> 注文リスト
+					<img src="Image/cart.png" alt="注文リストのボタン"><div>注文リスト<span class="count">1</span></div>
 				</button>
 			</form>
 			<!--履歴・お会計へ遷移-->
