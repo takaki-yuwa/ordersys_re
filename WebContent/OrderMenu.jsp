@@ -6,6 +6,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.Map.Entry"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,7 +102,14 @@
 			<!--注文リストへ遷移-->
 			<form action="OrderList" method="post">
 				<button class="fixed-right-button">
-					<img src="Image/cart.png" alt="注文リストのボタン"><div>注文リスト<span class="count">1</span></div>
+					<img src="Image/cart.png" alt="注文リストのボタン">
+					<div>
+						注文リスト
+						<!--注文リストが空でないときのみ注文件数を表示-->
+						<c:if test="${not empty sessionScope.orderList}">
+							<span class="count">${fn:length(sessionScope.orderList)}</span>
+						</c:if>
+					</div>
 				</button>
 			</form>
 			<!--履歴・お会計へ遷移-->
